@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Calculator — CGST SGST IGST Calculator Free | JoogadTools</title>
+  <meta name="description" content="Free GST Calculator. Calculate CGST, SGST, IGST instantly. Add or remove GST. Invoice format ready. All GST slab rates 5%, 12%, 18%, 28%.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header"><h1>🇮🇳 GST Calculator</h1><p>Calculate GST (CGST + SGST / IGST) instantly. Add or remove GST from any amount.</p></div>
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+      <div class="gst-layout">
+        <div class="glass-card--static gst-input-panel">
+          <div class="form-group"><label class="form-label">Amount (₹)</label><input type="number" class="form-input" id="gst-amount" placeholder="10000" min="0" step="0.01"></div>
+          <div class="form-group mt-md"><label class="form-label">GST Rate</label>
+            <div class="rate-btns" id="rate-btns">
+              <button class="rate-btn" data-rate="3">3%</button>
+              <button class="rate-btn active" data-rate="5">5%</button>
+              <button class="rate-btn" data-rate="12">12%</button>
+              <button class="rate-btn" data-rate="18">18%</button>
+              <button class="rate-btn" data-rate="28">28%</button>
+              <input type="number" class="form-input rate-custom" id="custom-rate" placeholder="Custom %" min="0" max="100" step="0.5">
+            </div>
+          </div>
+          <div class="form-group mt-md"><label class="form-label">GST Type</label>
+            <div class="toggle-group">
+              <button class="toggle-btn active" data-type="intra">CGST + SGST (Intra-State)</button>
+              <button class="toggle-btn" data-type="inter">IGST (Inter-State)</button>
+            </div>
+          </div>
+          <div class="form-group mt-md"><label class="form-label">Calculation</label>
+            <div class="toggle-group">
+              <button class="toggle-btn active" data-calc="exclusive">Add GST (Exclusive)</button>
+              <button class="toggle-btn" data-calc="inclusive">Remove GST (Inclusive)</button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-calc">⚡ Calculate GST</button>
+        </div>
+        <div class="glass-card--static gst-result-panel">
+          <h3>📊 Result</h3>
+          <div class="gst-result-grid mt-lg" id="gst-result">
+            <div class="gst-row"><span>Base Amount</span><span class="val" id="r-base">₹ 0.00</span></div>
+            <div class="gst-row" id="row-cgst"><span>CGST</span><span class="val" id="r-cgst">₹ 0.00</span></div>
+            <div class="gst-row" id="row-sgst"><span>SGST</span><span class="val" id="r-sgst">₹ 0.00</span></div>
+            <div class="gst-row hidden" id="row-igst"><span>IGST</span><span class="val" id="r-igst">₹ 0.00</span></div>
+            <div class="gst-row total"><span>Total Amount</span><span class="val" id="r-total">₹ 0.00</span></div>
+            <div class="gst-row gst-total"><span>Total GST</span><span class="val" id="r-gst">₹ 0.00</span></div>
+          </div>
+          <button class="btn btn-secondary btn-sm mt-lg" id="btn-copy-result">📋 Copy Result</button>
+        </div>
+      </div>
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

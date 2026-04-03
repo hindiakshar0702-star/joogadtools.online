@@ -1,0 +1,168 @@
+/* Password Generator Styles */
+
+.pass-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Password display */
+.pass-display-card {
+  padding: var(--space-xl);
+}
+
+.pass-output-row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.pass-output {
+  flex: 1;
+  padding: 1rem 1.2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  color: var(--accent-secondary);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: var(--fs-lg);
+  letter-spacing: 1px;
+  cursor: text;
+  user-select: all;
+}
+
+/* Strength Bar */
+.strength-section {
+  margin-top: var(--space-lg);
+}
+
+.strength-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-full);
+  transition: all 0.5s ease;
+}
+
+.strength-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-sm);
+  font-size: var(--fs-xs);
+}
+
+.strength-label {
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.strength-time {
+  color: var(--text-muted);
+}
+
+/* Options */
+.pass-options-card {
+  padding: var(--space-xl);
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slider-value {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+/* Bulk */
+.pass-bulk-card {
+  padding: var(--space-xl);
+}
+
+.pass-bulk-card h3 {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-md);
+}
+
+.bulk-results {
+  margin-top: var(--space-lg);
+}
+
+.bulk-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.bulk-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  gap: var(--space-sm);
+}
+
+.bulk-item-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bulk-item-copy {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.bulk-item-copy:hover {
+  color: var(--accent-primary);
+  background: rgba(108, 99, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pass-output {
+    font-size: var(--fs-base);
+  }
+}

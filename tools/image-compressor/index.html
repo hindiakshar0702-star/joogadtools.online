@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compressor — Compress PNG, JPEG Online Free | JoogadTools</title>
+  <meta name="description" content="Free online image compressor. Compress PNG, JPEG, WebP images in browser. No upload to server. Adjust quality, resize, before/after comparison.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>🖼️ Image Compressor</h1>
+      <p>Compress images in your browser — no upload to any server. Supports PNG, JPEG, WebP with quality control.</p>
+    </div>
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+
+      <!-- Drop Zone -->
+      <div class="glass-card--static drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept="image/*" multiple class="hidden">
+        <div class="drop-content" id="drop-content">
+          <span class="drop-icon">📁</span>
+          <h3>Drop images here or <button class="btn btn-primary btn-sm" id="btn-browse">Browse</button></h3>
+          <p>Supports JPEG, PNG, WebP • Max 20MB per file • Multiple files allowed</p>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="glass-card--static controls-panel mt-xl" id="controls-panel" style="display:none;">
+        <div class="controls-row">
+          <div class="form-group">
+            <label class="form-label">Quality: <span id="quality-val">80</span>%</label>
+            <input type="range" id="quality-slider" min="1" max="100" value="80" class="range-slider">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Output Format</label>
+            <select class="form-select" id="output-format">
+              <option value="auto">Same as Original</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Width (px)</label>
+            <input type="number" class="form-input" id="max-width" placeholder="Original" min="10" max="10000">
+          </div>
+          <button class="btn btn-primary" id="btn-compress">⚡ Compress All</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results-grid mt-xl" id="results-grid"></div>
+
+      <!-- Batch Actions -->
+      <div class="batch-bar mt-lg hidden" id="batch-bar">
+        <span id="batch-summary"></span>
+        <button class="btn btn-primary btn-sm" id="btn-download-all">⬇ Download All</button>
+      </div>
+
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

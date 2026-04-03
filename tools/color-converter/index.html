@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Converter — HEX RGB HSL CMYK Converter | JoogadTools</title>
+  <meta name="description" content="Convert colors between HEX, RGB, HSL, and CMYK. Includes contrast checker, palette suggestions, and color picker. Free online color tool.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>🎨 Color Converter</h1>
+      <p>Convert colors between formats, check contrast, and discover beautiful color palettes — all in one place.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-color-top"></div>
+
+      <div class="color-layout">
+        <!-- Left: Color Controls -->
+        <div class="color-controls">
+          <!-- Color Picker & Preview -->
+          <div class="glass-card--static color-preview-card">
+            <div class="color-swatch" id="color-swatch">
+              <input type="color" id="color-picker" value="#6C63FF" class="hidden-color-picker">
+              <span class="swatch-label">Click to pick</span>
+            </div>
+          </div>
+
+          <!-- Color Format Inputs -->
+          <div class="glass-card--static">
+            <!-- HEX -->
+            <div class="color-format-row">
+              <label class="format-label">HEX</label>
+              <div class="format-input-group">
+                <span class="format-prefix">#</span>
+                <input type="text" class="form-input format-input" id="input-hex" value="6C63FF" maxlength="6" placeholder="6C63FF">
+              </div>
+              <button class="btn btn-icon btn-secondary btn-sm copy-format" data-format="hex" title="Copy">📋</button>
+            </div>
+
+            <!-- RGB -->
+            <div class="color-format-row mt-md">
+              <label class="format-label">RGB</label>
+              <div class="rgb-inputs">
+                <input type="number" class="form-input format-input-small" id="input-r" min="0" max="255" value="108" placeholder="R">
+                <input type="number" class="form-input format-input-small" id="input-g" min="0" max="255" value="99" placeholder="G">
+                <input type="number" class="form-input format-input-small" id="input-b" min="0" max="255" value="255" placeholder="B">
+              </div>
+              <button class="btn btn-icon btn-secondary btn-sm copy-format" data-format="rgb" title="Copy">📋</button>
+            </div>
+
+            <!-- HSL -->
+            <div class="color-format-row mt-md">
+              <label class="format-label">HSL</label>
+              <div class="rgb-inputs">
+                <input type="number" class="form-input format-input-small" id="input-h" min="0" max="360" value="243" placeholder="H">
+                <input type="number" class="form-input format-input-small" id="input-s" min="0" max="100" value="100" placeholder="S">
+                <input type="number" class="form-input format-input-small" id="input-l" min="0" max="100" value="69" placeholder="L">
+              </div>
+              <button class="btn btn-icon btn-secondary btn-sm copy-format" data-format="hsl" title="Copy">📋</button>
+            </div>
+
+            <!-- CMYK -->
+            <div class="color-format-row mt-md">
+              <label class="format-label">CMYK</label>
+              <div class="cmyk-inputs">
+                <input type="number" class="form-input format-input-small" id="input-c" min="0" max="100" value="58" placeholder="C">
+                <input type="number" class="form-input format-input-small" id="input-m" min="0" max="100" value="61" placeholder="M">
+                <input type="number" class="form-input format-input-small" id="input-y" min="0" max="100" value="0" placeholder="Y">
+                <input type="number" class="form-input format-input-small" id="input-k" min="0" max="100" value="0" placeholder="K">
+              </div>
+              <button class="btn btn-icon btn-secondary btn-sm copy-format" data-format="cmyk" title="Copy">📋</button>
+            </div>
+
+            <!-- CSS string -->
+            <div class="color-format-row mt-md">
+              <label class="format-label">CSS</label>
+              <input type="text" class="form-input format-input" id="input-css" value="rgb(108, 99, 255)" readonly>
+              <button class="btn btn-icon btn-secondary btn-sm copy-format" data-format="css" title="Copy">📋</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Contrast & Palette -->
+        <div class="color-extras">
+          <!-- Contrast Checker -->
+          <div class="glass-card--static">
+            <h3 class="section-subtitle">Contrast Checker</h3>
+            <div class="contrast-preview" id="contrast-preview">
+              <div class="contrast-sample" id="contrast-on-white" style="background:#fff;color:#6C63FF;">
+                <span class="sample-text-lg">Aa</span>
+                <span class="sample-text-sm">Sample Text</span>
+              </div>
+              <div class="contrast-sample" id="contrast-on-black" style="background:#000;color:#6C63FF;">
+                <span class="sample-text-lg">Aa</span>
+                <span class="sample-text-sm">Sample Text</span>
+              </div>
+            </div>
+            <div class="contrast-results mt-md">
+              <div class="contrast-result">
+                <span>On White:</span>
+                <span class="badge" id="contrast-white-ratio">—</span>
+                <span class="badge" id="contrast-white-aa">—</span>
+              </div>
+              <div class="contrast-result mt-sm">
+                <span>On Black:</span>
+                <span class="badge" id="contrast-black-ratio">—</span>
+                <span class="badge" id="contrast-black-aa">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Color Palette -->
+          <div class="glass-card--static">
+            <h3 class="section-subtitle">Palette Suggestions</h3>
+            <div class="palette-section">
+              <span class="palette-label">Complementary</span>
+              <div class="palette-swatches" id="palette-complementary"></div>
+            </div>
+            <div class="palette-section mt-md">
+              <span class="palette-label">Analogous</span>
+              <div class="palette-swatches" id="palette-analogous"></div>
+            </div>
+            <div class="palette-section mt-md">
+              <span class="palette-label">Triadic</span>
+              <div class="palette-swatches" id="palette-triadic"></div>
+            </div>
+            <div class="palette-section mt-md">
+              <span class="palette-label">Shades</span>
+              <div class="palette-swatches" id="palette-shades"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-color-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

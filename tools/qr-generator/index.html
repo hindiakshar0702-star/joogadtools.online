@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator — Free QR Maker with UPI, WiFi, Logo & Scanner | JoogadTools</title>
+  <meta name="description" content="Free QR Code Generator with Logo, Custom Shapes, Gradient Colors, Scanner, WhatsApp QR, UPI, WiFi, vCard, Email, SMS, Calendar, Bulk QR from CSV. No signup needed.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>📱 QR Code Generator</h1>
+      <p>Generate stunning QR codes with logo, custom shapes, gradient colors — supports 10+ types including UPI, WhatsApp, WiFi & more.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-qr-top"></div>
+
+      <div class="qr-layout">
+        <!-- ======= LEFT: Settings Panel ======= -->
+        <div class="glass-card--static qr-settings-panel">
+
+          <!-- QR Type Selector -->
+          <div class="form-group">
+            <label class="form-label">QR Code Type</label>
+            <select class="form-select" id="qr-type">
+              <optgroup label="Common">
+                <option value="text" selected>📝 Text / URL</option>
+                <option value="wifi">📶 WiFi Network</option>
+                <option value="upi">💳 UPI Payment</option>
+                <option value="vcard">👤 vCard (Contact)</option>
+              </optgroup>
+              <optgroup label="Social & Messaging">
+                <option value="whatsapp">💬 WhatsApp</option>
+                <option value="email">📧 Email</option>
+                <option value="sms">📱 SMS</option>
+              </optgroup>
+              <optgroup label="Utility">
+                <option value="phone">📞 Phone Call</option>
+                <option value="location">📍 Location / Maps</option>
+                <option value="calendar">📅 Calendar Event</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <!-- ---- Dynamic Input Panels ---- -->
+          <div class="qr-inputs mt-lg" id="qr-inputs">
+
+            <!-- Text/URL -->
+            <div class="qr-input-panel active" id="panel-text">
+              <div class="form-group">
+                <label class="form-label">Enter Text or URL</label>
+                <textarea class="form-textarea" id="inp-text" rows="3" placeholder="https://example.com or any text..."></textarea>
+              </div>
+            </div>
+
+            <!-- WiFi -->
+            <div class="qr-input-panel" id="panel-wifi">
+              <div class="form-group">
+                <label class="form-label">Network Name (SSID) *</label>
+                <input type="text" class="form-input" id="inp-wifi-ssid" placeholder="My WiFi Network">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Password</label>
+                <input type="text" class="form-input" id="inp-wifi-pass" placeholder="WiFi password">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Security</label>
+                <select class="form-select" id="inp-wifi-sec">
+                  <option value="WPA">WPA/WPA2</option>
+                  <option value="WEP">WEP</option>
+                  <option value="nopass">None (Open)</option>
+                </select>
+              </div>
+              <label class="checkbox-label mt-md"><input type="checkbox" id="inp-wifi-hidden"> Hidden Network</label>
+            </div>
+
+            <!-- UPI -->
+            <div class="qr-input-panel" id="panel-upi">
+              <div class="form-group">
+                <label class="form-label">UPI ID (VPA) *</label>
+                <input type="text" class="form-input" id="inp-upi-vpa" placeholder="name@upi or name@bank">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Payee Name *</label>
+                <input type="text" class="form-input" id="inp-upi-name" placeholder="Your Name">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Amount (₹) — Optional</label>
+                <input type="number" class="form-input" id="inp-upi-amount" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Note — Optional</label>
+                <input type="text" class="form-input" id="inp-upi-note" placeholder="Payment for...">
+              </div>
+            </div>
+
+            <!-- vCard -->
+            <div class="qr-input-panel" id="panel-vcard">
+              <div class="form-group">
+                <label class="form-label">Full Name *</label>
+                <input type="text" class="form-input" id="inp-vc-name" placeholder="John Doe">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-input" id="inp-vc-phone" placeholder="+91 98765 43210">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" id="inp-vc-email" placeholder="john@example.com">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Website</label>
+                <input type="url" class="form-input" id="inp-vc-url" placeholder="https://example.com">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Organization</label>
+                <input type="text" class="form-input" id="inp-vc-org" placeholder="Company Name">
+              </div>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="qr-input-panel" id="panel-whatsapp">
+              <div class="form-group">
+                <label class="form-label">Phone Number (with country code) *</label>
+                <input type="tel" class="form-input" id="inp-wa-phone" placeholder="919876543210">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Pre-filled Message — Optional</label>
+                <textarea class="form-textarea" id="inp-wa-msg" rows="2" placeholder="Hello! I want to..."></textarea>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="qr-input-panel" id="panel-email">
+              <div class="form-group">
+                <label class="form-label">Email Address *</label>
+                <input type="email" class="form-input" id="inp-email-to" placeholder="contact@example.com">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Subject — Optional</label>
+                <input type="text" class="form-input" id="inp-email-sub" placeholder="Inquiry about...">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Body — Optional</label>
+                <textarea class="form-textarea" id="inp-email-body" rows="2" placeholder="Email body text..."></textarea>
+              </div>
+            </div>
+
+            <!-- SMS -->
+            <div class="qr-input-panel" id="panel-sms">
+              <div class="form-group">
+                <label class="form-label">Phone Number *</label>
+                <input type="tel" class="form-input" id="inp-sms-phone" placeholder="+919876543210">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Message — Optional</label>
+                <textarea class="form-textarea" id="inp-sms-msg" rows="2" placeholder="Your message..."></textarea>
+              </div>
+            </div>
+
+            <!-- Phone Call -->
+            <div class="qr-input-panel" id="panel-phone">
+              <div class="form-group">
+                <label class="form-label">Phone Number *</label>
+                <input type="tel" class="form-input" id="inp-phone-num" placeholder="+919876543210">
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="qr-input-panel" id="panel-location">
+              <div class="form-group">
+                <label class="form-label">Latitude *</label>
+                <input type="number" class="form-input" id="inp-loc-lat" placeholder="28.6139" step="any">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Longitude *</label>
+                <input type="number" class="form-input" id="inp-loc-lng" placeholder="77.2090" step="any">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Label — Optional</label>
+                <input type="text" class="form-input" id="inp-loc-label" placeholder="My Shop Location">
+              </div>
+              <button class="btn btn-outline btn-sm mt-md" id="btn-my-location">📍 Use My Current Location</button>
+            </div>
+
+            <!-- Calendar Event -->
+            <div class="qr-input-panel" id="panel-calendar">
+              <div class="form-group">
+                <label class="form-label">Event Title *</label>
+                <input type="text" class="form-input" id="inp-cal-title" placeholder="Team Meeting">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Start Date & Time *</label>
+                <input type="datetime-local" class="form-input" id="inp-cal-start">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">End Date & Time</label>
+                <input type="datetime-local" class="form-input" id="inp-cal-end">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Location — Optional</label>
+                <input type="text" class="form-input" id="inp-cal-loc" placeholder="Conference Room A">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Description — Optional</label>
+                <textarea class="form-textarea" id="inp-cal-desc" rows="2" placeholder="Meeting details..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ---- Customization Options ---- -->
+          <div class="qr-customize mt-xl">
+            <h3 class="section-label">🎨 Customize</h3>
+
+            <!-- Module Shape -->
+            <div class="form-group mt-md">
+              <label class="form-label">Module Shape</label>
+              <select class="form-select" id="opt-shape">
+                <option value="square">■ Square (Default)</option>
+                <option value="rounded">▢ Rounded</option>
+                <option value="dots">● Dots / Circle</option>
+                <option value="diamond">◆ Diamond</option>
+              </select>
+            </div>
+
+            <!-- Colors -->
+            <div class="color-row mt-md">
+              <div class="form-group">
+                <label class="form-label">Foreground</label>
+                <div class="color-pick-wrapper">
+                  <input type="color" id="opt-fg" value="#ffffff" class="color-pick">
+                  <span class="color-val" id="fg-val">#ffffff</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Background</label>
+                <div class="color-pick-wrapper">
+                  <input type="color" id="opt-bg" value="#0a0e1a" class="color-pick">
+                  <span class="color-val" id="bg-val">#0a0e1a</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gradient Toggle -->
+            <label class="checkbox-label mt-md"><input type="checkbox" id="opt-gradient"> Enable Gradient Foreground</label>
+            <div class="gradient-opts hidden mt-sm" id="gradient-opts">
+              <div class="color-row">
+                <div class="form-group">
+                  <label class="form-label">Gradient End Color</label>
+                  <div class="color-pick-wrapper">
+                    <input type="color" id="opt-fg2" value="#4ECDC4" class="color-pick">
+                    <span class="color-val" id="fg2-val">#4ECDC4</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Direction</label>
+                  <select class="form-select" id="opt-grad-dir">
+                    <option value="diagonal">↘ Diagonal</option>
+                    <option value="horizontal">→ Horizontal</option>
+                    <option value="vertical">↓ Vertical</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Logo Upload -->
+            <div class="form-group mt-md">
+              <label class="form-label">Logo in Center</label>
+              <div class="logo-upload-area" id="logo-upload-area">
+                <input type="file" id="opt-logo" accept="image/*" class="hidden">
+                <button class="btn btn-secondary btn-sm" id="btn-logo-upload">🖼️ Upload Logo</button>
+                <span class="logo-filename" id="logo-filename">No file</span>
+                <button class="btn btn-icon btn-sm" id="btn-logo-clear" style="display:none;" title="Remove logo">✕</button>
+              </div>
+            </div>
+
+            <!-- Size & Error Correction -->
+            <div class="color-row mt-md">
+              <div class="form-group">
+                <label class="form-label">Size (px)</label>
+                <select class="form-select" id="opt-size">
+                  <option value="200">200</option>
+                  <option value="300" selected>300</option>
+                  <option value="400">400</option>
+                  <option value="512">512</option>
+                  <option value="800">800</option>
+                  <option value="1024">1024</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Error Correction</label>
+                <select class="form-select" id="opt-ec">
+                  <option value="L">Low (7%)</option>
+                  <option value="M" selected>Medium (15%)</option>
+                  <option value="Q">Quartile (25%)</option>
+                  <option value="H">High (30%) — Best with Logo</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Frame Template -->
+            <div class="form-group mt-md">
+              <label class="form-label">Frame / Label</label>
+              <select class="form-select" id="opt-frame">
+                <option value="none">No Frame</option>
+                <option value="scan-me">📷 SCAN ME</option>
+                <option value="pay-here">💳 PAY HERE</option>
+                <option value="connect">📶 CONNECT WIFI</option>
+                <option value="visit">🌐 VISIT US</option>
+                <option value="contact">👤 SAVE CONTACT</option>
+                <option value="custom">✏️ Custom Text...</option>
+              </select>
+              <input type="text" class="form-input mt-sm hidden" id="opt-frame-custom" placeholder="Enter your label text">
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-generate">⚡ Generate QR Code</button>
+        </div>
+
+        <!-- ======= RIGHT: Preview Panel ======= -->
+        <div class="qr-right-col">
+          <div class="glass-card--static qr-preview-panel">
+            <h3 class="preview-title">Preview</h3>
+            <div class="qr-preview-box" id="qr-preview-box">
+              <div class="qr-placeholder" id="qr-placeholder">
+                <span>📱</span>
+                <p>Your QR code will appear here</p>
+              </div>
+              <canvas id="qr-canvas" style="display:none;"></canvas>
+            </div>
+            <div class="qr-actions hidden" id="qr-actions">
+              <button class="btn btn-primary btn-sm" id="btn-dl-png">⬇ PNG</button>
+              <button class="btn btn-primary btn-sm" id="btn-dl-svg" style="background:var(--gradient-warm);">⬇ SVG</button>
+              <button class="btn btn-secondary btn-sm" id="btn-copy">📋 Copy</button>
+              <button class="btn btn-secondary btn-sm" id="btn-save-history">💾 Save</button>
+            </div>
+          </div>
+
+          <!-- Scanner Section -->
+          <div class="glass-card--static scanner-section mt-xl">
+            <h3 class="section-label">📸 QR Scanner / Reader</h3>
+            <p class="section-desc">Scan QR code from camera or upload an image to decode.</p>
+            <div class="scanner-actions mt-md">
+              <button class="btn btn-secondary btn-sm" id="btn-scan-camera">📷 Open Camera</button>
+              <label class="btn btn-secondary btn-sm" id="btn-scan-file">
+                🖼️ Upload Image
+                <input type="file" accept="image/*" id="scan-file-input" class="hidden">
+              </label>
+            </div>
+            <div class="scanner-viewport hidden mt-md" id="scanner-viewport">
+              <video id="scanner-video" autoplay playsinline></video>
+              <button class="btn btn-sm btn-outline" id="btn-scan-stop">⬜ Stop Camera</button>
+            </div>
+            <div class="scanner-result hidden mt-md" id="scanner-result">
+              <label class="form-label">Decoded Result:</label>
+              <div class="result-box">
+                <span id="scan-result-text"></span>
+                <button class="btn btn-icon btn-sm btn-secondary" id="btn-copy-scan" title="Copy">📋</button>
+              </div>
+              <a href="#" class="btn btn-outline btn-sm mt-sm" id="scan-result-link" target="_blank" style="display:none;">🔗 Open Link</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= BULK GENERATION ======= -->
+      <div class="glass-card--static bulk-section mt-xl" id="bulk-section">
+        <h3 class="section-label">📊 Bulk QR Generation</h3>
+        <p class="section-desc">Enter one text/URL per line, or upload a CSV file. QR codes will be generated for each line.</p>
+        <div class="bulk-layout mt-md">
+          <div class="bulk-input-col">
+            <textarea class="form-textarea" id="bulk-input" rows="6" placeholder="https://example1.com&#10;https://example2.com&#10;https://example3.com"></textarea>
+            <div class="flex gap-sm mt-md">
+              <label class="btn btn-secondary btn-sm">
+                📁 Load CSV
+                <input type="file" accept=".csv,.txt" id="bulk-csv-input" class="hidden">
+              </label>
+              <button class="btn btn-primary btn-sm" id="btn-bulk-generate">⚡ Generate All</button>
+              <button class="btn btn-secondary btn-sm hidden" id="btn-bulk-download">⬇ Download All (ZIP)</button>
+            </div>
+          </div>
+          <div class="bulk-results hidden" id="bulk-results">
+            <div class="bulk-grid" id="bulk-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======= QR HISTORY ======= -->
+      <div class="glass-card--static history-section mt-xl" id="history-section">
+        <div class="flex items-center justify-between">
+          <h3 class="section-label">💾 QR History</h3>
+          <button class="btn btn-outline btn-sm" id="btn-clear-history">🗑️ Clear All</button>
+        </div>
+        <p class="section-desc">Your recently saved QR codes (stored in browser).</p>
+        <div class="history-grid mt-md" id="history-grid">
+          <p class="text-muted" id="history-empty">No saved QR codes yet. Generate one and click "💾 Save".</p>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-qr-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

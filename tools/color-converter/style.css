@@ -1,0 +1,221 @@
+/* Color Converter Styles */
+
+.color-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.color-controls,
+.color-extras {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Color Preview Swatch */
+.color-preview-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.color-swatch {
+  height: 160px;
+  background: #6C63FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-base);
+  border-radius: var(--radius-lg);
+}
+
+.hidden-color-picker {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.swatch-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  pointer-events: none;
+}
+
+/* Format Rows */
+.color-format-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.format-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  width: 50px;
+  flex-shrink: 0;
+}
+
+.format-input-group {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.format-prefix {
+  padding: 0 0 0 12px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: var(--fw-medium);
+}
+
+.format-input-group .format-input {
+  border: none;
+  background: none;
+  padding: 0.65rem 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.format-input-group .format-input:focus {
+  box-shadow: none;
+}
+
+.format-input {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.rgb-inputs,
+.cmyk-inputs {
+  display: flex;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.format-input-small {
+  width: 100%;
+  text-align: center;
+  padding: 0.6rem 0.3rem !important;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-sm);
+}
+
+/* Section subtitle */
+.section-subtitle {
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-lg);
+}
+
+/* Contrast Checker */
+.contrast-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.contrast-sample {
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sample-text-lg {
+  font-family: var(--font-heading);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+}
+
+.sample-text-sm {
+  font-size: var(--fs-sm);
+}
+
+.contrast-results {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.contrast-result {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Palettes */
+.palette-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.palette-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: var(--fw-semibold);
+}
+
+.palette-swatches {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.palette-color {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.palette-color:hover {
+  transform: scale(1.1);
+  border-color: var(--text-primary);
+  z-index: 1;
+}
+
+.palette-color[title]::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+.palette-color:hover::after {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .color-layout {
+    grid-template-columns: 1fr;
+  }
+}

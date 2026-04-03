@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Generator — MD5, SHA-1, SHA-256, SHA-512 | JoogadTools</title>
+  <meta name="description" content="Free hash generator. Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text or files. Compare hashes for integrity check.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header"><h1>🔐 Hash Generator</h1><p>Generate SHA-256, SHA-512, SHA-1 hashes from text or files. Verify hash integrity instantly.</p></div>
+    <div class="tool-body">
+      <div class="hash-layout">
+        <div class="glass-card--static" style="padding:var(--space-xl)">
+          <div class="form-group"><label class="form-label">Enter Text</label><textarea class="form-textarea" id="hash-input" rows="5" placeholder="Enter text to hash..."></textarea></div>
+          <div class="form-group mt-md"><label class="form-label">Or upload a file</label>
+            <label class="btn btn-secondary btn-sm">📁 Choose File <input type="file" id="hash-file" class="hidden"></label>
+            <span class="text-muted ml-md" id="hash-filename"></span></div>
+          <button class="btn btn-primary btn-lg w-full mt-lg" id="btn-hash">⚡ Generate Hashes</button>
+        </div>
+        <div class="glass-card--static" style="padding:var(--space-xl)">
+          <h3 style="font-family:var(--font-heading);">Hashes</h3>
+          <div class="hash-results mt-md" id="hash-results">
+            <div class="hash-row"><span class="hash-algo">SHA-256</span><div class="hash-val-wrapper"><input class="hash-val" id="h-sha256" readonly placeholder="—"><button class="btn btn-icon btn-sm" onclick="JoogadTools.copyToClipboard(document.getElementById('h-sha256').value)">📋</button></div></div>
+            <div class="hash-row"><span class="hash-algo">SHA-512</span><div class="hash-val-wrapper"><input class="hash-val" id="h-sha512" readonly placeholder="—"><button class="btn btn-icon btn-sm" onclick="JoogadTools.copyToClipboard(document.getElementById('h-sha512').value)">📋</button></div></div>
+            <div class="hash-row"><span class="hash-algo">SHA-1</span><div class="hash-val-wrapper"><input class="hash-val" id="h-sha1" readonly placeholder="—"><button class="btn btn-icon btn-sm" onclick="JoogadTools.copyToClipboard(document.getElementById('h-sha1').value)">📋</button></div></div>
+          </div>
+          <div class="form-group mt-lg"><label class="form-label">Verify Hash (paste expected hash)</label>
+            <input class="form-input" id="hash-verify" placeholder="Paste hash to compare...">
+            <div class="verify-result mt-sm hidden" id="verify-result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

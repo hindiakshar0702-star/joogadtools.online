@@ -1,0 +1,83 @@
+/* Case Converter Styles */
+
+.case-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.options-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-md);
+}
+
+/* Case Buttons Grid */
+.case-buttons-card {
+  padding: var(--space-xl);
+}
+
+.case-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.case-btn {
+  padding: 0.7rem 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+.case-btn:hover {
+  background: rgba(108, 99, 255, 0.1);
+  border-color: rgba(108, 99, 255, 0.3);
+  color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+.case-btn.active {
+  background: var(--gradient-accent);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+}
+
+/* Text Stats */
+.text-stats {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+@media (max-width: 768px) {
+  .case-buttons-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .case-buttons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .text-stats {
+    display: none;
+  }
+}

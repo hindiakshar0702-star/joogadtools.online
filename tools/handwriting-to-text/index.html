@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handwriting to Text Converter — Image to Text OCR | JoogadTools</title>
+  <meta name="description" content="Free online handwriting to text converter (OCR). Extract text from images, scanned documents, and handwritten notes. 100% Client-Side, no server upload required.">
+  <meta name="keywords" content="handwriting to text, image to text, ocr converter, online ocr, extract text from image, photo to text">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>✍️ Handwriting to Text Converter</h1>
+      <p>Extract text from images containing handwritten notes, documents, or screenshots. Works entirely in your browser — 100% private.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-ocr-top"></div>
+
+      <div class="ocr-layout">
+        <!-- ======= LEFT: Upload & Preview Panel ======= -->
+        <div class="glass-card--static ocr-left-panel">
+          
+          <h3 class="section-label">1. Select your Image</h3>
+          
+          <div class="upload-area" id="upload-area">
+            <input type="file" id="image-input" accept="image/*" class="hidden">
+            <div class="upload-placeholder" id="upload-placeholder">
+              <span class="upload-icon">📁</span>
+              <p>Drag & Drop an image here</p>
+              <p class="text-sm text-muted">or click to browse. You can also press <kbd>Ctrl</kbd> + <kbd>V</kbd> to paste an image.</p>
+              <button class="btn btn-secondary btn-sm mt-md" id="btn-browse" style="position: relative; z-index: 2;">Browse Files</button>
+            </div>
+            <img src="" id="image-preview" class="image-preview hidden" alt="Selected Image">
+            <button class="btn btn-icon btn-sm btn-clear hidden" id="btn-clear-image" title="Remove Image">✕</button>
+          </div>
+
+          <!-- Language Selection (Optional future-proofing, defaulted to eng) -->
+          <div class="form-group mt-lg">
+            <label class="form-label">Language Model</label>
+            <select class="form-select" id="ocr-lang">
+              <option value="eng" selected>🇺🇸 English (Best for most handwriting)</option>
+              <option value="hin">🇮🇳 Hindi</option>
+              <option value="spa">🇪🇸 Spanish</option>
+            </select>
+            <p class="text-sm text-muted mt-sm">Note: Tesseract OCR model (~25MB) will be downloaded on the very first run.</p>
+          </div>
+
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-extract" disabled>🔍 Extract Text</button>
+        </div>
+
+        <!-- ======= RIGHT: Result Panel ======= -->
+        <div class="ocr-right-col">
+          <div class="glass-card--static ocr-result-panel">
+            <div class="flex items-center justify-between mb-md">
+              <h3 class="section-label" style="margin:0;">2. Extracted Text</h3>
+              <div class="ocr-actions">
+                <button class="btn btn-secondary btn-sm" id="btn-copy" disabled>📋 Copy</button>
+                <button class="btn btn-secondary btn-sm" id="btn-download" disabled>⬇ .txt</button>
+              </div>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="progress-container hidden" id="progress-container">
+              <div class="progress-header">
+                <span class="progress-status" id="progress-status">Initializing Engine...</span>
+                <span class="progress-percent" id="progress-percent">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Output Text Area -->
+            <textarea class="form-textarea output-textarea" id="output-text" placeholder="Extracted text will appear here..." readonly></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-ocr-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <!-- Load Tesseract.js -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

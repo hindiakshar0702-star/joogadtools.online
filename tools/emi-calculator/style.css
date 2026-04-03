@@ -1,0 +1,22 @@
+/* EMI Calculator */
+.emi-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); max-width: var(--container-max); margin: 0 auto; align-items: start; }
+.emi-input-panel, .emi-result-panel { padding: var(--space-xl); }
+.range-slider { width: 100%; cursor: pointer; accent-color: var(--accent-primary); }
+.emi-result-panel h3 { font-family: var(--font-heading); font-size: var(--fs-lg); }
+.emi-big-number { text-align: center; padding: var(--space-lg); background: rgba(108,99,255,0.08); border-radius: var(--radius-lg); }
+.emi-big-number .label { display: block; font-size: var(--fs-sm); color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+.emi-big-number .value { display: block; font-size: 2rem; font-weight: var(--fw-bold); font-family: 'JetBrains Mono', monospace; color: var(--accent-primary); margin-top: var(--space-xs); }
+.emi-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-md); }
+.emi-stat { text-align: center; padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-md); }
+.emi-stat .label { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+.emi-stat .value { display: block; font-size: var(--fs-md); font-weight: var(--fw-bold); font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+.emi-stat .value.orange { color: #FFD93D; }
+.emi-chart { display: block; margin: 0 auto; max-width: 250px; }
+.amort-section { padding: var(--space-xl); max-width: var(--container-max); margin-left: auto; margin-right: auto; }
+.amort-section h3 { font-family: var(--font-heading); font-size: var(--fs-md); }
+.table-wrapper { overflow-x: auto; max-height: 400px; overflow-y: auto; border: 1px solid var(--surface-glass-border); border-radius: var(--radius-md); }
+.csv-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); font-family: 'JetBrains Mono', monospace; }
+.csv-table th { background: rgba(108,99,255,0.15); padding: 8px 12px; text-align: right; font-size: 11px; text-transform: uppercase; border-bottom: 2px solid var(--accent-primary); position: sticky; top: 0; }
+.csv-table td { padding: 6px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); text-align: right; color: var(--text-secondary); }
+.csv-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+@media (max-width: 768px) { .emi-layout { grid-template-columns: 1fr; } .emi-stats { grid-template-columns: 1fr; } }

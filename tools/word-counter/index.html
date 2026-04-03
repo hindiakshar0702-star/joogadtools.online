@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter — Character, Sentence, Keyword Density | JoogadTools</title>
+  <meta name="description" content="Free word counter tool. Count words, characters, sentences, paragraphs. Reading time, speaking time, keyword density analysis.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header"><h1>📝 Word Counter</h1><p>Count words, characters, sentences, paragraphs. Get reading time & keyword density.</p></div>
+    <div class="tool-body">
+      <div class="wc-stats-bar glass-card--static" id="wc-stats">
+        <div class="wc-stat"><span class="wc-num" id="s-words">0</span><span class="wc-label">Words</span></div>
+        <div class="wc-stat"><span class="wc-num" id="s-chars">0</span><span class="wc-label">Characters</span></div>
+        <div class="wc-stat"><span class="wc-num" id="s-chars-ns">0</span><span class="wc-label">Chars (no space)</span></div>
+        <div class="wc-stat"><span class="wc-num" id="s-sentences">0</span><span class="wc-label">Sentences</span></div>
+        <div class="wc-stat"><span class="wc-num" id="s-paragraphs">0</span><span class="wc-label">Paragraphs</span></div>
+        <div class="wc-stat"><span class="wc-num" id="s-read">0 min</span><span class="wc-label">Read Time</span></div>
+        <div class="wc-stat"><span class="wc-num" id="s-speak">0 min</span><span class="wc-label">Speak Time</span></div>
+      </div>
+      <div class="glass-card--static mt-xl" style="padding:var(--space-xl)">
+        <textarea class="form-textarea" id="wc-input" rows="14" placeholder="Start typing or paste your text here..."></textarea>
+      </div>
+      <div class="glass-card--static mt-xl keyword-section" style="padding:var(--space-xl)">
+        <h3>🔑 Keyword Density</h3>
+        <div class="keyword-grid mt-md" id="keyword-grid"><p class="text-muted">Type some text above to see keyword density.</p></div>
+      </div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

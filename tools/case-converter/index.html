@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Converter — Transform Text Cases Online | JoogadTools</title>
+  <meta name="description" content="Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case, PascalCase, and more. Free online text case converter.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>Aa Case Converter</h1>
+      <p>Transform your text between 10+ different cases instantly. Perfect for developers and writers.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-case-top"></div>
+
+      <div class="case-layout container--narrow">
+        <!-- Input -->
+        <div class="glass-card--static">
+          <div class="flex items-center justify-between mb-md">
+            <label class="form-label" style="margin:0;">Input Text</label>
+            <div class="text-stats" id="text-stats">
+              <span id="stat-chars">0 chars</span>
+              <span>•</span>
+              <span id="stat-words">0 words</span>
+              <span>•</span>
+              <span id="stat-lines">0 lines</span>
+            </div>
+          </div>
+          <textarea class="form-textarea" id="case-input" rows="6" placeholder="Type or paste your text here..."></textarea>
+          <div class="flex gap-sm mt-md" style="flex-wrap:wrap;">
+            <button class="btn btn-secondary btn-sm" id="clear-input">✕ Clear</button>
+            <button class="btn btn-secondary btn-sm" id="paste-input">📋 Paste</button>
+          </div>
+        </div>
+
+        <!-- Case Buttons -->
+        <div class="glass-card--static case-buttons-card">
+          <h3 class="options-title">Select Case</h3>
+          <div class="case-buttons-grid" id="case-buttons">
+            <button class="case-btn" data-case="upper" id="btn-upper">UPPERCASE</button>
+            <button class="case-btn" data-case="lower" id="btn-lower">lowercase</button>
+            <button class="case-btn" data-case="title" id="btn-title">Title Case</button>
+            <button class="case-btn" data-case="sentence" id="btn-sentence">Sentence case</button>
+            <button class="case-btn" data-case="camel" id="btn-camel">camelCase</button>
+            <button class="case-btn" data-case="pascal" id="btn-pascal">PascalCase</button>
+            <button class="case-btn" data-case="snake" id="btn-snake">snake_case</button>
+            <button class="case-btn" data-case="kebab" id="btn-kebab">kebab-case</button>
+            <button class="case-btn" data-case="constant" id="btn-constant">CONSTANT_CASE</button>
+            <button class="case-btn" data-case="dot" id="btn-dot">dot.case</button>
+            <button class="case-btn" data-case="toggle" id="btn-toggle">tOGGLE cASE</button>
+            <button class="case-btn" data-case="alternating" id="btn-alternating">aLtErNaTiNg</button>
+          </div>
+        </div>
+
+        <!-- Output -->
+        <div class="glass-card--static">
+          <div class="flex items-center justify-between mb-md">
+            <label class="form-label" style="margin:0;">Result</label>
+            <span class="badge" id="active-case">—</span>
+          </div>
+          <textarea class="form-textarea" id="case-output" rows="6" readonly placeholder="Converted text will appear here..."></textarea>
+          <div class="flex gap-sm mt-md">
+            <button class="btn btn-primary btn-sm" id="copy-output">📋 Copy Result</button>
+            <button class="btn btn-secondary btn-sm" id="download-output">⬇ Download</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-case-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMI Calculator — Loan EMI Calculator with Chart | JoogadTools</title>
+  <meta name="description" content="Free EMI Calculator. Calculate monthly EMI for home loan, car loan, personal loan. Visual chart, amortization table, total interest breakdown.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header"><h1>🏦 EMI Calculator</h1><p>Calculate monthly EMI for any loan — Home, Car, Personal. Includes chart breakdown & amortization schedule.</p></div>
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+      <div class="emi-layout">
+        <div class="glass-card--static emi-input-panel">
+          <div class="form-group"><label class="form-label">Loan Amount (₹)</label><input type="number" class="form-input" id="emi-principal" value="1000000" min="1000"></div>
+          <div class="form-group mt-md"><label class="form-label">Interest Rate (% per annum): <span id="rate-val">8.5</span>%</label><input type="range" id="emi-rate" min="1" max="30" step="0.1" value="8.5" class="range-slider"></div>
+          <div class="form-group mt-md"><label class="form-label">Loan Tenure: <span id="tenure-val">20</span> Years</label><input type="range" id="emi-tenure" min="1" max="30" value="20" class="range-slider"></div>
+          <div class="form-group mt-md"><label class="form-label">Loan Type</label>
+            <select class="form-select" id="loan-type">
+              <option value="custom">Custom</option>
+              <option value="home">🏠 Home Loan (8-9%)</option>
+              <option value="car">🚗 Car Loan (9-12%)</option>
+              <option value="personal">💳 Personal Loan (12-18%)</option>
+              <option value="education">🎓 Education Loan (8-11%)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-calc-emi">⚡ Calculate EMI</button>
+        </div>
+        <div class="glass-card--static emi-result-panel">
+          <h3>📊 EMI Breakdown</h3>
+          <div class="emi-big-number mt-lg"><span class="label">Monthly EMI</span><span class="value" id="r-emi">₹ 0</span></div>
+          <div class="emi-stats mt-lg">
+            <div class="emi-stat"><span class="label">Principal</span><span class="value" id="r-principal">₹ 0</span></div>
+            <div class="emi-stat"><span class="label">Total Interest</span><span class="value orange" id="r-interest">₹ 0</span></div>
+            <div class="emi-stat"><span class="label">Total Payment</span><span class="value" id="r-total">₹ 0</span></div>
+          </div>
+          <canvas id="emi-chart" width="300" height="300" class="emi-chart mt-lg"></canvas>
+        </div>
+      </div>
+      <!-- Amortization Table -->
+      <div class="glass-card--static mt-xl amort-section">
+        <h3>📋 Yearly Amortization Schedule</h3>
+        <div class="table-wrapper mt-md">
+          <table class="csv-table" id="amort-table"><thead><tr><th>Year</th><th>EMI Paid</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="amort-body"></tbody></table>
+        </div>
+      </div>
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

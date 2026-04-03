@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator — Strong & Secure Passwords | JoogadTools</title>
+  <meta name="description" content="Generate strong, secure passwords instantly. Customize length, characters, and get strength analysis. Free passphrase generator included.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>🔐 Password Generator</h1>
+      <p>Create strong, uncrackable passwords. Fully customizable with real-time strength analysis.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-pass-top"></div>
+
+      <div class="pass-layout container--narrow">
+        <!-- Generated Password Display -->
+        <div class="glass-card--static pass-display-card">
+          <div class="pass-output-row">
+            <input type="text" id="password-output" class="pass-output" value="" readonly placeholder="Click Generate...">
+            <button class="btn btn-icon btn-secondary" id="copy-password" title="Copy">📋</button>
+            <button class="btn btn-icon btn-secondary" id="regenerate" title="Regenerate">🔄</button>
+          </div>
+
+          <!-- Strength Bar -->
+          <div class="strength-section">
+            <div class="strength-bar-track">
+              <div class="strength-bar-fill" id="strength-fill"></div>
+            </div>
+            <div class="strength-info">
+              <span class="strength-label" id="strength-label">—</span>
+              <span class="strength-time" id="strength-time"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Options Card -->
+        <div class="glass-card--static pass-options-card">
+          <!-- Mode Tabs -->
+          <div class="tabs-wrapper">
+            <div class="tabs" id="pass-tabs">
+              <button class="tab-btn active" data-tab="tab-password" id="btn-tab-password">Password</button>
+              <button class="tab-btn" data-tab="tab-passphrase" id="btn-tab-passphrase">Passphrase</button>
+            </div>
+
+            <!-- Password Mode -->
+            <div class="tab-content active" id="tab-password">
+              <div class="form-group mt-lg">
+                <div class="slider-header">
+                  <label class="form-label">Length</label>
+                  <span class="slider-value" id="length-value">16</span>
+                </div>
+                <input type="range" class="form-range" id="password-length" min="4" max="128" value="16">
+              </div>
+
+              <div class="options-grid mt-lg">
+                <label class="checkbox-label" id="label-uppercase">
+                  <input type="checkbox" id="opt-uppercase" checked> Uppercase (A-Z)
+                </label>
+                <label class="checkbox-label" id="label-lowercase">
+                  <input type="checkbox" id="opt-lowercase" checked> Lowercase (a-z)
+                </label>
+                <label class="checkbox-label" id="label-numbers">
+                  <input type="checkbox" id="opt-numbers" checked> Numbers (0-9)
+                </label>
+                <label class="checkbox-label" id="label-symbols">
+                  <input type="checkbox" id="opt-symbols" checked> Symbols (!@#$...)
+                </label>
+                <label class="checkbox-label" id="label-ambiguous">
+                  <input type="checkbox" id="opt-no-ambiguous"> Exclude Ambiguous (0OIl1)
+                </label>
+              </div>
+            </div>
+
+            <!-- Passphrase Mode -->
+            <div class="tab-content" id="tab-passphrase">
+              <div class="form-group mt-lg">
+                <div class="slider-header">
+                  <label class="form-label">Word Count</label>
+                  <span class="slider-value" id="word-count-value">4</span>
+                </div>
+                <input type="range" class="form-range" id="word-count" min="3" max="10" value="4">
+              </div>
+              <div class="form-group mt-md">
+                <label class="form-label">Separator</label>
+                <select class="form-select" id="phrase-separator">
+                  <option value="-">Hyphen (-)</option>
+                  <option value="_">Underscore (_)</option>
+                  <option value=".">Dot (.)</option>
+                  <option value=" ">Space</option>
+                  <option value="#">Hash (#)</option>
+                </select>
+              </div>
+              <label class="checkbox-label mt-md" id="label-capitalize-words">
+                <input type="checkbox" id="opt-capitalize-words" checked> Capitalize Words
+              </label>
+              <label class="checkbox-label mt-md" id="label-add-number">
+                <input type="checkbox" id="opt-add-number" checked> Add Number
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="generate-password">⚡ Generate Password</button>
+        </div>
+
+        <!-- Bulk Generate -->
+        <div class="glass-card--static pass-bulk-card">
+          <div class="flex items-center justify-between">
+            <h3>Bulk Generate</h3>
+            <div class="flex items-center gap-sm">
+              <label class="form-label" style="margin:0;white-space:nowrap;">Count:</label>
+              <select class="form-select" id="bulk-count" style="width:80px;">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" id="bulk-generate">Generate</button>
+            </div>
+          </div>
+          <div class="bulk-results" id="bulk-results" style="display:none;">
+            <div class="bulk-list" id="bulk-list"></div>
+            <button class="btn btn-outline btn-sm mt-md" id="copy-all-bulk">📋 Copy All</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-pass-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

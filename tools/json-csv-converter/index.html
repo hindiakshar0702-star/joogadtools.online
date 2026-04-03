@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON ↔ CSV Converter — Free Online Data Converter | JoogadTools</title>
+  <meta name="description" content="Convert between JSON and CSV formats instantly. Includes JSON validator, pretty printer, minifier, and tree view. Free, no signup required.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>{ } JSON ↔ CSV Converter</h1>
+      <p>Convert between JSON and CSV, validate, format, minify, and visualize your data — all in the browser.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-json-top"></div>
+
+      <div class="json-layout">
+        <!-- Input Panel -->
+        <div class="json-panel glass-card--static">
+          <div class="panel-header">
+            <h3>Input</h3>
+            <div class="flex gap-xs items-center">
+              <select class="form-select" id="input-format" style="width:auto;">
+                <option value="json">JSON</option>
+                <option value="csv">CSV</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" id="load-sample" title="Load sample data">📝 Sample</button>
+              <button class="btn btn-secondary btn-sm" id="clear-input" title="Clear">✕</button>
+            </div>
+          </div>
+          <textarea class="form-textarea code-textarea" id="json-input" rows="18" placeholder='Paste your JSON or CSV here...
+
+Example JSON:
+[
+  {"name": "Rahul", "age": 25, "city": "Delhi"},
+  {"name": "Priya", "age": 28, "city": "Mumbai"}
+]'></textarea>
+          <div class="panel-footer">
+            <div class="input-stats">
+              <span id="input-size">0 bytes</span>
+              <span class="validation-badge" id="validation-status"></span>
+            </div>
+            <div class="flex gap-xs">
+              <button class="btn btn-secondary btn-sm" id="prettify-btn">✨ Prettify</button>
+              <button class="btn btn-secondary btn-sm" id="minify-btn">⊟ Minify</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Column -->
+        <div class="json-actions">
+          <button class="btn btn-primary convert-arrow-btn" id="convert-btn" title="Convert">
+            <span class="arrow-icon">⇄</span>
+            <span>Convert</span>
+          </button>
+          <div class="convert-options">
+            <div class="form-group" id="csv-delimiter-group">
+              <label class="form-label">CSV Delimiter</label>
+              <select class="form-select" id="csv-delimiter">
+                <option value=",">Comma (,)</option>
+                <option value=";">Semicolon (;)</option>
+                <option value="\t">Tab</option>
+                <option value="|">Pipe (|)</option>
+              </select>
+            </div>
+            <label class="checkbox-label" id="label-include-header">
+              <input type="checkbox" id="include-header" checked> Include Header Row
+            </label>
+          </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="json-panel glass-card--static">
+          <div class="panel-header">
+            <h3>Output</h3>
+            <div class="flex gap-xs">
+              <span class="badge" id="output-format-badge">—</span>
+              <button class="btn btn-secondary btn-sm" id="copy-output">📋 Copy</button>
+              <button class="btn btn-secondary btn-sm" id="download-output">⬇ Download</button>
+            </div>
+          </div>
+          <textarea class="form-textarea code-textarea" id="json-output" rows="18" readonly placeholder="Converted output will appear here..."></textarea>
+          <div class="panel-footer">
+            <span id="output-size">0 bytes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tree View -->
+      <div class="glass-card--static tree-view-card mt-xl" id="tree-view-card" style="display:none;">
+        <div class="flex items-center justify-between mb-md">
+          <h3>🌳 JSON Tree View</h3>
+          <button class="btn btn-secondary btn-sm" id="toggle-tree">Collapse All</button>
+        </div>
+        <div class="tree-container" id="tree-container"></div>
+      </div>
+
+      <div class="ad-slot" id="ad-json-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

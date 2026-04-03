@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Generator — Fake Data, Indian Data, SQL & More | JoogadTools</title>
+  <meta name="description" content="Free CSV Generator with fake data, Indian data (PAN, GSTIN, Aadhaar), visual editor, formula columns, SQL export, data masking, regex patterns, chart preview. No signup.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>📊 CSV Generator</h1>
+      <p>Generate realistic CSV/JSON data with visual editor, Indian data, formulas, regex patterns, SQL export & more — all in the browser.</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-csv-top"></div>
+
+      <!-- ===== TOP BAR: Templates + Controls ===== -->
+      <div class="csv-topbar glass-card--static">
+        <div class="topbar-left">
+          <div class="form-group">
+            <label class="form-label">Template</label>
+            <select class="form-select" id="template-select">
+              <option value="none">— Blank —</option>
+              <option value="employees">👔 Employee List</option>
+              <option value="products">📦 Product Catalog</option>
+              <option value="students">🎓 Student Records</option>
+              <option value="invoices">🧾 Invoice Items</option>
+              <option value="contacts">📇 Contact Book</option>
+              <option value="indian-customers">🇮🇳 Indian Customers</option>
+              <option value="indian-businesses">🇮🇳 Indian Businesses</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rows</label>
+            <input type="number" class="form-input" id="row-count" value="10" min="1" max="10000">
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-generate">⚡ Generate Data</button>
+        </div>
+        <div class="topbar-right">
+          <label class="btn btn-secondary btn-sm">
+            📥 Import CSV
+            <input type="file" accept=".csv,.tsv,.txt" id="import-csv" class="hidden">
+          </label>
+          <button class="btn btn-secondary btn-sm" id="btn-shuffle">🔀 Shuffle</button>
+          <div class="stats-bar" id="stats-bar">
+            <span id="stat-rows">0 rows</span> · <span id="stat-cols">0 cols</span> · <span id="stat-size">0 B</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== MAIN LAYOUT ===== -->
+      <div class="csv-main-layout">
+
+        <!-- LEFT: Column Configuration -->
+        <div class="glass-card--static csv-columns-panel">
+          <div class="panel-hdr">
+            <h3>Columns</h3>
+            <button class="btn btn-primary btn-sm" id="btn-add-col">+ Add</button>
+          </div>
+          <div class="columns-list" id="columns-list">
+            <!-- Column items rendered by JS -->
+          </div>
+          <div class="schema-actions mt-md">
+            <button class="btn btn-outline btn-sm" id="btn-save-schema">💾 Save Schema</button>
+            <button class="btn btn-outline btn-sm" id="btn-load-schema">📂 Load Schema</button>
+          </div>
+        </div>
+
+        <!-- CENTER: Table Preview -->
+        <div class="glass-card--static csv-table-panel">
+          <div class="panel-hdr">
+            <h3>📋 Live Preview</h3>
+            <div class="flex gap-xs">
+              <button class="btn btn-secondary btn-sm" id="btn-add-row">+ Row</button>
+              <button class="btn btn-secondary btn-sm" id="btn-del-row">- Row</button>
+            </div>
+          </div>
+          <div class="table-wrapper" id="table-wrapper">
+            <table class="csv-table" id="csv-table">
+              <thead id="csv-thead"><tr></tr></thead>
+              <tbody id="csv-tbody"></tbody>
+            </table>
+            <p class="table-empty" id="table-empty">Add columns and click "Generate Data" to begin.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== EXPORT SECTION ===== -->
+      <div class="glass-card--static export-section mt-xl">
+        <div class="panel-hdr">
+          <h3>📤 Export</h3>
+        </div>
+        <div class="export-options mt-md">
+          <div class="export-row">
+            <div class="form-group">
+              <label class="form-label">Delimiter</label>
+              <select class="form-select" id="export-delimiter">
+                <option value=",">Comma (CSV)</option>
+                <option value="&#9;">Tab (TSV)</option>
+                <option value=";">Semicolon</option>
+                <option value="|">Pipe</option>
+              </select>
+            </div>
+            <label class="checkbox-label"><input type="checkbox" id="export-header" checked> Include Header</label>
+          </div>
+          <div class="export-buttons mt-md">
+            <button class="btn btn-primary btn-sm" id="btn-export-csv">⬇ CSV</button>
+            <button class="btn btn-primary btn-sm" id="btn-export-json">⬇ JSON</button>
+            <button class="btn btn-primary btn-sm" id="btn-export-sql">⬇ SQL</button>
+            <button class="btn btn-primary btn-sm" id="btn-export-md">⬇ Markdown</button>
+            <button class="btn btn-primary btn-sm" id="btn-export-html">⬇ HTML Table</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-csv">📋 Copy CSV</button>
+            <button class="btn btn-secondary btn-sm" id="btn-copy-json">📋 Copy JSON</button>
+          </div>
+        </div>
+
+        <!-- SQL Preview -->
+        <div class="sql-preview hidden mt-lg" id="sql-preview">
+          <h4>SQL Output</h4>
+          <textarea class="form-textarea code-textarea" id="sql-output" rows="8" readonly></textarea>
+        </div>
+      </div>
+
+      <!-- ===== DATA MASKING ===== -->
+      <div class="glass-card--static masking-section mt-xl">
+        <div class="panel-hdr">
+          <h3>🎭 Data Masking</h3>
+          <p class="section-desc">Import real CSV and anonymize sensitive columns.</p>
+        </div>
+        <div class="masking-options mt-md" id="masking-options">
+          <p class="text-muted">Import a CSV first, then select columns to mask. Masking options will appear here.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm mt-md hidden" id="btn-apply-mask">🎭 Apply Masking</button>
+      </div>
+
+      <!-- ===== CHART PREVIEW ===== -->
+      <div class="glass-card--static chart-section mt-xl">
+        <div class="panel-hdr">
+          <h3>📊 Chart Preview</h3>
+        </div>
+        <div class="chart-controls mt-md">
+          <div class="form-group">
+            <label class="form-label">Column for Chart</label>
+            <select class="form-select" id="chart-column">
+              <option value="">— Select numeric column —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chart Type</label>
+            <select class="form-select" id="chart-type">
+              <option value="bar">Bar Chart</option>
+              <option value="hbar">Horizontal Bar</option>
+            </select>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-draw-chart">📊 Draw Chart</button>
+        </div>
+        <canvas id="chart-canvas" class="chart-canvas hidden mt-md" width="700" height="300"></canvas>
+      </div>
+
+      <div class="ad-slot" id="ad-csv-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

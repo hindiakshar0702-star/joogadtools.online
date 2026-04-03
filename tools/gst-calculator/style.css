@@ -1,0 +1,20 @@
+/* GST Calculator */
+.gst-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); max-width: var(--container-max); margin: 0 auto; align-items: start; }
+.gst-input-panel, .gst-result-panel { padding: var(--space-xl); }
+.rate-btns { display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center; }
+.rate-btn { padding: 0.5rem 1rem; border: 1px solid var(--surface-glass-border); border-radius: var(--radius-md); background: rgba(255,255,255,0.04); color: var(--text-secondary); cursor: pointer; font-weight: var(--fw-semibold); transition: all var(--transition-fast); }
+.rate-btn.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+.rate-btn:hover:not(.active) { border-color: var(--accent-primary); }
+.rate-custom { width: 80px !important; padding: 0.5rem !important; font-size: var(--fs-sm) !important; }
+.toggle-group { display: flex; gap: 0; border: 1px solid var(--surface-glass-border); border-radius: var(--radius-md); overflow: hidden; }
+.toggle-btn { flex: 1; padding: 0.6rem 0.8rem; border: none; background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer; font-size: var(--fs-xs); transition: all var(--transition-fast); }
+.toggle-btn.active { background: var(--accent-primary); color: white; }
+.gst-result-panel h3 { font-family: var(--font-heading); font-size: var(--fs-lg); }
+.gst-result-grid { display: flex; flex-direction: column; gap: 0; }
+.gst-row { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.gst-row .val { font-family: 'JetBrains Mono', monospace; font-weight: var(--fw-bold); font-size: var(--fs-md); }
+.gst-row.total { border-top: 2px solid var(--accent-primary); background: rgba(108,99,255,0.08); border-radius: var(--radius-md) var(--radius-md) 0 0; margin-top: var(--space-sm); }
+.gst-row.total .val { color: var(--accent-primary); font-size: var(--fs-lg); }
+.gst-row.gst-total { background: rgba(78,205,196,0.08); border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.gst-row.gst-total .val { color: var(--accent-secondary); }
+@media (max-width: 768px) { .gst-layout { grid-template-columns: 1fr; } }
