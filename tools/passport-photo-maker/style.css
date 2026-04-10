@@ -1,0 +1,126 @@
+/* style.css */
+/* Step Tracking / Flow */
+.wizard-step {
+  animation: fadeIn var(--transition-slow);
+}
+.step-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+.step-header h3 {
+  color: var(--accent-primary);
+  margin-bottom: var(--space-xs);
+}
+
+/* Upload Area */
+.upload-area {
+  border: 2px dashed var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3xl) var(--space-xl);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+.upload-area:hover, .upload-area.dragover {
+  background: rgba(108, 99, 255, 0.08);
+  border-color: var(--accent-primary);
+}
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+/* Step 2: Cropper Layout */
+.crop-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .crop-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crop-container {
+  width: 100%;
+  height: 450px;
+  background: #000;
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+/* Cropper fixes for dark theme */
+.cropper-modal {
+  opacity: 0.8 !important;
+  background-color: #000 !important;
+}
+.cropper-view-box,
+.cropper-face {
+  border-radius: 0;
+}
+.cropper-line {
+  background-color: var(--accent-primary) !important;
+}
+.cropper-point {
+  background-color: var(--accent-primary) !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.loader-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  color: white;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid rgba(255,255,255,0.2);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Step 3 Layout */
+.layout-grid-step3 {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .layout-grid-step3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.layout-preview-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.1);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--surface-glass-border);
+}
+
+.mt-4 { margin-top: 16px; }
+.mt-3 { margin-top: 12px; }
+
+.actions-row {
+  display: flex;
+  gap: var(--space-md);
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator — Know Your Exact Age | JoogadTools</title>
+  <meta name="description" content="Free Age Calculator. Know your exact age in years, months & days. Birthday countdown, zodiac sign, life progress chart & fun life statistics. 100% client-side.">
+  <meta name="keywords" content="age calculator, birthday calculator, date of birth, zodiac sign, life stats, birthday countdown, exact age">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>🎂 Age Calculator</h1>
+      <p>Know your exact age in years, months & days. Includes birthday countdown, zodiac signs, life stats & more.</p>
+    </div>
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+
+      <!-- Main Layout: Input + Results -->
+      <div class="age-layout">
+        <!-- Input Panel -->
+        <div class="glass-card--static age-input-panel">
+          <h3 class="panel-title">📅 Enter Your Date of Birth</h3>
+          <div class="form-group mt-lg">
+            <label class="form-label" for="dob-input">Date of Birth</label>
+            <input type="date" class="form-input" id="dob-input">
+          </div>
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-calc-age">⚡ Calculate Age</button>
+          <p class="input-hint mt-md">Your data never leaves your device.</p>
+        </div>
+
+        <!-- Result Panel -->
+        <div class="glass-card--static age-result-panel" id="result-panel">
+          <h3 class="panel-title">📊 Your Age</h3>
+          <div class="age-big-display mt-lg" id="age-display">
+            <div class="age-item">
+              <span class="age-number" id="r-years">0</span>
+              <span class="age-label">Years</span>
+            </div>
+            <div class="age-item">
+              <span class="age-number" id="r-months">0</span>
+              <span class="age-label">Months</span>
+            </div>
+            <div class="age-item">
+              <span class="age-number" id="r-days">0</span>
+              <span class="age-label">Days</span>
+            </div>
+          </div>
+
+          <!-- Day of Birth -->
+          <div class="born-day mt-lg" id="born-day">
+            <span class="born-day-icon">📅</span>
+            <span id="r-born-day">You were born on a —</span>
+          </div>
+
+          <!-- Next Birthday Countdown -->
+          <div class="countdown-section mt-lg">
+            <h4 class="countdown-title">🎉 Next Birthday In</h4>
+            <div class="age-countdown" id="countdown">
+              <div class="countdown-box">
+                <span class="countdown-number" id="cd-days">0</span>
+                <span class="countdown-label">Days</span>
+              </div>
+              <div class="countdown-box">
+                <span class="countdown-number" id="cd-hours">0</span>
+                <span class="countdown-label">Hours</span>
+              </div>
+              <div class="countdown-box">
+                <span class="countdown-number" id="cd-min">0</span>
+                <span class="countdown-label">Min</span>
+              </div>
+              <div class="countdown-box">
+                <span class="countdown-number" id="cd-sec">0</span>
+                <span class="countdown-label">Sec</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zodiac Signs -->
+          <div class="zodiac-section mt-lg">
+            <div class="zodiac-badges">
+              <div class="zodiac-badge western" id="zodiac-western">
+                <span class="zodiac-emoji" id="z-west-emoji">♈</span>
+                <span class="zodiac-name" id="z-west-name">Aries</span>
+              </div>
+              <div class="zodiac-badge chinese" id="zodiac-chinese">
+                <span class="zodiac-emoji" id="z-china-emoji">🐉</span>
+                <span class="zodiac-name" id="z-china-name">Dragon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Age in Different Units -->
+      <div class="glass-card--static age-units-section mt-xl" id="units-section">
+        <h3 class="panel-title">⏱️ Age in Different Units</h3>
+        <div class="age-units-grid mt-lg">
+          <div class="unit-card">
+            <div class="unit-icon">📆</div>
+            <div class="unit-number" id="u-months">0</div>
+            <div class="unit-label">Months</div>
+          </div>
+          <div class="unit-card">
+            <div class="unit-icon">📅</div>
+            <div class="unit-number" id="u-weeks">0</div>
+            <div class="unit-label">Weeks</div>
+          </div>
+          <div class="unit-card">
+            <div class="unit-icon">☀️</div>
+            <div class="unit-number" id="u-days">0</div>
+            <div class="unit-label">Days</div>
+          </div>
+          <div class="unit-card">
+            <div class="unit-icon">⏰</div>
+            <div class="unit-number" id="u-hours">0</div>
+            <div class="unit-label">Hours</div>
+          </div>
+          <div class="unit-card">
+            <div class="unit-icon">⏱️</div>
+            <div class="unit-number" id="u-minutes">0</div>
+            <div class="unit-label">Minutes</div>
+          </div>
+          <div class="unit-card">
+            <div class="unit-icon">⚡</div>
+            <div class="unit-number" id="u-seconds">0</div>
+            <div class="unit-label">Seconds</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Life Progress & Fun Stats -->
+      <div class="glass-card--static age-life-section mt-xl" id="life-section">
+        <div class="life-grid">
+          <!-- Life Progress Chart -->
+          <div class="life-chart-wrap">
+            <h3 class="panel-title">📊 Life Progress</h3>
+            <p class="life-chart-subtitle">Based on avg. lifespan of 75 years</p>
+            <canvas id="life-chart" width="260" height="260"></canvas>
+            <div class="life-percent-label" id="life-percent">0%</div>
+          </div>
+          <!-- Fun Life Stats -->
+          <div class="life-stats-wrap">
+            <h3 class="panel-title">🫀 Fun Life Statistics</h3>
+            <div class="life-stats-grid mt-lg">
+              <div class="life-stat">
+                <div class="life-stat-icon">💓</div>
+                <div class="life-stat-number" id="ls-heartbeats">0</div>
+                <div class="life-stat-label">Heartbeats</div>
+              </div>
+              <div class="life-stat">
+                <div class="life-stat-icon">🌬️</div>
+                <div class="life-stat-number" id="ls-breaths">0</div>
+                <div class="life-stat-label">Breaths</div>
+              </div>
+              <div class="life-stat">
+                <div class="life-stat-icon">👁️</div>
+                <div class="life-stat-number" id="ls-blinks">0</div>
+                <div class="life-stat-label">Blinks</div>
+              </div>
+              <div class="life-stat">
+                <div class="life-stat-icon">😴</div>
+                <div class="life-stat-number" id="ls-sleep">0</div>
+                <div class="life-stat-label">Hours Slept</div>
+              </div>
+              <div class="life-stat">
+                <div class="life-stat-icon">🍽️</div>
+                <div class="life-stat-number" id="ls-meals">0</div>
+                <div class="life-stat-label">Meals Eaten</div>
+              </div>
+              <div class="life-stat">
+                <div class="life-stat-icon">🚶</div>
+                <div class="life-stat-number" id="ls-steps">0</div>
+                <div class="life-stat-label">Steps Walked</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

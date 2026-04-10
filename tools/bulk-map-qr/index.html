@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Map QR Code Generator — JoogadTools</title>
+  <meta name="description" content="Generate bulk Google Maps QR Codes from CSV or manual entry. 100% Client-side. Download as ZIP in PNG, SVG, or WebP.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- CDNs for parsing, generating and zipping -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- Replace old qrcodejs with superior qr-code-styling -->
+  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+  <!-- Monetag Ad Slot -->
+  <div class="ad-slot ad-slot--header" id="ad-top"></div>
+
+  <main class="tool-page">
+    <div class="tool-header container">
+      <h1>📍 Bulk Map QR Code Generator</h1>
+      <p>Convert lists of map coordinates into styled individual QR codes instantly. Choose formats like SVG or PNG. 100% Secure & Client-Side!</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="glass-card main-panel">
+        
+        <!-- Input Tabs -->
+        <div class="tabs-wrapper">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-csv">CSV Upload</button>
+            <button class="tab-btn" data-tab="tab-manual">Manual Entry</button>
+          </div>
+
+          <div class="tab-content active" id="tab-csv">
+            <div class="upload-area" id="dropzone">
+              <div class="upload-icon">📁</div>
+              <h3>Drag & Drop CSV File</h3>
+              <p>or click to select file</p>
+              <input type="file" id="file-input" accept=".csv" hidden>
+            </div>
+            
+            <div class="actions-row">
+              <button class="btn btn-secondary" id="btn-sample" type="button">⬇ Download Sample CSV</button>
+            </div>
+          </div>
+
+          <div class="tab-content" id="tab-manual">
+            <div class="form-group">
+              <label class="form-label" for="manual-input">Paste Data (Lat, Lon, Label)</label>
+              <textarea id="manual-input" class="form-textarea" placeholder="28.6139, 77.2090, India Gate
+40.7128, -74.0060, Statue of Liberty"></textarea>
+            </div>
+            <div class="actions-row">
+              <button class="btn btn-primary" id="btn-parse-manual">Parse Data</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Styling Section -->
+        <div class="style-section" id="style-section">
+          <h3>🎨 QR Styling & Export Profile</h3>
+          <div class="style-grid">
+            <div class="form-group">
+              <label class="form-label">Dots Style</label>
+              <select class="form-select" id="qr-dots-style">
+                <option value="square">Square</option>
+                <option value="dots">Dots</option>
+                <option value="rounded" selected>Rounded</option>
+                <option value="classy">Classy</option>
+                <option value="classy-rounded">Classy Rounded</option>
+                <option value="extra-rounded">Extra Rounded</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Marker Border Style</label>
+              <select class="form-select" id="qr-corner-style">
+                <option value="square">Square</option>
+                <option value="dot">Dot</option>
+                <option value="extra-rounded" selected>Extra Rounded</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Foreground Color</label>
+              <div class="color-picker-wrapper">
+                <input type="color" id="qr-fg-color" value="#0a0e1a" class="color-input">
+                <span id="qr-fg-value" class="color-hex-text">#0a0e1a</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Background Color</label>
+              <div class="color-picker-wrapper">
+                <input type="color" id="qr-bg-color" value="#ffffff" class="color-input">
+                <span id="qr-bg-value" class="color-hex-text">#ffffff</span>
+              </div>
+            </div>
+            
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label class="form-label">Export Format</label>
+              <select class="form-select" id="qr-export-format">
+                <option value="png">PNG (Raster High-Res)</option>
+                <option value="svg" selected>SVG (Vector Infinite-Res)</option>
+                <option value="webp">WebP (Modern compressed)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-section" id="progress-container" style="display: none;">
+          <h3>Generating Styled QR Codes...</h3>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+          <p id="progress-text">0 / 0</p>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="preview-section" id="preview-section" style="display: none;">
+          <h3>Data List (<span id="total-count">0</span> Locations)</h3>
+          <div class="table-container">
+            <table class="data-table" id="data-table">
+              <thead>
+                <tr>
+                  <th>Latitude</th>
+                  <th>Longitude</th>
+                  <th>Label (Optional)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+          <div class="actions-row" style="margin-top: var(--space-xl)">
+            <button class="btn btn-primary btn-lg" id="btn-generate">Generate ZIP</button>
+            <button class="btn btn-outline" id="btn-clear">Clear Data</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ad-slot ad-slot--sidebar" id="ad-middle"></div>
+    </div>
+  </main>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+  <script>
+    JoogadTools.renderHeader('../../');
+    JoogadTools.renderFooter('../../');
+    JoogadTools.initTabs();
+  </script>
+</body>
+</html>

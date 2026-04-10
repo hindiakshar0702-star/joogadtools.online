@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // Case Converter — Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/case-converter');

@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // EMI Calculator Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/emi-calculator');

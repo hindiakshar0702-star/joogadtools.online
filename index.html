@@ -17,6 +17,38 @@
 
   <!-- Monetag Head Code - Replace with your actual Monetag code -->
   <!-- <script>(function(d,z,s){s.src='https://'+d+'/400/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('your-monetag-domain','your-zone-id',document.createElement('script'));</script> -->
+  <style>
+    /* Pagination Styles */
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .page-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .page-btn.active {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
+    }
+  </style>
 </head>
 <body>
   <!-- Monetag Ad Slot - Top Banner -->
@@ -48,7 +80,7 @@
       <!-- Stats -->
       <div class="stats-strip">
         <div class="stat-item">
-          <div class="stat-number" id="stat-tools">12+</div>
+          <div class="stat-number" id="stat-tools">18+</div>
           <div class="stat-label">Free Tools</div>
         </div>
         <div class="stat-item">
@@ -70,29 +102,29 @@
     </div>
     <div class="tools-grid stagger-children" id="tools-grid">
 
-      <!-- QR Code Generator -->
-      <a href="tools/qr-generator/index.html" class="tool-card" id="card-qr" data-keywords="qr code generator upi wifi url vcard payment scanner barcode whatsapp email sms logo gradient shape bulk calendar location">
-        <div class="tool-card-icon purple">📱</div>
-        <h3>QR Code Generator</h3>
-        <p>All-in-one QR tool — 10+ types (UPI, WhatsApp, WiFi, vCard, Email, SMS), custom shapes, gradients, logo, scanner, bulk generation.</p>
+      <!-- Age Calculator -->
+      <a href="tools/age-calculator/index.html" class="tool-card" id="card-age" data-keywords="age calculator birthday date of birth dob zodiac life years months days countdown chinese zodiac sign">
+        <div class="tool-card-icon pink">🎂</div>
+        <h3>Age Calculator</h3>
+        <p>Know your exact age in years, months &amp; days. Birthday countdown, zodiac sign, life progress chart &amp; fun statistics.</p>
         <div class="tool-card-footer">
           <div class="tool-card-tags">
-            <span class="badge">12 Features</span>
-            <span class="badge badge--success">🔥 Popular</span>
+            <span class="badge">Life</span>
+            <span class="badge badge--warning">🔥 New</span>
           </div>
           <div class="tool-card-arrow">→</div>
         </div>
       </a>
 
-      <!-- Password Generator -->
-      <a href="tools/password-generator/index.html" class="tool-card" id="card-password" data-keywords="password generator strong secure random passphrase security">
-        <div class="tool-card-icon teal">🔐</div>
-        <h3>Password Generator</h3>
-        <p>Create strong, secure passwords with customizable length, character types, and strength meter. Passphrase mode included.</p>
+      <!-- Bulk Map QR Code -->
+      <a href="tools/bulk-map-qr/index.html" class="tool-card" id="card-bulk-map" data-keywords="bulk map qr code generator location latitude longitude csv zip download">
+        <div class="tool-card-icon purple">📍</div>
+        <h3>Bulk Map QR Codes</h3>
+        <p>Upload a CSV file of map coordinates or addresses, and instantly generate bulk QR Codes. Downloads automatically as a tidy ZIP.</p>
         <div class="tool-card-footer">
           <div class="tool-card-tags">
-            <span class="badge">Security</span>
-            <span class="badge badge--warning">Essential</span>
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">Utility</span>
           </div>
           <div class="tool-card-arrow">→</div>
         </div>
@@ -112,6 +144,48 @@
         </div>
       </a>
 
+      <!-- Chart Generator -->
+      <a href="tools/chart-generator/index.html" class="tool-card" id="card-chart" data-keywords="chart generator graph maker bar pie line doughnut radar polar area data visualization">
+        <div class="tool-card-icon teal">📊</div>
+        <h3>Chart Generator</h3>
+        <p>Create and download beautiful, customizable charts instantly. Supports Bar, Line, Pie, and more. 100% Client-side.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge">Data</span>
+            <span class="badge badge--warning">🔥 New</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- CipherArt Studio -->
+      <a href="tools/cipherart-studio/index.html" class="tool-card" id="card-cipherart" data-keywords="cipherart studio steganography shape art halftone binary encrypt secret hide face svg">
+        <div class="tool-card-icon pink">🔳</div>
+        <h3>CipherArt Studio</h3>
+        <p>Merge halftone shape-rendering with binary steganography. Hide encrypted secret messages inside beautiful vector shape art.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">Security</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Halftone Shape Converter -->
+      <a href="tools/halftone-converter/index.html" class="tool-card" id="card-halftone" data-keywords="halftone shape converter art photo image vector svg generator pixel cross circle checkerboard">
+        <div class="tool-card-icon purple">🎨</div>
+        <h3>Halftone Shape Converter</h3>
+        <p>Convert your photos into stunning steganography-free halftone shape art. Generate high-quality SVG grid art using shapes &amp; animations.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">Design</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
       <!-- Color Converter -->
       <a href="tools/color-converter/index.html" class="tool-card" id="card-color" data-keywords="color converter hex rgb hsl cmyk picker palette contrast checker design css">
         <div class="tool-card-icon orange">🎨</div>
@@ -126,29 +200,29 @@
         </div>
       </a>
 
-      <!-- JSON/CSV Converter -->
-      <a href="tools/json-csv-converter/index.html" class="tool-card" id="card-json" data-keywords="json csv converter formatter validator pretty print minify data transform export">
-        <div class="tool-card-icon green">{ }</div>
-        <h3>JSON ↔ CSV Converter</h3>
-        <p>Convert between JSON and CSV formats. Includes JSON validation, pretty print, minify, tree view, and file download.</p>
+      <!-- CSV Generator -->
+      <a href="tools/csv-generator/index.html" class="tool-card" id="card-csv-gen" data-keywords="csv generator fake data indian data pan gstin aadhaar ifsc sql export table editor faker mock data masking chart regex formula template bulk">
+        <div class="tool-card-icon teal">📊</div>
+        <h3>CSV Generator</h3>
+        <p>Generate realistic CSV data with Indian data (PAN, GSTIN, Aadhaar), fake names, formulas, regex patterns, SQL export, chart preview &amp; more.</p>
         <div class="tool-card-footer">
           <div class="tool-card-tags">
-            <span class="badge">Data</span>
-            <span class="badge">Developer</span>
+            <span class="badge">🇮🇳 Indian Data</span>
+            <span class="badge badge--warning">🔥 Unique</span>
           </div>
           <div class="tool-card-arrow">→</div>
         </div>
       </a>
 
-      <!-- CSV Generator -->
-      <a href="tools/csv-generator/index.html" class="tool-card" id="card-csv-gen" data-keywords="csv generator fake data indian data pan gstin aadhaar ifsc sql export table editor faker mock data masking chart regex formula template bulk">
-        <div class="tool-card-icon teal">📊</div>
-        <h3>CSV Generator</h3>
-        <p>Generate realistic CSV data with Indian data (PAN, GSTIN, Aadhaar), fake names, formulas, regex patterns, SQL export, chart preview & more.</p>
+      <!-- Date Calculator -->
+      <a href="tools/historical-date-calculator/index.html" class="tool-card" id="card-history" data-keywords="historical date calculator bce ce bc ad date difference day finder leap year events timeline ancient india world history">
+        <div class="tool-card-icon orange">📜</div>
+        <h3>Date Calculator</h3>
+        <p>Calculate date differences across BCE/CE eras. Find days, check leap years &amp; explore famous historical events timeline.</p>
         <div class="tool-card-footer">
           <div class="tool-card-tags">
-            <span class="badge">🇮🇳 Indian Data</span>
-            <span class="badge badge--warning">🔥 Unique</span>
+            <span class="badge">History</span>
+            <span class="badge badge--warning">🔥 New</span>
           </div>
           <div class="tool-card-arrow">→</div>
         </div>
@@ -182,6 +256,48 @@
         </div>
       </a>
 
+      <!-- Handwriting to Text -->
+      <a href="tools/handwriting-to-text/index.html" class="tool-card" id="card-ocr" data-keywords="handwriting to text converter ocr image photo scanned document extract text read ai">
+        <div class="tool-card-icon purple">✍️</div>
+        <h3>Handwriting to Text</h3>
+        <p>Extract text from handwritten notes or scanned docs using advanced <strong>Gemini AI</strong> or local OCR technology. High accuracy.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">AI OCR</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Hash Generator -->
+      <a href="tools/hash-generator/index.html" class="tool-card" id="card-hash" data-keywords="hash generator md5 sha1 sha256 sha512 checksum file integrity verify security">
+        <div class="tool-card-icon red">🔑</div>
+        <h3>Hash Generator</h3>
+        <p>Generate SHA-256, SHA-512 &amp; SHA-1 hashes from text or files. Verify file integrity by comparing hash values instantly.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge">Security</span>
+            <span class="badge">Developer</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Hindu Panchang -->
+      <a href="tools/hindu-panchang/index.html" class="tool-card" id="card-panchang" data-keywords="hindu panchang tithi nakshatra paksha yoga karana rahu kaal moon phase calendar indian vedic astrology shubh ashubh">
+        <div class="tool-card-icon green">🕉️</div>
+        <h3>Hindu Panchang</h3>
+        <p>आज का पंचांग — Tithi, Nakshatra, Paksha, Yoga, Karana, Moon Phase &amp; Rahu Kaal. Client-side calculations.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge">🇮🇳 Indian</span>
+            <span class="badge badge--warning">🔥 New</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
       <!-- Image Compressor -->
       <a href="tools/image-compressor/index.html" class="tool-card" id="card-image" data-keywords="image compressor compress resize png jpeg webp photo optimize reduce size quality bulk batch">
         <div class="tool-card-icon pink">🖼️</div>
@@ -190,6 +306,104 @@
         <div class="tool-card-footer">
           <div class="tool-card-tags">
             <span class="badge">Media</span>
+            <span class="badge badge--success">🔥 Popular</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Image Quality Checker -->
+      <a href="tools/image-quality-checker/index.html" class="tool-card" id="card-quality" data-keywords="image quality checker resolution aspect ratio blur sharpness exif data colors print 4k hd social media transparent alpha">
+        <div class="tool-card-icon purple">📸</div>
+        <h3>Image Quality Checker</h3>
+        <p>Analyze resolution, sharpness, EXIF data, dominant colors, alpha transparency, and print suitability completely in your browser.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">Media</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Instagram Grid Splitter -->
+      <a href="tools/image-grid-splitter/index.html" class="tool-card" id="card-grid" data-keywords="image grid splitter instagram 9 grid post crop cutter zip squares picture maker">
+        <div class="tool-card-icon blue">🔲</div>
+        <h3>Instagram Grid Splitter</h3>
+        <p>Perfectly center-crop and slice any photo into 9 equal squares for your Instagram Profile Grid. Downloads as a convenient ZIP.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">Social</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- JSON/CSV Converter -->
+      <a href="tools/json-csv-converter/index.html" class="tool-card" id="card-json" data-keywords="json csv converter formatter validator pretty print minify data transform export">
+        <div class="tool-card-icon green">{ }</div>
+        <h3>JSON ↔ CSV Converter</h3>
+        <p>Convert between JSON and CSV formats. Includes JSON validation, pretty print, minify, tree view, and file download.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge">Data</span>
+            <span class="badge">Developer</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Map Coordinates Extractor -->
+      <a href="tools/map-csv-generator/index.html" class="tool-card" id="card-map-csv" data-keywords="map coordinates extractor latitude longitude csv generator route json kml">
+        <div class="tool-card-icon blue">🌍</div>
+        <h3>Map Coordinates Extractor</h3>
+        <p>Drop pins on the map, use reverse geocoding, or trace routes to extract Lat/Lon in bulk. Export data directly to CSV, JSON, or KML format.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--success">⭐ Pro</span>
+            <span class="badge">Maps</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Passport Photo Maker -->
+      <a href="tools/passport-photo-maker/index.html" class="tool-card" id="card-passport" data-keywords="passport photo maker face detection crop print tile pdf sizes image margin gap">
+        <div class="tool-card-icon red">📸</div>
+        <h3>Passport Photo Maker</h3>
+        <p>Cropping, face alignment AI, and smart paper tiling. Print perfect passport photos in PDF securely 100% offline.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge badge--warning">🔥 New</span>
+            <span class="badge">Docs</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- Password Generator -->
+      <a href="tools/password-generator/index.html" class="tool-card" id="card-password" data-keywords="password generator strong secure random passphrase security">
+        <div class="tool-card-icon teal">🔐</div>
+        <h3>Password Generator</h3>
+        <p>Create strong, secure passwords with customizable length, character types, and strength meter. Passphrase mode included.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge">Security</span>
+            <span class="badge badge--warning">Essential</span>
+          </div>
+          <div class="tool-card-arrow">→</div>
+        </div>
+      </a>
+
+      <!-- QR Code Generator -->
+      <a href="tools/qr-generator/index.html" class="tool-card" id="card-qr" data-keywords="qr code generator upi wifi url vcard payment scanner barcode whatsapp email sms logo gradient shape bulk calendar location">
+        <div class="tool-card-icon purple">📱</div>
+        <h3>QR Code Generator</h3>
+        <p>All-in-one QR tool — 10+ types (UPI, WhatsApp, WiFi, vCard, Email, SMS), custom shapes, gradients, logo, scanner, bulk generation.</p>
+        <div class="tool-card-footer">
+          <div class="tool-card-tags">
+            <span class="badge">12 Features</span>
             <span class="badge badge--success">🔥 Popular</span>
           </div>
           <div class="tool-card-arrow">→</div>
@@ -210,35 +424,10 @@
         </div>
       </a>
 
-      <!-- Hash Generator -->
-      <a href="tools/hash-generator/index.html" class="tool-card" id="card-hash" data-keywords="hash generator md5 sha1 sha256 sha512 checksum file integrity verify security">
-        <div class="tool-card-icon red">🔑</div>
-        <h3>Hash Generator</h3>
-        <p>Generate SHA-256, SHA-512 &amp; SHA-1 hashes from text or files. Verify file integrity by comparing hash values instantly.</p>
-        <div class="tool-card-footer">
-          <div class="tool-card-tags">
-            <span class="badge">Security</span>
-            <span class="badge">Developer</span>
-          </div>
-          <div class="tool-card-arrow">→</div>
-        </div>
-      </a>
-
-      <!-- Handwriting to Text Converter -->
-      <a href="tools/handwriting-to-text/index.html" class="tool-card" id="card-ocr" data-keywords="handwriting to text converter ocr image photo scanned document extract text read ai">
-        <div class="tool-card-icon purple">✍️</div>
-        <h3>Handwriting to Text</h3>
-        <p>Extract text from images containing handwritten notes or scanned documents using client-side OCR technology. 100% private.</p>
-        <div class="tool-card-footer">
-          <div class="tool-card-tags">
-            <span class="badge badge--warning">🔥 New</span>
-            <span class="badge">AI OCR</span>
-          </div>
-          <div class="tool-card-arrow">→</div>
-        </div>
-      </a>
-
     </div>
+    
+    <!-- Pagination Controls -->
+    <div id="pagination-controls" class="pagination-controls container"></div>
   </section>
 
   <!-- Monetag Ad Slot - Middle Banner -->
@@ -281,23 +470,91 @@
     JoogadTools.renderHeader('');
     JoogadTools.renderFooter('');
 
-    // Search functionality
+    // Pagination & Search logic
     const searchInput = document.getElementById('tool-search');
-    const toolCards = document.querySelectorAll('.tool-card');
+    const toolCards = Array.from(document.querySelectorAll('.tool-card'));
+    const paginationControls = document.getElementById('pagination-controls');
+    
+    let currentPage = parseInt(sessionStorage.getItem('joogadtools_page')) || 1;
+    const itemsPerPage = 9;
+    let filteredCards = [...toolCards];
 
-    searchInput.addEventListener('input', JoogadTools.debounce((e) => {
-      const query = e.target.value.toLowerCase().trim();
-      let visibleCount = 0;
-      toolCards.forEach(card => {
+    // If browser preserved search input on back navigation, apply it
+    if (searchInput.value.trim()) {
+      const query = searchInput.value.toLowerCase().trim();
+      filteredCards = toolCards.filter(card => {
         const keywords = (card.dataset.keywords || '').toLowerCase();
         const title = card.querySelector('h3').textContent.toLowerCase();
         const desc = card.querySelector('p').textContent.toLowerCase();
-        const match = !query || keywords.includes(query) || title.includes(query) || desc.includes(query);
-        card.style.display = match ? '' : 'none';
-        card.style.opacity = match ? '1' : '0';
-        if (match) visibleCount++;
+        return keywords.includes(query) || title.includes(query) || desc.includes(query);
       });
+    }
+
+    function renderPagination() {
+      paginationControls.innerHTML = '';
+      const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+      
+      if (currentPage > totalPages && totalPages > 0) {
+        currentPage = totalPages;
+      } else if (totalPages === 0) {
+        currentPage = 1;
+      }
+      
+      if (totalPages <= 1) return; // No pagination needed
+      
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('div');
+        btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+        btn.textContent = i;
+        btn.addEventListener('click', () => {
+          currentPage = i;
+          sessionStorage.setItem('joogadtools_page', currentPage);
+          renderPagination();
+          displayPage();
+          document.getElementById('tools').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        paginationControls.appendChild(btn);
+      }
+    }
+
+    function displayPage() {
+      // Hide all first
+      toolCards.forEach(card => {
+        card.style.display = 'none';
+        card.style.opacity = '0';
+      });
+      
+      // Calculate range
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageCards = filteredCards.slice(start, end);
+      
+      // Show page cards
+      pageCards.forEach(card => {
+        card.style.display = '';
+        setTimeout(() => card.style.opacity = '1', 50); // slight delay for CSS transition
+      });
+    }
+
+    searchInput.addEventListener('input', JoogadTools.debounce((e) => {
+      const query = e.target.value.toLowerCase().trim();
+      
+      filteredCards = toolCards.filter(card => {
+        const keywords = (card.dataset.keywords || '').toLowerCase();
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const desc = card.querySelector('p').textContent.toLowerCase();
+        return !query || keywords.includes(query) || title.includes(query) || desc.includes(query);
+      });
+      
+      currentPage = 1;
+      sessionStorage.setItem('joogadtools_page', currentPage);
+      renderPagination();
+      displayPage();
     }, 150));
+
+    // Initial render
+    renderPagination();
+    displayPage();
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(a => {

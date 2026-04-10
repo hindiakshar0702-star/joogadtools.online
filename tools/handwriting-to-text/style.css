@@ -13,6 +13,14 @@
   }
 }
 
+/* Engine Toggle */
+.engine-toggle {
+  display: flex;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--surface-glass-border);
+}
+
 /* Upload Area */
 .upload-area {
   margin-top: var(--space-md);

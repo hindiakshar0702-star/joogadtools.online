@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // Image Compressor Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/image-compressor');

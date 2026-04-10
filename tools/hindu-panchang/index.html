@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hindu Panchang Calculator — Tithi Nakshatra Today | JoogadTools</title>
+  <meta name="description" content="Free Hindu Panchang Calculator. Find today's Tithi, Nakshatra, Paksha, Hindu Month, Yoga, Karana, Rahu Kaal & Moon Phase. Approximate astronomical calculations. 100% client-side.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>🕉️ Hindu Panchang</h1>
+      <p>आज का पंचांग — Tithi, Nakshatra, Paksha, Yoga, Karana, Moon Phase & Rahu Kaal</p>
+    </div>
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+
+      <!-- Top: Input + Moon -->
+      <div class="panchang-layout">
+        <!-- Input Panel -->
+        <div class="glass-card--static panchang-input-panel">
+          <h3 class="panel-title">📅 दिनांक चुनें / Select Date</h3>
+          <div class="form-group mt-lg">
+            <label class="form-label" for="panchang-date">Date</label>
+            <input type="date" class="form-input" id="panchang-date">
+          </div>
+          <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-panchang">📅 पंचांग दिखाएं</button>
+          <div class="quick-dates mt-lg">
+            <button class="quick-btn" id="q-yesterday">◀ कल</button>
+            <button class="quick-btn active" id="q-today">आज</button>
+            <button class="quick-btn" id="q-tomorrow">कल ▶</button>
+          </div>
+        </div>
+
+        <!-- Moon Phase Panel -->
+        <div class="glass-card--static panchang-moon-panel">
+          <h3 class="panel-title">🌙 चन्द्र कला / Moon Phase</h3>
+          <canvas id="moon-canvas" width="200" height="200"></canvas>
+          <div class="moon-phase-name" id="moon-phase-name">—</div>
+          <div class="moon-paksha-label" id="moon-paksha-label">—</div>
+        </div>
+      </div>
+
+      <!-- Panchang Details -->
+      <div class="glass-card--static panchang-details mt-xl">
+        <h3 class="panel-title">📋 पंचांग विवरण / Panchang Details</h3>
+        <div class="panchang-table mt-lg">
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">तिथि</span><span class="label-en">Tithi</span></div>
+            <div class="panchang-value" id="p-tithi">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">नक्षत्र</span><span class="label-en">Nakshatra</span></div>
+            <div class="panchang-value" id="p-nakshatra">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">पक्ष</span><span class="label-en">Paksha</span></div>
+            <div class="panchang-value" id="p-paksha">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">हिन्दू मास</span><span class="label-en">Hindu Month</span></div>
+            <div class="panchang-value" id="p-month">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">योग</span><span class="label-en">Yoga</span></div>
+            <div class="panchang-value" id="p-yoga">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">करण</span><span class="label-en">Karana</span></div>
+            <div class="panchang-value" id="p-karana">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">वार</span><span class="label-en">Day</span></div>
+            <div class="panchang-value" id="p-var">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">राहुकाल</span><span class="label-en">Rahu Kaal</span></div>
+            <div class="panchang-value mono-val" id="p-rahu">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">सूर्योदय</span><span class="label-en">Sunrise (approx)</span></div>
+            <div class="panchang-value mono-val" id="p-sunrise">—</div>
+          </div>
+          <div class="panchang-row">
+            <div class="panchang-label"><span class="label-hi">सूर्यास्त</span><span class="label-en">Sunset (approx)</span></div>
+            <div class="panchang-value mono-val" id="p-sunset">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shubh / Ashubh -->
+      <div class="glass-card--static panchang-auspicious mt-xl" id="auspicious-card">
+        <div class="auspicious-icon" id="ausp-icon">—</div>
+        <div class="auspicious-title" id="ausp-title">—</div>
+        <div class="auspicious-desc" id="ausp-desc">—</div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="panchang-disclaimer mt-xl">
+        <div class="disclaimer-icon">⚠️</div>
+        <div class="disclaimer-text">
+          <strong>Accuracy Note:</strong> यह पंचांग approximate astronomical calculations पर आधारित है। सटीक पंचांग के लिए किसी विद्वान पंडित या प्रमाणित पंचांग से परामर्श करें।
+          <br><small>This Panchang uses approximate astronomical algorithms (Jean Meeus). For precise religious timings, please consult a qualified pandit or certified Panchang.</small>
+        </div>
+      </div>
+
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historical Date Calculator — BCE/CE Date Calculator | JoogadTools</title>
+  <meta name="description" content="Free Historical Date Calculator. Calculate date differences across BCE/CE eras, find day of any date, add/subtract dates, check leap years & explore famous historical events.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>📜 Historical Date Calculator</h1>
+      <p>Calculate date differences across BCE/CE eras, find days, check leap years & explore famous historical events.</p>
+    </div>
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+
+      <!-- Tabs -->
+      <div class="tabs-wrapper">
+        <div class="tabs" id="hist-tabs">
+          <button class="tab-btn active" data-tab="tab-diff" id="tbtn-diff">📅 Date Difference</button>
+          <button class="tab-btn" data-tab="tab-day" id="tbtn-day">🔍 Day Finder</button>
+          <button class="tab-btn" data-tab="tab-add" id="tbtn-add">➕ Add / Subtract</button>
+          <button class="tab-btn" data-tab="tab-leap" id="tbtn-leap">🔄 Leap Year</button>
+          <button class="tab-btn" data-tab="tab-events" id="tbtn-events">🏛️ Famous Events</button>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- TAB 1: Date Difference -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="tab-content active" id="tab-diff">
+          <div class="hist-layout mt-xl">
+            <div class="glass-card--static hist-input-panel">
+              <h3 class="panel-title">📅 Date A</h3>
+              <div class="hist-input-row mt-md">
+                <div class="form-group">
+                  <label class="form-label">Day</label>
+                  <input type="number" class="form-input" id="diff-a-day" min="1" max="31" value="1" placeholder="DD">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Month</label>
+                  <select class="form-select" id="diff-a-month">
+                    <option value="1">January</option><option value="2">February</option>
+                    <option value="3">March</option><option value="4">April</option>
+                    <option value="5">May</option><option value="6">June</option>
+                    <option value="7">July</option><option value="8">August</option>
+                    <option value="9">September</option><option value="10">October</option>
+                    <option value="11">November</option><option value="12">December</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Year</label>
+                  <input type="number" class="form-input year-input" id="diff-a-year" value="2500" min="1" placeholder="YYYY">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Era</label>
+                  <div class="era-toggle">
+                    <button class="era-btn active" data-era="bce" id="diff-a-bce">BCE</button>
+                    <button class="era-btn" data-era="ce" id="diff-a-ce">CE</button>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="panel-title mt-xl">📅 Date B</h3>
+              <div class="hist-input-row mt-md">
+                <div class="form-group">
+                  <label class="form-label">Day</label>
+                  <input type="number" class="form-input" id="diff-b-day" min="1" max="31" value="4" placeholder="DD">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Month</label>
+                  <select class="form-select" id="diff-b-month">
+                    <option value="1">January</option><option value="2">February</option>
+                    <option value="3">March</option><option value="4" selected>April</option>
+                    <option value="5">May</option><option value="6">June</option>
+                    <option value="7">July</option><option value="8">August</option>
+                    <option value="9">September</option><option value="10">October</option>
+                    <option value="11">November</option><option value="12">December</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Year</label>
+                  <input type="number" class="form-input year-input" id="diff-b-year" value="2026" min="1" placeholder="YYYY">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Era</label>
+                  <div class="era-toggle">
+                    <button class="era-btn" data-era="bce" id="diff-b-bce">BCE</button>
+                    <button class="era-btn active" data-era="ce" id="diff-b-ce">CE</button>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-diff">⚡ Calculate Difference</button>
+            </div>
+
+            <div class="glass-card--static hist-result-panel" id="diff-result">
+              <h3 class="panel-title">📊 Result</h3>
+              <div class="hist-big-result mt-lg">
+                <div class="hist-result-number" id="diff-r-years">0</div>
+                <div class="hist-result-label">Years</div>
+              </div>
+              <div class="hist-result-sub mt-md">
+                <div class="hist-sub-item">
+                  <span class="sub-val" id="diff-r-months">0</span>
+                  <span class="sub-label">Months</span>
+                </div>
+                <div class="hist-sub-item">
+                  <span class="sub-val" id="diff-r-days">0</span>
+                  <span class="sub-label">Days</span>
+                </div>
+                <div class="hist-sub-item">
+                  <span class="sub-val" id="diff-r-total">0</span>
+                  <span class="sub-label">Total Days</span>
+                </div>
+              </div>
+              <div class="hist-fun-fact mt-lg" id="diff-fun-fact">
+                <span class="fact-icon">💡</span>
+                <span class="fact-text">Enter dates to see the difference</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- TAB 2: Day Finder -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="tab-content" id="tab-day">
+          <div class="hist-layout mt-xl">
+            <div class="glass-card--static hist-input-panel">
+              <h3 class="panel-title">🔍 Find the Day</h3>
+              <p class="hint-text mt-sm">Enter any date to find which day of the week it was.</p>
+              <div class="form-group mt-lg">
+                <label class="form-label">Select Date</label>
+                <input type="date" class="form-input" id="day-date-input">
+              </div>
+              <div class="divider-or mt-lg">OR enter manually</div>
+              <div class="hist-input-row mt-md">
+                <div class="form-group">
+                  <label class="form-label">Day</label>
+                  <input type="number" class="form-input" id="day-m-day" min="1" max="31" placeholder="DD">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Month</label>
+                  <input type="number" class="form-input" id="day-m-month" min="1" max="12" placeholder="MM">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Year (CE)</label>
+                  <input type="number" class="form-input year-input" id="day-m-year" min="1" placeholder="YYYY">
+                </div>
+              </div>
+              <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-day">🔍 Find Day</button>
+            </div>
+
+            <div class="glass-card--static hist-result-panel" id="day-result">
+              <h3 class="panel-title">📊 Result</h3>
+              <div class="day-result-big mt-lg" id="day-display">
+                <div class="day-name-display" id="day-r-name">—</div>
+                <div class="day-full-date" id="day-r-full">Select a date</div>
+              </div>
+              <div class="hist-result-sub mt-lg">
+                <div class="hist-sub-item">
+                  <span class="sub-val" id="day-r-week">—</span>
+                  <span class="sub-label">Week #</span>
+                </div>
+                <div class="hist-sub-item">
+                  <span class="sub-val" id="day-r-dayofyear">—</span>
+                  <span class="sub-label">Day of Year</span>
+                </div>
+                <div class="hist-sub-item">
+                  <span class="sub-val" id="day-r-remaining">—</span>
+                  <span class="sub-label">Days Left</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- TAB 3: Add / Subtract -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="tab-content" id="tab-add">
+          <div class="hist-layout mt-xl">
+            <div class="glass-card--static hist-input-panel">
+              <h3 class="panel-title">➕ Add / Subtract Days</h3>
+              <div class="form-group mt-lg">
+                <label class="form-label">Start Date</label>
+                <input type="date" class="form-input" id="add-start-date">
+              </div>
+              <div class="hist-input-row mt-lg">
+                <div class="form-group" style="flex:2">
+                  <label class="form-label">Amount</label>
+                  <input type="number" class="form-input" id="add-amount" value="100" min="0">
+                </div>
+                <div class="form-group" style="flex:2">
+                  <label class="form-label">Unit</label>
+                  <select class="form-select" id="add-unit">
+                    <option value="days">Days</option>
+                    <option value="weeks">Weeks</option>
+                    <option value="months">Months</option>
+                    <option value="years">Years</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group mt-lg">
+                <label class="form-label">Operation</label>
+                <div class="era-toggle">
+                  <button class="era-btn active" data-op="add" id="op-add">➕ Add</button>
+                  <button class="era-btn" data-op="sub" id="op-sub">➖ Subtract</button>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-add">⚡ Calculate</button>
+            </div>
+
+            <div class="glass-card--static hist-result-panel" id="add-result">
+              <h3 class="panel-title">📊 Result</h3>
+              <div class="day-result-big mt-lg">
+                <div class="day-name-display" id="add-r-day">—</div>
+                <div class="day-full-date" id="add-r-full">Enter a date and amount</div>
+              </div>
+              <div class="hist-fun-fact mt-lg" id="add-fun-fact">
+                <span class="fact-icon">📅</span>
+                <span class="fact-text">Result date will appear here</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- TAB 4: Leap Year -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="tab-content" id="tab-leap">
+          <div class="hist-layout mt-xl">
+            <div class="glass-card--static hist-input-panel">
+              <h3 class="panel-title">🔄 Leap Year Checker</h3>
+              <div class="form-group mt-lg">
+                <label class="form-label">Enter Year</label>
+                <input type="number" class="form-input year-input" id="leap-year" value="2024" min="1" placeholder="e.g. 2024">
+              </div>
+              <button class="btn btn-primary btn-lg w-full mt-xl" id="btn-leap">🔍 Check Leap Year</button>
+            </div>
+
+            <div class="glass-card--static hist-result-panel" id="leap-result">
+              <h3 class="panel-title">📊 Result</h3>
+              <div class="leap-result-big mt-lg" id="leap-display">
+                <div class="leap-badge" id="leap-badge">—</div>
+                <div class="leap-year-text" id="leap-year-text">Enter a year</div>
+              </div>
+              <div class="leap-reason mt-md" id="leap-reason"></div>
+              <div class="leap-nearby mt-lg">
+                <h4>Nearby Leap Years</h4>
+                <div class="leap-nearby-list" id="leap-nearby"></div>
+              </div>
+              <div class="hist-fun-fact mt-lg">
+                <span class="fact-icon">💡</span>
+                <span class="fact-text" id="leap-fun">Leap years keep our calendar in sync with Earth's orbit around the Sun (~365.2422 days).</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════ -->
+        <!-- TAB 5: Famous Events -->
+        <!-- ═══════════════════════════════════ -->
+        <div class="tab-content" id="tab-events">
+          <div class="glass-card--static mt-xl events-container">
+            <h3 class="panel-title">🏛️ Famous Historical Events — "Kitne Saal Pehle?"</h3>
+            <div class="events-filter-row mt-lg">
+              <input type="text" class="form-input events-filter" id="events-filter" placeholder="🔍 Search events...">
+              <div class="event-cat-btns" id="cat-btns">
+                <button class="cat-btn active" data-cat="all">All</button>
+                <button class="cat-btn" data-cat="ancient-india">🇮🇳 Ancient India</button>
+                <button class="cat-btn" data-cat="world">🌍 World</button>
+                <button class="cat-btn" data-cat="modern-india">🇮🇳 Modern India</button>
+                <button class="cat-btn" data-cat="science">🔬 Science</button>
+              </div>
+            </div>
+            <div class="events-grid mt-lg" id="events-grid">
+              <!-- JS rendered -->
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /tabs-wrapper -->
+
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+  <script src="../../js/common.js"></script><script src="script.js"></script>
+</body>
+</html>

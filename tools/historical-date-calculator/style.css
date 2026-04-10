@@ -1,0 +1,445 @@
+/* ============================================
+   Historical Date Calculator — Styles
+   ============================================ */
+
+/* Layout */
+.hist-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.hist-input-panel,
+.hist-result-panel {
+  padding: var(--space-xl);
+}
+
+.panel-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+}
+
+.hint-text {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* Input Rows */
+.hist-input-row {
+  display: flex;
+  gap: var(--space-md);
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.hist-input-row .form-group {
+  flex: 1;
+  min-width: 80px;
+}
+
+.year-input {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Era Toggle */
+.era-toggle {
+  display: flex;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--surface-glass-border);
+}
+
+.era-btn {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-align: center;
+}
+
+.era-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+}
+
+.era-btn.active {
+  background: var(--gradient-accent);
+  color: white;
+  box-shadow: 0 2px 10px rgba(108, 99, 255, 0.3);
+}
+
+/* Divider OR */
+.divider-or {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.divider-or::before,
+.divider-or::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: var(--surface-glass-border);
+}
+
+.divider-or::before { left: 0; }
+.divider-or::after { right: 0; }
+
+/* Big Result Display */
+.hist-big-result {
+  text-align: center;
+  padding: var(--space-lg);
+  background: rgba(108, 99, 255, 0.06);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(108, 99, 255, 0.1);
+}
+
+.hist-result-number {
+  font-size: 3rem;
+  font-weight: var(--fw-bold);
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.hist-result-label {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+
+/* Sub Results */
+.hist-result-sub {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.hist-sub-item {
+  text-align: center;
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+}
+
+.sub-val {
+  display: block;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+}
+
+.sub-label {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Fun Fact Box */
+.hist-fun-fact {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: rgba(255, 167, 38, 0.06);
+  border: 1px solid rgba(255, 167, 38, 0.12);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.fact-icon {
+  font-size: var(--fs-xl);
+  flex-shrink: 0;
+}
+
+/* Day Finder Result */
+.day-result-big {
+  text-align: center;
+  padding: var(--space-xl);
+  background: rgba(108, 99, 255, 0.06);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(108, 99, 255, 0.1);
+}
+
+.day-name-display {
+  font-size: 2.5rem;
+  font-weight: var(--fw-extrabold);
+  font-family: var(--font-heading);
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.day-full-date {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-sm);
+}
+
+/* Leap Year Result */
+.leap-result-big {
+  text-align: center;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+}
+
+.leap-badge {
+  font-size: 3rem;
+  font-weight: var(--fw-extrabold);
+  font-family: var(--font-heading);
+  line-height: 1;
+}
+
+.leap-badge.yes {
+  color: var(--success);
+}
+
+.leap-badge.no {
+  color: var(--error);
+}
+
+.leap-year-text {
+  font-size: var(--fs-md);
+  color: var(--text-secondary);
+  margin-top: var(--space-sm);
+}
+
+.leap-reason {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  text-align: center;
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+}
+
+.leap-nearby h4 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-sm);
+}
+
+.leap-nearby-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.leap-year-pill {
+  padding: 0.3rem 0.8rem;
+  background: rgba(108, 99, 255, 0.1);
+  border: 1px solid rgba(108, 99, 255, 0.15);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: var(--fw-semibold);
+  color: var(--accent-primary);
+}
+
+.leap-year-pill.current {
+  background: var(--gradient-accent);
+  color: white;
+  border-color: transparent;
+}
+
+/* ═══ Famous Events ═══ */
+.events-container {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--space-xl);
+}
+
+.events-filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.events-filter {
+  max-width: 400px;
+}
+
+.event-cat-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.cat-btn {
+  padding: 0.35rem 0.9rem;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-glass-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cat-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.cat-btn.active {
+  background: var(--gradient-accent);
+  color: white;
+  border-color: transparent;
+}
+
+.events-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: var(--space-sm);
+}
+
+.event-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+}
+
+.event-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(108, 99, 255, 0.15);
+  transform: translateX(4px);
+}
+
+.event-card[data-category="ancient-india"] { border-left: 3px solid #FFA726; }
+.event-card[data-category="world"] { border-left: 3px solid #6C63FF; }
+.event-card[data-category="modern-india"] { border-left: 3px solid #4ECDC4; }
+.event-card[data-category="science"] { border-left: 3px solid #FF6B9D; }
+
+.event-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--accent-primary);
+  min-width: 100px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.event-info {
+  flex: 1;
+}
+
+.event-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.event-desc {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.event-ago {
+  padding: 0.25rem 0.7rem;
+  background: rgba(78, 205, 196, 0.12);
+  border: 1px solid rgba(78, 205, 196, 0.15);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 900px) {
+  .hist-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hist-input-row {
+    flex-direction: column;
+  }
+
+  .hist-result-sub {
+    grid-template-columns: 1fr;
+  }
+
+  .hist-result-number,
+  .day-name-display {
+    font-size: 2rem;
+  }
+
+  .event-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .event-year {
+    min-width: auto;
+    text-align: left;
+  }
+
+  .event-ago {
+    align-self: flex-start;
+  }
+
+  .event-cat-btns {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--space-xs);
+  }
+
+  .cat-btn {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .leap-badge {
+    font-size: 2rem;
+  }
+}

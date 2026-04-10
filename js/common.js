@@ -16,8 +16,35 @@ const JoogadTools = {
         </a>
         <nav class="nav-links" id="nav-links">
           <a href="${this.getBasePath(currentPath)}index.html" id="nav-home">Home</a>
-          <a href="${this.getBasePath(currentPath)}index.html#tools" id="nav-tools">Tools</a>
-          <a href="${this.getBasePath(currentPath)}index.html#features" id="nav-about">About</a>
+          <div class="nav-dropdown">
+            <a href="${this.getBasePath(currentPath)}index.html#tools" id="nav-tools">Tools</a>
+            <div class="dropdown-menu glass-card">
+              <div class="dropdown-grid">
+                <a href="${this.getBasePath(currentPath)}tools/qr-generator/index.html">QR Generator</a>
+                <a href="${this.getBasePath(currentPath)}tools/password-generator/index.html">Password Generator</a>
+                <a href="${this.getBasePath(currentPath)}tools/case-converter/index.html">Case Converter</a>
+                <a href="${this.getBasePath(currentPath)}tools/color-converter/index.html">Color Converter</a>
+                <a href="${this.getBasePath(currentPath)}tools/json-csv-converter/index.html">JSON/CSV Converter</a>
+                <a href="${this.getBasePath(currentPath)}tools/csv-generator/index.html">CSV Generator</a>
+                <a href="${this.getBasePath(currentPath)}tools/emi-calculator/index.html">EMI Calculator</a>
+                <a href="${this.getBasePath(currentPath)}tools/gst-calculator/index.html">GST Calculator</a>
+                <a href="${this.getBasePath(currentPath)}tools/image-quality-checker/index.html">Image Quality Checker</a>
+                <a href="${this.getBasePath(currentPath)}tools/image-compressor/index.html">Image Compressor</a>
+                <a href="${this.getBasePath(currentPath)}tools/word-counter/index.html">Word Counter</a>
+                <a href="${this.getBasePath(currentPath)}tools/hash-generator/index.html">Hash Generator</a>
+                <a href="${this.getBasePath(currentPath)}tools/handwriting-to-text/index.html">Handwriting to Text</a>
+                <a href="${this.getBasePath(currentPath)}tools/image-grid-splitter/index.html">Insta Grid Splitter</a>
+                <a href="${this.getBasePath(currentPath)}tools/age-calculator/index.html">Age Calculator</a>
+                <a href="${this.getBasePath(currentPath)}tools/historical-date-calculator/index.html">Date Calculator</a>
+                <a href="${this.getBasePath(currentPath)}tools/hindu-panchang/index.html">Hindu Panchang</a>
+                <a href="${this.getBasePath(currentPath)}tools/chart-generator/index.html">Chart Generator</a>
+                <a href="${this.getBasePath(currentPath)}tools/bulk-map-qr/index.html">Bulk Map QR Codes</a>
+                <a href="${this.getBasePath(currentPath)}tools/map-csv-generator/index.html">Map to CSV Extractor</a>
+                <a href="${this.getBasePath(currentPath)}tools/passport-photo-maker/index.html">Passport Photo Maker</a>
+              </div>
+            </div>
+          </div>
+          <a href="${this.getBasePath(currentPath)}about.html" id="nav-about">About</a>
         </nav>
         <div class="menu-toggle" id="menu-toggle">
           <span></span>
@@ -69,10 +96,18 @@ const JoogadTools = {
           <a href="${this.getBasePath(currentPath)}tools/csv-generator/index.html" id="footer-csv-gen">CSV Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/emi-calculator/index.html" id="footer-emi">EMI Calculator</a>
           <a href="${this.getBasePath(currentPath)}tools/gst-calculator/index.html" id="footer-gst">GST Calculator</a>
+          <a href="${this.getBasePath(currentPath)}tools/image-quality-checker/index.html" id="footer-quality">Image Quality Checker</a>
           <a href="${this.getBasePath(currentPath)}tools/image-compressor/index.html" id="footer-image">Image Compressor</a>
           <a href="${this.getBasePath(currentPath)}tools/word-counter/index.html" id="footer-word">Word Counter</a>
           <a href="${this.getBasePath(currentPath)}tools/hash-generator/index.html" id="footer-hash">Hash Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/handwriting-to-text/index.html" id="footer-ocr">Handwriting to Text</a>
+          <a href="${this.getBasePath(currentPath)}tools/image-grid-splitter/index.html" id="footer-grid">Insta Grid Splitter</a>
+          <a href="${this.getBasePath(currentPath)}tools/age-calculator/index.html" id="footer-age">Age Calculator</a>
+          <a href="${this.getBasePath(currentPath)}tools/historical-date-calculator/index.html" id="footer-history">Date Calculator</a>
+          <a href="${this.getBasePath(currentPath)}tools/hindu-panchang/index.html" id="footer-panchang">Hindu Panchang</a>
+          <a href="${this.getBasePath(currentPath)}tools/bulk-map-qr/index.html" id="footer-bulk-map">Bulk Map QR</a>
+          <a href="${this.getBasePath(currentPath)}tools/map-csv-generator/index.html" id="footer-map-csv">Map to CSV Extractor</a>
+          <a href="${this.getBasePath(currentPath)}tools/passport-photo-maker/index.html" id="footer-passport">Passport Photo Maker</a>
         </div>
         <p class="footer-copyright">© ${new Date().getFullYear()} JoogadTools.online — Free Online Tools for Everyone</p>
       </div>
@@ -221,31 +256,5 @@ const JoogadTools = {
     };
   },
 
-  // ---- Analytics / Tracking System ----
-  initTracking() {
-    // 👇 Replace 'G-XXXXXXXXXX' with your actual Google Analytics Measurement ID
-    const MEASUREMENT_ID = 'G-XXXXXXXXXX'; 
-    
-    if (MEASUREMENT_ID === 'G-XXXXXXXXXX') {
-      console.log('Analytics tracking is NOT active. Please put your Google Analytics ID (Measurement ID) in js/common.js');
-      return;
-    }
-
-    // Inject Google Analytics (gtag.js) script into the <head>
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', MEASUREMENT_ID);
-    
-    console.log(`Analytics initialized for ID: ${MEASUREMENT_ID}`);
-  }
 };
 
-// Initialize tracking automatically on all pages
-JoogadTools.initTracking();

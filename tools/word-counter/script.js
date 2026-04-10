@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // Word Counter Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/word-counter');

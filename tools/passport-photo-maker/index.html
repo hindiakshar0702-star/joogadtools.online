@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passport Photo Maker & Tiler — JoogadTools</title>
+  <meta name="description" content="Create perfect passport photos with AI face alignment checking. Arrange, tile, and download customized printing grids in high-quality PDF offline.">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+</head>
+<body>
+  <div class="ad-slot ad-slot--header" id="ad-top"></div>
+
+  <main class="tool-page">
+    <div class="tool-header container">
+      <h1>📸 Passport Photo Maker & Tiler</h1>
+      <p>Upload a photo, let AI verify face alignment, crop smartly, and generate perfectly spaced printable PDFs. 100% Secure & Client-Side!</p>
+    </div>
+
+    <div class="tool-body">
+      <div class="glass-card main-panel" style="max-width: 1000px; margin: 0 auto; padding: var(--space-xl);">
+        
+        <!-- STEP 1: UPLOAD -->
+        <div id="step-1" class="wizard-step active">
+          <div class="step-header">
+            <h3>Step 1: Upload Photo</h3>
+            <p>Ensure good lighting and a plain background.</p>
+          </div>
+          <div class="upload-area" id="dropzone">
+            <div class="upload-icon">👤</div>
+            <h3>Drag & Drop Photo</h3>
+            <p>.jpg, .png, .jpeg</p>
+            <input type="file" id="file-input" accept="image/*" hidden>
+            <button class="btn btn-primary" style="margin-top: 15px; pointer-events: none;">Browse Files</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: CROP & FACE CHECK -->
+        <div id="step-2" class="wizard-step" style="display: none;">
+          <div class="step-header">
+            <h3>Step 2: AI Check & Crop</h3>
+            <p>Adjust the bounding box to frame the face.</p>
+          </div>
+          
+          <div id="face-warning" class="alert alert-warning" style="display: none; margin-bottom: 15px; padding: 10px; border-radius: 5px; background: rgba(255, 165, 0, 0.1); border: 1px solid orange; color: orange;">
+            ⚠️ <strong>AI Note:</strong> It seems your face might not be looking completely straight at the camera. For official passports, front-facing is required!
+          </div>
+
+          <div class="crop-layout">
+            <div class="crop-container" id="crop-container">
+              <img id="cropper-image" src="" alt="Picture">
+              <!-- Loading overlay -->
+              <div id="ai-loader" class="loader-overlay">
+                <div class="spinner"></div>
+                <p>Loading Local AI Models & Analyzing Face...</p>
+              </div>
+            </div>
+            
+            <div class="crop-settings">
+              <label class="form-label">Photo Standard</label>
+              <select id="select-ratio" class="form-select">
+                <option value="0.7777" data-w="35" data-h="45" selected>India / Europe (3.5 x 4.5 cm)</option>
+                <option value="1.0" data-w="50.8" data-h="50.8">USA / India Visa (2 x 2 inch)</option>
+                <option value="0.75" data-w="30" data-h="40">Standard (3 x 4 cm)</option>
+                <option value="custom">Custom Dimensions</option>
+              </select>
+
+              <div id="custom-photo-wrap" style="display: none; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                <input type="number" id="custom-photo-w" class="form-input" style="flex:1; min-width: 60px; padding: 0.5rem;" placeholder="W" value="40">
+                <input type="number" id="custom-photo-h" class="form-input" style="flex:1; min-width: 60px; padding: 0.5rem;" placeholder="H" value="40">
+                <select id="custom-photo-unit" class="form-select" style="width: auto; flex:1;">
+                  <option value="mm">mm</option>
+                  <option value="cm">cm</option>
+                  <option value="in">inch</option>
+                </select>
+                <button id="btn-apply-custom-photo" class="btn btn-primary" style="padding: 0.5rem; flex:1;">Apply</button>
+              </div>
+
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 20px;">Use the corner handles to adjust the crop box. Mouse scroll to zoom.</p>
+              
+              <div class="actions-row mt-4">
+                <button class="btn btn-outline" id="btn-back-1">← Back</button>
+                <button class="btn btn-primary" id="btn-confirm-crop">Confirm Crop →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: TILE LAYOUT & PDF -->
+        <div id="step-3" class="wizard-step" style="display: none;">
+          <div class="step-header">
+            <h3>Step 3: Paper Layout & Export</h3>
+            <p>Customize margins and gaps before downloading your print-ready PDF!</p>
+          </div>
+
+          <div class="layout-grid-step3">
+            <div class="layout-controls glass-card" style="padding: var(--space-md);">
+              <h4 style="margin-bottom: 15px; color: var(--accent-primary);">Page Settings</h4>
+              
+              <div class="form-group">
+                <label class="form-label">Paper Size</label>
+                <select id="select-paper" class="form-select">
+                  <option value="a4" data-w="210" data-h="297" selected>A4 (210 x 297 mm)</option>
+                  <option value="letter" data-w="215.9" data-h="279.4">Letter (8.5 x 11 inch)</option>
+                  <option value="legal" data-w="215.9" data-h="355.6">Legal (8.5 x 14 inch)</option>
+                  <option value="4x6" data-w="101.6" data-h="152.4">4x6 inch (Photo Paper)</option>
+                  <option value="5x7" data-w="127" data-h="177.8">5x7 inch</option>
+                  <option value="single">Single Photo (No Grid)</option>
+                  <option value="custom">Custom Paper</option>
+                </select>
+              </div>
+
+              <div id="custom-paper-wrap" style="display: none; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+                <input type="number" id="custom-paper-w" class="form-input" style="flex:1; min-width: 60px; padding: 0.5rem;" placeholder="W" value="100">
+                <input type="number" id="custom-paper-h" class="form-input" style="flex:1; min-width: 60px; padding: 0.5rem;" placeholder="H" value="150">
+                <select id="custom-paper-unit" class="form-select" style="width: auto; flex:1;">
+                  <option value="mm">mm</option>
+                  <option value="cm">cm</option>
+                  <option value="in">inch</option>
+                </select>
+                <button id="btn-apply-custom-paper" class="btn btn-outline" style="padding: 0.5rem; border-color: var(--accent-primary); flex:1;">Apply</button>
+              </div>
+
+              <!-- Extra Layout Toggles -->
+              <div class="form-group" style="display: flex; gap: 10px; align-items: center; margin-top: 10px;">
+                <input type="checkbox" id="check-center" style="width: 18px; height: 18px; cursor: pointer;">
+                <label for="check-center" style="cursor: pointer; font-size: 0.9rem;">Auto-Center Grid on Page</label>
+              </div>
+
+              <div class="form-group" id="container-margin">
+                <label class="form-label">Page Margin (<span id="margin-val">5</span> mm)</label>
+                <input type="range" id="input-margin" min="0" max="25" value="5" style="width: 100%;">
+              </div>
+
+              <div class="form-group" id="container-gap">
+                <label class="form-label">Photo Gap (<span id="gap-val">3</span> mm)</label>
+                <input type="range" id="input-gap" min="0" max="15" value="3" style="width: 100%;">
+              </div>
+              
+              <div class="stats-box mt-3" style="padding: 10px; background: rgba(0,0,0,0.2); border-radius: 5px; font-size: 0.9rem;">
+                <p><strong>Photo Size:</strong> <span id="stat-size">35 x 45 mm</span></p>
+                <p><strong>Total Copies:</strong> <span id="stat-copies" style="color: var(--success);">0</span></p>
+              </div>
+
+              <div class="actions-row mt-4">
+                <button class="btn btn-outline" id="btn-back-2">← Back</button>
+                <button class="btn btn-primary" id="btn-export-pdf" style="font-weight: 600;">📄 Download PDF</button>
+              </div>
+            </div>
+
+            <!-- Canvas Preview -->
+            <div class="layout-preview-wrap">
+              <div class="canvas-scaler">
+                <canvas id="preview-canvas" style="background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 1px solid #ccc; max-width: 100%; height: auto;"></canvas>
+              </div>
+              <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 10px;">Live rendering. Background represents A4/Photo Paper.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ad-slot ad-slot--sidebar" id="ad-middle" style="margin-top: 30px;"></div>
+    </div>
+  </main>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+  <script>
+    JoogadTools.renderHeader('../../');
+    JoogadTools.renderFooter('../../');
+  </script>
+</body>
+</html>

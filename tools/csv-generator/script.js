@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // CSV Generator — Complete Script with all features
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/csv-generator');

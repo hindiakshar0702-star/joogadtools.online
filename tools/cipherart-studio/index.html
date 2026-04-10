@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CipherArt Studio — Steganography Canvas</title>
+  <meta name="description" content="Merge halftone shape-rendering technology with binary steganography. Hide secret messages inside beautiful cross and circle shape art.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+</head>
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🔳</span>
+        <div>
+          <h1>CipherArt Studio</h1>
+          <p>Halftone Shape Steganography Generator</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Main Tabs -->
+    <nav class="main-tabs">
+      <button class="tab-btn active" data-tab="create-tab">
+        <span class="tab-icon">🖌️</span>
+        <span>Create Art (Hide Message)</span>
+      </button>
+      <button class="tab-btn" data-tab="decode-tab">
+        <span class="tab-icon">🔍</span>
+        <span>Decode Art (Read Message)</span>
+      </button>
+    </nav>
+
+    <!-- ===== TAB 1: CREATE ART ===== -->
+    <div id="create-tab" class="tab-panel active">
+      <div class="panel-grid">
+        
+        <!-- Left Column: Inputs -->
+        <div class="settings-col">
+          <div class="glass-panel">
+            <h3 class="panel-title">1. Base Image</h3>
+            <div class="dropzone" id="create-dropzone">
+              <div class="drop-icon">🖼️</div>
+              <p>Drag & Drop any Image</p>
+              <input type="file" id="create-file" accept="image/*" hidden>
+            </div>
+            <div class="image-preview-wrap hidden" id="create-preview-wrap">
+              <img id="create-preview-img" src="" alt="Carrier">
+              <div class="image-meta">
+                <span id="create-img-size">—</span>
+                <button class="btn btn-xs btn-outline" id="btn-remove-img">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-panel">
+            <h3 class="panel-title">2. Secret payload</h3>
+            <label class="field-label">Message to Hide</label>
+            <textarea id="create-message" class="field-textarea" placeholder="Type your secret message..." rows="3"></textarea>
+            
+            <div class="field-meta" style="margin-bottom: 1rem;">
+              <span id="capacity-indicator">Capacity: 0/0 chars</span>
+              <div class="capacity-bar-wrap"><div class="capacity-bar-fill" id="capacity-fill"></div></div>
+            </div>
+
+            <label class="field-label">Encryption Password</label>
+            <div class="password-wrap">
+              <input type="password" id="create-password" class="field-input" placeholder="AES-256 password...">
+              <button class="toggle-pw-btn" data-target="create-password">👁️</button>
+            </div>
+          </div>
+
+          <div class="glass-panel">
+            <h3 class="panel-title">3. Art Settings</h3>
+            <div class="setting-row">
+              <div>
+                <label class="field-label" style="margin:0;">Grid Detail (Density)</label>
+                <div class="setting-desc">More detail = clearer image, more text capacity.</div>
+              </div>
+              <span id="density-val" class="val-badge">Medium (8px)</span>
+            </div>
+            <input type="range" id="density-slider" min="4" max="25" value="8" step="1" class="custom-range">
+            
+            <div class="setting-row" style="margin-top: 1rem;">
+              <label class="field-label" style="margin:0;">Color Mode</label>
+              <select id="color-mode" class="field-input select-input" style="width: auto;">
+                <option value="original">Original Colors</option>
+                <option value="monochrome">Monochrome (B&W)</option>
+                <option value="neon">Matrix Neon Green</option>
+              </select>
+            </div>
+            
+            <div class="setting-row" style="margin-top: 1rem;">
+              <div>
+                <label class="field-label" style="margin:0;">Shape Theme</label>
+              </div>
+              <select id="shape-theme" class="field-input select-input" style="width: auto;">
+                <option value="classic">Classic [ X / O ]</option>
+                <option value="matrix">Matrix [ 0 / 1 ]</option>
+                <option value="minimal">Minimal [ + / - ]</option>
+                <option value="custom">Custom Text / Emoji</option>
+              </select>
+            </div>
+            
+            <div id="custom-shape-wrap" style="display: none; margin-top: 0.5rem; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--glass-border);">
+               <div style="display: flex; gap: 1rem; align-items: center;">
+                 <div style="flex: 1;">
+                   <label style="font-size: 0.75rem; color: var(--text-muted); display:block; margin-bottom:0.25rem;">Bit-0 Shape</label>
+                   <input type="text" id="shape-0" value="💀" class="field-input" maxlength="2" style="text-align:center; padding: 0.5rem;">
+                 </div>
+                 <div style="flex: 1;">
+                   <label style="font-size: 0.75rem; color: var(--text-muted); display:block; margin-bottom:0.25rem;">Bit-1 Shape</label>
+                   <input type="text" id="shape-1" value="🌹" class="field-input" maxlength="2" style="text-align:center; padding: 0.5rem;">
+                 </div>
+               </div>
+            </div>
+
+            <div class="setting-row" style="margin-top: 1rem; display: none;">
+              <div>
+                <label class="field-label" style="margin:0;">Animation Style</label>
+              </div>
+              <select id="animation-style" class="field-input select-input" style="width: auto;">
+                <option value="none">None (Static Output)</option>
+                <option value="matrix_rain">Matrix Rain Reveal</option>
+                <option value="cyber_glitch">Cyberpunk Glitch &amp; Flicker</option>
+                <option value="pulse">Organic Breathing</option>
+                <option value="hue_shift">Neon Hue Shifting</option>
+                <option value="hover_flashlight">Hover Flashlight</option>
+              </select>
+            </div>
+            
+            <button class="btn btn-primary btn-full" id="btn-generate" style="margin-top: 1.5rem;">
+              <span>✨ Generate CipherArt</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Canvas Output -->
+        <div class="output-col">
+          <div class="glass-panel canvas-panel">
+            <div class="canvas-header">
+              <h3 class="panel-title" style="margin:0;">Preview</h3>
+              <div class="canvas-actions" style="display:flex; gap:0.5rem;">
+                <button class="btn btn-outline btn-sm hidden" id="btn-magnifier" disabled title="Toggle Magnifier Lens">🔍 Lens</button>
+                <button class="btn btn-accent btn-sm" id="btn-download" disabled>⬇️ Save as SVG</button>
+              </div>
+            </div>
+            
+            <div class="canvas-container" id="canvas-container" style="position:relative;">
+              <div class="empty-state">
+                <div class="empty-icon">🎨</div>
+                <p>Upload an image and message to generate art.</p>
+              </div>
+              <!-- We will generate SVG inside this container -->
+              <div id="svg-output-wrap" style="width:100%; height:100%; display:none; overflow:auto; cursor:default;">
+                <!-- Output SVG goes here -->
+              </div>
+              
+              <!-- Magnifier Lens -->
+              <div id="magnifier-glass" class="hidden"></div>
+            </div>
+            
+            <div class="toast-inline hidden" id="generate-success">
+              ✅ <strong>Art generated successfully!</strong> Ready to download.
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <h4>💡 How it works</h4>
+            <p>Your image is converted into a grid of SVG shapes. Depending on the secret encrypted message, either a <strong>Cross (X)</strong> or <strong>Circle (O)</strong> is drawn. The size/thickness of the shape represents the brightness of the original pixel.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ===== TAB 2: DECODE ART ===== -->
+    <div id="decode-tab" class="tab-panel">
+      <div class="steg-grid">
+        <div class="glass-panel">
+          <h3 class="panel-title">Upload CipherArt (SVG)</h3>
+          <div class="dropzone" id="decode-dropzone">
+            <div class="drop-icon">🔍</div>
+            <p>Upload previously generated .svg file</p>
+            <input type="file" id="decode-file" accept=".svg,image/svg+xml" hidden>
+          </div>
+          <div class="file-name-display hidden" id="decode-file-display">
+             <span id="decode-file-name">file.svg</span>
+             <button class="btn btn-xs btn-outline" id="btn-remove-decode">X</button>
+          </div>
+
+          <label class="field-label" style="margin-top: 1.5rem;">Decryption Password</label>
+          <div class="password-wrap">
+            <input type="password" id="decode-password" class="field-input" placeholder="Enter password used during creation...">
+            <button class="toggle-pw-btn" data-target="decode-password">👁️</button>
+          </div>
+          <button class="btn btn-accent btn-full" id="btn-decode" style="margin-top: 1rem;">
+            <span>🔓 Decode Message</span>
+          </button>
+        </div>
+
+        <div class="glass-panel">
+          <div class="output-header" style="margin-bottom: 1rem; border:none; padding:0; background:transparent;">
+            <h3 class="panel-title" style="margin:0;">Extracted Message</h3>
+            <button class="btn btn-xs btn-outline hidden" id="btn-copy-decrypted">Copy</button>
+          </div>
+          <div class="output-box" id="decode-output-wrap" style="margin-top:0; min-height: 200px; padding: 1.2rem;">
+            <p class="text-muted" id="decode-placeholder">Upload an SVG Art file and enter the password to decrypt the hidden message...</p>
+            <pre id="decode-output" class="output-text hidden" style="padding:0;"></pre>
+          </div>
+          <div class="error-box hidden" id="decode-error"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="app-footer">
+    <p>🔳 All operations happen <strong>locally in your browser</strong>. 100% Vector SVG generation.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

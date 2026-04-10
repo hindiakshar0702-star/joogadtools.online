@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Chart & Graph Generator | JoogadTools</title>
+  <meta name="description" content="Generate beautiful Bar, Line, Pie, Doughnut, and Radar charts online. Customize colors, labels, and download as PNG, JPG, or PDF. 100% free and client-side.">
+  <meta name="keywords" content="chart generator, graph maker, online chart maker, bar chart, pie chart, line graph, free graph generator">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js via cdnjs (Stable alternative to jsDelivr) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <!-- jsPDF via CDN for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- canvas2svg via unpkg -->
+  <script src="https://unpkg.com/canvas2svg@1.0.16/canvas2svg.js"></script>
+</head>
+<body>
+  <div class="tool-page">
+    <div class="tool-header">
+      <h1>📊 Chart Generator</h1>
+      <p>Create and download beautiful, customizable charts instantly in your browser.</p>
+    </div>
+    
+    <div class="tool-body">
+      <div class="ad-slot" id="ad-top"></div>
+
+      <!-- Main Layout -->
+      <div class="chart-layout">
+        
+        <!-- Left Panel: Settings & Data -->
+        <div class="glass-card--static left-panel">
+          
+          <h3 class="panel-title">1. Chart Settings</h3>
+          <div class="form-group mt-md">
+            <label class="form-label" for="chart-title">Chart Title</label>
+            <input type="text" class="form-input" id="chart-title" value="My Awesome Chart" placeholder="Enter title">
+          </div>
+          
+          <div class="settings-grid mt-md">
+            <div class="form-group">
+              <label class="form-label" for="chart-type">Chart Type</label>
+              <select class="form-input" id="chart-type">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="pie">Pie Chart</option>
+                <option value="doughnut">Doughnut Chart</option>
+                <option value="radar">Radar Chart</option>
+                <option value="polarArea">Polar Area</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="chart-theme">Color Theme</label>
+              <select class="form-input" id="chart-theme">
+                <option value="vibrant">Vibrant & Modern</option>
+                <option value="pastel">Soft Pastels</option>
+                <option value="monochrome">Monochrome Blue</option>
+                <option value="neon">Cyberpunk Neon</option>
+              </select>
+            </div>
+          </div>
+          <div class="settings-grid mt-md">
+            <div class="form-group">
+              <label class="form-label" for="bg-color">Chart Background</label>
+              <input type="color" class="form-input color-picker" id="bg-color" value="#111827">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="text-color">Label Text Color</label>
+              <input type="color" class="form-input color-picker" id="text-color" value="#e5e7eb">
+            </div>
+          </div>
+
+          <h3 class="panel-title mt-xl">2. Data Entry</h3>
+          <p class="input-hint mt-xs">Add your labels and corresponding values.</p>
+          
+          <div class="data-table-container mt-md">
+            <div class="data-header">
+              <div class="data-col">Label (X-Axis)</div>
+              <div class="data-col">Value (Y-Axis)</div>
+              <div class="data-col-action"></div>
+            </div>
+            <div class="data-rows" id="data-rows">
+              <!-- Default Rows -->
+              <div class="data-row">
+                <input type="text" class="form-input row-label" value="January">
+                <input type="number" class="form-input row-value" value="65">
+                <button class="btn btn-danger btn-icon remove-row" title="Remove row">✖</button>
+              </div>
+              <div class="data-row">
+                <input type="text" class="form-input row-label" value="February">
+                <input type="number" class="form-input row-value" value="59">
+                <button class="btn btn-danger btn-icon remove-row" title="Remove row">✖</button>
+              </div>
+              <div class="data-row">
+                <input type="text" class="form-input row-label" value="March">
+                <input type="number" class="form-input row-value" value="80">
+                <button class="btn btn-danger btn-icon remove-row" title="Remove row">✖</button>
+              </div>
+            </div>
+            <button class="btn btn-secondary w-full mt-md" id="btn-add-row">+ Add New Row</button>
+          </div>
+          
+        </div>
+
+        <!-- Right Panel: Preview & Export -->
+        <div class="glass-card--static right-panel">
+          <h3 class="panel-title">Live Preview</h3>
+          
+          <div class="canvas-wrapper mt-md" id="canvas-wrapper" style="width: 100%; min-height: 350px;">
+            <canvas id="chart-canvas" width="100%" height="350"></canvas>
+          </div>
+          
+          <div class="export-section mt-xl">
+            <h4 class="export-title">Export Options</h4>
+            <div class="export-buttons mt-md">
+              <button class="btn btn-primary" id="btn-export-png">📥 HQ PNG</button>
+              <button class="btn btn-primary" id="btn-export-jpg">📥 HQ JPG</button>
+              <button class="btn btn-primary" id="btn-export-pdf">📄 HQ PDF</button>
+              <button class="btn btn-primary" id="btn-export-svg">📥 SVG</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ad-slot" id="ad-bottom"></div>
+    </div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

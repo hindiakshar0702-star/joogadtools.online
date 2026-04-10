@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // QR Code Generator — Complete Script with all 12 features
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/qr-generator');

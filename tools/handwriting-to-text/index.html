@@ -24,7 +24,35 @@
         <!-- ======= LEFT: Upload & Preview Panel ======= -->
         <div class="glass-card--static ocr-left-panel">
           
-          <h3 class="section-label">1. Select your Image</h3>
+          <h3 class="section-label">1. Select OCR Engine</h3>
+          <div class="engine-toggle mt-sm mb-lg">
+            <button class="era-btn active w-full" data-engine="tesseract" id="engine-tesseract">Tesseract (Offline)</button>
+            <button class="era-btn w-full" data-engine="gemini" id="engine-gemini" style="color:var(--warning)">✨ Gemini AI (High Accuracy)</button>
+          </div>
+
+          <div class="glass-card--static p-md mb-lg hidden" id="gemini-key-panel" style="border: 1px solid var(--warning); padding:1rem;">
+            <label class="form-label" style="display:flex; justify-content:space-between;">
+              <span>🔑 Gemini API Key</span>
+              <a href="https://aistudio.google.com/api-keys" target="_blank" style="color:var(--warning); text-decoration:underline;">Get Free Key</a>
+            </label>
+            <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+              <input type="password" class="form-input" id="api-key-input" placeholder="AIzaSy..." style="flex:1;">
+              <button class="btn btn-secondary btn-sm" id="btn-save-key">Save</button>
+            </div>
+            <p class="text-sm text-muted mt-sm">Key is saved securely in your local browser storage. No server uploads.</p>
+
+            <div class="form-group mt-md">
+              <label class="form-label">Specialized Prompt</label>
+              <select class="form-select" id="gemini-prompt">
+                <option value="general" selected>General Handwriting (English/Hindi)</option>
+                <option value="medical">Medical Prescription / Doctor's Notes</option>
+                <option value="math">Math Equations & Formulas</option>
+                <option value="receipt">Receipts & Bills</option>
+              </select>
+            </div>
+          </div>
+          
+          <h3 class="section-label">2. Select your Image</h3>
           
           <div class="upload-area" id="upload-area">
             <input type="file" id="image-input" accept="image/*" class="hidden">
@@ -38,8 +66,8 @@
             <button class="btn btn-icon btn-sm btn-clear hidden" id="btn-clear-image" title="Remove Image">✕</button>
           </div>
 
-          <!-- Language Selection (Optional future-proofing, defaulted to eng) -->
-          <div class="form-group mt-lg">
+          <!-- Language Selection (Tesseract only) -->
+          <div class="form-group mt-lg" id="tesseract-lang-panel">
             <label class="form-label">Language Model</label>
             <select class="form-select" id="ocr-lang">
               <option value="eng" selected>🇺🇸 English (Best for most handwriting)</option>
@@ -56,7 +84,7 @@
         <div class="ocr-right-col">
           <div class="glass-card--static ocr-result-panel">
             <div class="flex items-center justify-between mb-md">
-              <h3 class="section-label" style="margin:0;">2. Extracted Text</h3>
+              <h3 class="section-label" style="margin:0;">3. Extracted Text</h3>
               <div class="ocr-actions">
                 <button class="btn btn-secondary btn-sm" id="btn-copy" disabled>📋 Copy</button>
                 <button class="btn btn-secondary btn-sm" id="btn-download" disabled>⬇ .txt</button>

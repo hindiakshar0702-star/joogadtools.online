@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // JSON ↔ CSV Converter — Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/json-csv-converter');

@@ -296,6 +296,85 @@ button {
   width: 100%;
 }
 
+/* Dropdown styles */
+.nav-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-base);
+  width: 420px;
+  padding: var(--space-md);
+  margin-top: 20px;
+  z-index: 1002;
+  cursor: default;
+}
+
+/* Invisible bridge so hover state isn't lost */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.dropdown-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-full);
+}
+.dropdown-grid::-webkit-scrollbar-thumb {
+  background: rgba(108, 99, 255, 0.2);
+  border-radius: var(--radius-full);
+}
+
+.dropdown-grid a {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary) !important;
+  font-size: var(--fs-sm);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-grid a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-primary) !important;
+  transform: translateX(4px);
+}
+.dropdown-grid a::after {
+  display: none !important;
+}
+
 /* Mobile menu toggle */
 .menu-toggle {
   display: none;
@@ -859,6 +938,10 @@ button {
 .stagger-children > *:nth-child(10) { animation-delay: 0.5s; }
 .stagger-children > *:nth-child(11) { animation-delay: 0.55s; }
 .stagger-children > *:nth-child(12) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(13) { animation-delay: 0.65s; }
+.stagger-children > *:nth-child(14) { animation-delay: 0.7s; }
+.stagger-children > *:nth-child(15) { animation-delay: 0.75s; }
+.stagger-children > *:nth-child(16) { animation-delay: 0.8s; }
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {

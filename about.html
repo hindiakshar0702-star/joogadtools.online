@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — JoogadTools</title>
+  <meta name="description" content="Learn about JoogadTools, a collection of free, secure, client-side tools for developers and everyday users.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .about-section {
+      padding: 6rem 1rem 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .about-title {
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .about-subtitle {
+      font-size: 1.25rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--text-secondary);
+    }
+    .about-content h2 {
+      color: var(--text-primary);
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
+    }
+    .about-content p {
+      margin-bottom: 1.25rem;
+    }
+    .about-content ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .about-content li {
+      margin-bottom: 0.5rem;
+    }
+    .highlight {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    /* Simple glass card for the mission */
+    .mission-card {
+      background: var(--surface-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .mission-card h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="about-section container">
+    <h1 class="about-title">About <span class="gradient-text">JoogadTools</span></h1>
+    <p class="about-subtitle">Your reliable suite of free, private, and lightning-fast online tools.</p>
+    
+    <div class="mission-card">
+      <h3>Our Mission</h3>
+      <p>To provide high-quality, everyday digital tools that empower users to get things done quickly, securely, and completely free of charge. No subscriptions, no hidden limits, no compromises.</p>
+    </div>
+
+    <div class="about-content">
+      <h2>Why We Built JoogadTools</h2>
+      <p>In a world where simple online utilities often require you to upload your sensitive data, sign up for accounts, or navigate through intrusive paywalls, we wanted to create a better alternative. We built JoogadTools on a simple principle: <strong>essential tools should be accessible everywhere, instantly, and safely.</strong></p>
+      
+      <h2>100% Client-Side Processing</h2>
+      <p>Your privacy is our priority. Every tool on this platform runs <span class="highlight">entirely within your web browser</span>. This means:</p>
+      <ul>
+        <li>Your data never leaves your device.</li>
+        <li>We don't upload your files, images, or text to any servers.</li>
+        <li>Your passwords, sensitive JSON/CSV files, and personal images remain completely private.</li>
+        <li>You experience zero latency—everything processes instantly.</li>
+      </ul>
+
+      <h2>Free Forever</h2>
+      <p>We genuinely believe that utility tools shouldn't cost you money. JoogadTools is free for everyone to use. We rely on unintrusive ads to maintain our infrastructure so you can focus on building, designing, and calculating without any interruptions.</p>
+
+      <h2>Our Growing Toolkit</h2>
+      <p>What started as a simple idea has grown into a comprehensive platform serving diverse needs—from developers and designers to students and finance professionals. We're continually expanding our toolkit based on what our users need the most.</p>
+
+      <p style="text-align: center; margin-top: 3rem;">
+        <a href="index.html#tools" class="btn" style="display: inline-block; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: var(--radius-md); font-weight: bold; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; cursor: pointer;">Explore All Tools</a>
+      </p>
+    </div>
+  </main>
+
+  <script src="js/common.js"></script>
+  <script>
+    // Initialize header & footer
+    JoogadTools.renderHeader('');
+    JoogadTools.renderFooter('');
+  </script>
+</body>
+</html>

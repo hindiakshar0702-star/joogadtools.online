@@ -1,0 +1,204 @@
+/* Layout Strategy */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Map Column Styles */
+.map-column {
+  padding: var(--space-md);
+}
+
+.map-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+@media (min-width: 600px) {
+  .map-toolbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.search-box {
+  display: flex;
+  gap: var(--space-sm);
+  flex: 1;
+  width: 100%;
+}
+.search-box input {
+  padding: 0.5rem 0.8rem;
+  background: rgba(0,0,0,0.15);
+}
+
+.mt-2 { margin-top: 8px; }
+
+#map-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--surface-glass-border);
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Leaflet Dark mode trick */
+.leaflet-container.dark-filter .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+.leaflet-container.dark-filter .leaflet-control-zoom {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.floating-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: var(--surface-glass-hover);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--surface-glass-border);
+  box-shadow: var(--shadow-sm);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  transition: all var(--transition-base);
+  color: white;
+}
+.floating-btn:hover {
+  background: var(--surface-glass-border-hover);
+  transform: scale(1.05);
+}
+
+/* Data Column Styles */
+.data-column {
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.data-actions-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.table-container {
+  max-height: 350px;
+  overflow-y: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--surface-glass-border);
+  background: rgba(0,0,0,0.15);
+}
+
+.data-table {
+  width: 100%;
+}
+.data-table th, .data-table td {
+  padding: 0.5rem;
+  font-size: var(--fs-sm);
+}
+
+/* Draggable Row Styles */
+.drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  text-align: center;
+  user-select: none;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.sortable-ghost {
+  opacity: 0.4;
+  background: rgba(108, 99, 255, 0.2);
+}
+
+.btn-del {
+  background: rgba(255, 107, 107, 0.1);
+  color: var(--error);
+  border: none;
+  font-size: 1.2rem;
+  padding: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-del:hover {
+  background: var(--error);
+  color: white;
+}
+
+.drag-hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 5px;
+  margin-bottom: var(--space-md);
+}
+
+.location-input {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed transparent;
+  color: var(--text-primary);
+  font-size: var(--fs-sm);
+  padding: 4px;
+}
+.location-input:focus {
+  border-bottom: 1px dashed var(--accent-primary);
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.flex-row-btns {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.coords-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+/* Upload */
+.upload-area {
+  border: 1px dashed var(--surface-glass-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+.upload-area:hover, .upload-area.dragover {
+  background: rgba(108, 99, 255, 0.08);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}

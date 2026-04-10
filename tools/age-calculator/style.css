@@ -1,0 +1,400 @@
+/* ============================================
+   Age Calculator — Styles
+   ============================================ */
+
+/* Main Layout */
+.age-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: var(--space-xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.age-input-panel,
+.age-result-panel {
+  padding: var(--space-xl);
+}
+
+.panel-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.input-hint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Big Age Display */
+.age-big-display {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  padding: var(--space-lg);
+  background: rgba(108, 99, 255, 0.06);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(108, 99, 255, 0.1);
+}
+
+.age-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.age-number {
+  font-size: 3rem;
+  font-weight: var(--fw-bold);
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  transition: all 0.4s ease;
+}
+
+.age-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: var(--fw-medium);
+}
+
+/* Born Day */
+.born-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+
+.born-day-icon {
+  font-size: var(--fs-lg);
+}
+
+/* Countdown */
+.countdown-section {
+  text-align: center;
+}
+
+.countdown-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: var(--space-md);
+}
+
+.age-countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.countdown-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-md) var(--space-sm);
+  background: rgba(78, 205, 196, 0.06);
+  border: 1px solid rgba(78, 205, 196, 0.12);
+  border-radius: var(--radius-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.countdown-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.15);
+}
+
+.countdown-number {
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-secondary);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Zodiac */
+.zodiac-section {
+  text-align: center;
+}
+
+.zodiac-badges {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.zodiac-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.zodiac-badge:hover {
+  transform: scale(1.05);
+}
+
+.zodiac-badge.western {
+  background: rgba(108, 99, 255, 0.12);
+  border: 1px solid rgba(108, 99, 255, 0.2);
+  color: var(--accent-primary);
+}
+
+.zodiac-badge.chinese {
+  background: rgba(255, 107, 157, 0.12);
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  color: var(--accent-tertiary);
+}
+
+.zodiac-emoji {
+  font-size: var(--fs-xl);
+}
+
+.zodiac-name {
+  font-family: var(--font-heading);
+}
+
+/* Age Units Grid */
+.age-units-section {
+  padding: var(--space-xl);
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.age-units-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.unit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+}
+
+.unit-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(108, 99, 255, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.unit-icon {
+  font-size: var(--fs-xl);
+}
+
+.unit-number {
+  font-size: 1.3rem;
+  font-weight: var(--fw-bold);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+  word-break: break-all;
+  text-align: center;
+}
+
+.unit-label {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Life Section */
+.age-life-section {
+  padding: var(--space-xl);
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.life-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+.life-chart-wrap {
+  text-align: center;
+}
+
+.life-chart-subtitle {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+#life-chart {
+  display: block;
+  margin: var(--space-lg) auto 0;
+  max-width: 260px;
+}
+
+.life-percent-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--accent-primary);
+  margin-top: var(--space-sm);
+}
+
+/* Life Stats Grid */
+.life-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.life-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.3s ease;
+}
+
+.life-stat:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+.life-stat-icon {
+  font-size: 1.5rem;
+}
+
+.life-stat-number {
+  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-secondary);
+  text-align: center;
+  word-break: break-all;
+}
+
+.life-stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* Animations */
+.result-animate {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.count-animate {
+  animation: countUp 0.4s ease forwards;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .age-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .life-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .life-chart-wrap {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .age-big-display {
+    gap: var(--space-md);
+    padding: var(--space-md);
+  }
+
+  .age-number {
+    font-size: 2.2rem;
+  }
+
+  .age-units-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .life-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .countdown-number {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .age-number {
+    font-size: 1.8rem;
+  }
+
+  .age-units-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .life-stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .unit-number,
+  .life-stat-number {
+    font-size: 0.95rem;
+  }
+
+  .zodiac-badges {
+    flex-direction: column;
+    align-items: center;
+  }
+}

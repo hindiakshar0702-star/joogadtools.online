@@ -1,0 +1,265 @@
+/* ============================================
+   Hindu Panchang — Styles
+   ============================================ */
+
+.panel-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+}
+
+/* Top Layout */
+.panchang-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.panchang-input-panel,
+.panchang-moon-panel {
+  padding: var(--space-xl);
+}
+
+/* Quick Date Buttons */
+.quick-dates {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.quick-btn {
+  padding: 0.45rem 1rem;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-glass-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quick-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.quick-btn.active {
+  background: var(--gradient-accent);
+  color: white;
+  border-color: transparent;
+}
+
+/* Moon Phase */
+.panchang-moon-panel {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#moon-canvas {
+  margin: var(--space-lg) auto 0;
+  filter: drop-shadow(0 0 20px rgba(255, 220, 100, 0.15));
+}
+
+.moon-phase-name {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  margin-top: var(--space-md);
+  background: linear-gradient(135deg, #FFD93D 0%, #FFA726 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.moon-paksha-label {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* Panchang Details */
+.panchang-details {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--space-xl);
+}
+
+.panchang-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.panchang-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.2s ease;
+}
+
+.panchang-row:last-child {
+  border-bottom: none;
+}
+
+.panchang-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.panchang-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label-hi {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+.label-en {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.panchang-value {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  color: var(--accent-secondary);
+  text-align: right;
+  max-width: 60%;
+}
+
+.panchang-value.mono-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-sm);
+}
+
+/* Auspicious Card */
+.panchang-auspicious {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--space-xl);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.panchang-auspicious.shubh {
+  border-left: 4px solid var(--success);
+  background: rgba(78, 205, 196, 0.04);
+}
+
+.panchang-auspicious.ashubh {
+  border-left: 4px solid var(--error);
+  background: rgba(255, 107, 107, 0.04);
+}
+
+.auspicious-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.auspicious-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  margin-top: var(--space-sm);
+}
+
+.panchang-auspicious.shubh .auspicious-title {
+  color: var(--success);
+}
+
+.panchang-auspicious.ashubh .auspicious-title {
+  color: var(--error);
+}
+
+.auspicious-desc {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-sm);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Disclaimer */
+.panchang-disclaimer {
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: rgba(255, 167, 38, 0.05);
+  border: 1px solid rgba(255, 167, 38, 0.12);
+  border-left: 4px solid var(--warning);
+  border-radius: var(--radius-md);
+}
+
+.disclaimer-icon {
+  font-size: var(--fs-xl);
+  flex-shrink: 0;
+}
+
+.disclaimer-text {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.disclaimer-text strong {
+  color: var(--warning);
+}
+
+.disclaimer-text small {
+  color: var(--text-muted);
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 768px) {
+  .panchang-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .panchang-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+  }
+
+  .panchang-value {
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .moon-phase-name {
+    font-size: var(--fs-lg);
+  }
+
+  .panchang-disclaimer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-dates {
+    flex-direction: row;
+  }
+
+  .quick-btn {
+    flex: 1;
+    text-align: center;
+  }
+}

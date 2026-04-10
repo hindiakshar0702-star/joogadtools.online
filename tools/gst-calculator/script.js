@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // GST Calculator Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/gst-calculator');

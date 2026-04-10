@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Quality Checker — JoogadTools</title>
+  <meta name="description" content="Free online Image Quality Checker. Analyze resolution, aspect ratio, blur, sharpness, EXIF data, print suitability, and social media readiness.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+</head>
+<body>
+  <div class="tool-page-wrapper">
+    <!-- Ad Slot Top -->
+    <div class="ad-slot container" id="ad-top"></div>
+
+    <main class="container tool-main">
+      <div class="tool-header text-center">
+        <h1>📸 Image <span class="gradient-text">Quality Checker</span></h1>
+        <p>Pro-level analysis of resolution, sharpness, EXIF data, colors, and print suitability. 100% Client-Side Private.</p>
+      </div>
+
+      <!-- Upload Zone -->
+      <div class="upload-section glass-card" id="upload-section">
+        <input type="file" id="file-input" accept="image/jpeg, image/png, image/webp, image/heic" hidden>
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-icon">🖼️</div>
+          <h3>Drag & Drop your image here</h3>
+          <p>or click to browse</p>
+          <span class="formats">Supports JPG, PNG, WEBP, HEIC (Max 50MB)</span>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="hidden text-center">
+        <div class="spinner"></div>
+        <p>Analyzing pixels...</p>
+      </div>
+
+      <!-- Results Dashboard -->
+      <div class="results-dashboard hidden" id="results-dashboard">
+        
+        <!-- Preview & Basic Info -->
+        <div class="dashboard-grid top-grid">
+          <div class="glass-card img-preview-card">
+            <img id="preview-img" src="" alt="Preview">
+          </div>
+          <div class="glass-card basic-info-card">
+            <h3>Basic Properties</h3>
+            <ul class="data-list">
+              <li><strong>File Name:</strong> <span id="file-name">-</span></li>
+              <li><strong>File Size:</strong> <span id="file-size">-</span></li>
+              <li><strong>Dimensions:</strong> <span id="dimensions">-</span></li>
+              <li><strong>Aspect Ratio:</strong> <span id="aspect-ratio">-</span></li>
+            </ul>
+            <div class="resolution-badge" id="resolution-badge">Checking...</div>
+            <div class="optimization-warning hidden" id="optimization-warning">
+              ⚠️ Highly unoptimized size for resolution. Consider converting to WebP.
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Analysis Grid -->
+        <div class="dashboard-grid metrics-grid">
+          
+          <!-- Sharpness / Blur -->
+          <div class="glass-card metric-card">
+            <div class="metric-icon">🔍</div>
+            <h3>Sharpness Analysis</h3>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="sharpness-fill"></div>
+            </div>
+            <p id="sharpness-text" class="metric-result">Calculating...</p>
+            <small>Based on Laplacian Variance</small>
+          </div>
+
+          <!-- Print Suitability -->
+          <div class="glass-card metric-card">
+            <div class="metric-icon">🖨️</div>
+            <h3>Print Suitability (A4)</h3>
+            <p id="print-text" class="metric-result lg-text">Checking...</p>
+            <small>Requires ~300 DPI (2480 × 3508 px)</small>
+          </div>
+
+          <!-- Lighting / Exposure -->
+          <div class="glass-card metric-card">
+            <div class="metric-icon">☀️</div>
+            <h3>Lighting & Exposure</h3>
+            <p id="lighting-text" class="metric-result lg-text">Checking...</p>
+            <small>Based on overall pixel luminance</small>
+          </div>
+
+          <!-- Transparency -->
+          <div class="glass-card metric-card">
+            <div class="metric-icon">🏁</div>
+            <h3>Alpha Channel</h3>
+            <p id="alpha-text" class="metric-result lg-text">Checking...</p>
+            <small>Checks for true transparent pixels</small>
+          </div>
+        </div>
+
+        <!-- Social Media Readiness -->
+        <div class="glass-card social-card mt-card">
+          <h3>📱 Social Media Readiness</h3>
+          <div class="social-checklist" id="social-checklist">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="glass-card colors-card mt-card">
+          <h3>🎨 Dominant Color Palette</h3>
+          <div class="palette-swatches" id="palette-swatches">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- EXIF Data -->
+        <div class="glass-card exif-card mt-card hidden" id="exif-section">
+          <h3>📷 Embedded Metadata (EXIF)</h3>
+          <div class="table-responsive">
+            <table class="data-table">
+              <tbody id="exif-table-body">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+          <div id="gps-info" class="gps-info hidden">
+            <h4>📍 Location Data Found</h4>
+            <a id="maps-link" href="#" target="_blank" class="btn btn-outline">View on Google Maps</a>
+          </div>
+        </div>
+
+        <div class="actions center mt-card">
+          <button id="reset-btn" class="btn btn-primary">Check Another Image</button>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Ad Slot Bottom -->
+    <div class="ad-slot container" id="ad-bottom"></div>
+  </div>
+
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+  <script>
+    JoogadTools.renderHeader('../../');
+    JoogadTools.renderFooter('../../');
+  </script>
+</body>
+</html>

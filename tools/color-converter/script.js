@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // Color Converter — Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/color-converter');

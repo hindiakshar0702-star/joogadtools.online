@@ -1,3 +1,4 @@
+/// <reference path="../../js/common.d.ts" />
 // Password Generator — Script
 document.addEventListener('DOMContentLoaded', () => {
   JoogadTools.renderHeader('tools/password-generator');

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secret Studio — AES Encryption & Steganography</title>
+  <meta name="description" content="Military-grade AES-256 text encryption and deep-pixel image steganography. 100% offline, zero server.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+</head>
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🔐</span>
+        <div>
+          <h1>Secret Studio</h1>
+          <p>AES-256 Encryption & Deep-Pixel Steganography</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        <span>100% Offline — Zero Server</span>
+      </div>
+    </header>
+
+    <!-- Main Tabs -->
+    <nav class="main-tabs">
+      <button class="tab-btn active" data-tab="text-tab">
+        <span class="tab-icon">🔑</span>
+        <span>Text Encryptor</span>
+      </button>
+      <button class="tab-btn" data-tab="steg-tab">
+        <span class="tab-icon">🖼️</span>
+        <span>Image Steganography</span>
+      </button>
+      <button class="tab-btn" data-tab="passgen-tab">
+        <span class="tab-icon">🎲</span>
+        <span>Password Generator</span>
+      </button>
+    </nav>
+
+    <!-- ===== TAB 1: TEXT ENCRYPTOR ===== -->
+    <div id="text-tab" class="tab-panel active">
+      <div class="sub-tabs">
+        <button class="sub-tab-btn active" data-sub="encrypt-panel">🔒 Encrypt</button>
+        <button class="sub-tab-btn" data-sub="decrypt-panel">🔓 Decrypt</button>
+      </div>
+
+      <!-- Encrypt Panel -->
+      <div id="encrypt-panel" class="sub-panel active">
+        <div class="panel-grid">
+          <div class="glass-panel">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 0.6rem;">
+              <label class="field-label" style="margin-bottom:0;">Secret Message</label>
+              <button class="toggle-msg-btn" id="toggle-encrypt-msg" data-target="encrypt-input" title="Toggle visibility">👁️ Show</button>
+            </div>
+            <textarea id="encrypt-input" class="field-textarea masked-textarea" placeholder="Type your secret message here..." rows="7"></textarea>
+            <div class="field-meta">
+              <span id="encrypt-char-count">0 characters</span>
+              <span class="algo-badge">AES-256-CBC</span>
+            </div>
+          </div>
+          <div class="glass-panel">
+            <label class="field-label">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="encrypt-password" class="field-input" placeholder="Enter a strong password...">
+              <button class="toggle-pw-btn" data-target="encrypt-password">👁️</button>
+            </div>
+            <div class="strength-wrap" id="encrypt-strength-wrap">
+              <div class="strength-bar"><div class="strength-fill" id="encrypt-strength-fill"></div></div>
+              <span class="strength-label" id="encrypt-strength-label">—</span>
+            </div>
+            <button class="btn btn-primary btn-full" id="btn-encrypt">
+              <span>🔒 Encrypt Message</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-box hidden" id="encrypt-output-wrap">
+          <div class="output-header">
+            <span class="output-label">🔐 AES-256 Ciphertext</span>
+            <button class="copy-btn" id="btn-copy-cipher">Copy</button>
+          </div>
+          <pre id="encrypt-output" class="output-text"></pre>
+        </div>
+      </div>
+
+      <!-- Decrypt Panel -->
+      <div id="decrypt-panel" class="sub-panel">
+        <div class="panel-grid">
+          <div class="glass-panel">
+            <label class="field-label">Encrypted Ciphertext</label>
+            <textarea id="decrypt-input" class="field-textarea" placeholder="Paste the encrypted ciphertext here..." rows="7"></textarea>
+          </div>
+          <div class="glass-panel">
+            <label class="field-label">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="decrypt-password" class="field-input" placeholder="Enter decryption password...">
+              <button class="toggle-pw-btn" data-target="decrypt-password">👁️</button>
+            </div>
+            <button class="btn btn-accent btn-full" id="btn-decrypt" style="margin-top: 1rem;">
+              <span>🔓 Decrypt Message</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-box hidden" id="decrypt-output-wrap">
+          <div class="output-header">
+            <span class="output-label" id="decrypt-output-label">✅ Decrypted Message</span>
+            <button class="copy-btn" id="btn-copy-decrypted">Copy</button>
+          </div>
+          <pre id="decrypt-output" class="output-text"></pre>
+        </div>
+        <div class="error-box hidden" id="decrypt-error">
+          ❌ <strong>Incorrect Password or Invalid Ciphertext.</strong> Please verify your inputs and try again.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB 2: STEGANOGRAPHY ===== -->
+    <div id="steg-tab" class="tab-panel">
+      <div class="sub-tabs">
+        <button class="sub-tab-btn active" data-sub="hide-panel">🙈 Hide Message</button>
+        <button class="sub-tab-btn" data-sub="extract-panel">🔍 Extract Message</button>
+      </div>
+
+      <!-- Hide Panel -->
+      <div id="hide-panel" class="sub-panel active">
+        <div class="steg-grid">
+          <div>
+            <label class="field-label">Upload Carrier Image</label>
+            <div class="dropzone" id="hide-dropzone">
+              <div class="drop-icon">🖼️</div>
+              <p>Drag & Drop PNG/JPG Image</p>
+              <p class="drop-sub">or click to browse</p>
+              <input type="file" id="hide-file" accept="image/*" hidden>
+            </div>
+            <div class="image-preview-wrap hidden" id="hide-preview-wrap">
+              <img id="hide-preview-img" src="" alt="Carrier">
+              <div class="image-meta">
+                <span id="hide-img-size">—</span>
+                <span class="capacity-info">Capacity: <strong id="hide-capacity">—</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="glass-panel">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 0.6rem;">
+              <label class="field-label" style="margin-bottom:0;">Secret Message</label>
+              <button class="toggle-msg-btn" id="toggle-hide-msg" data-target="hide-message" title="Toggle visibility">👁️ Show</button>
+            </div>
+            <textarea id="hide-message" class="field-textarea masked-textarea" placeholder="Type the message to hide inside the image..." rows="5"></textarea>
+            <div class="field-meta">
+              <span id="hide-msg-size">0 bytes needed</span>
+            </div>
+            <label class="field-label" style="margin-top: 1rem;">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="hide-password" class="field-input" placeholder="Password for AES encryption...">
+              <button class="toggle-pw-btn" data-target="hide-password">👁️</button>
+            </div>
+            <button class="btn btn-primary btn-full" id="btn-hide" style="margin-top: 1rem;">
+              <span>🙈 Encode & Hide Message</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="progress-wrap hidden" id="hide-progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="hide-progress-fill"></div></div>
+          <span id="hide-progress-label">Encoding pixels...</span>
+        </div>
+
+        <div class="output-box success-box hidden" id="hide-output-wrap">
+          <span>🎉 <strong>Message hidden successfully!</strong> Download the encoded image below — it looks identical to the original.</span>
+          <button class="btn btn-primary" id="btn-download-steg">⬇️ Download Encoded PNG</button>
+        </div>
+
+        <canvas id="hide-canvas" hidden></canvas>
+      </div>
+
+      <!-- Extract Panel -->
+      <div id="extract-panel" class="sub-panel">
+        <div class="steg-grid">
+          <div>
+            <label class="field-label">Upload Encoded Image</label>
+            <div class="dropzone" id="extract-dropzone">
+              <div class="drop-icon">🔍</div>
+              <p>Upload the PNG with hidden message</p>
+              <p class="drop-sub">Only works with images encoded by this tool</p>
+              <input type="file" id="extract-file" accept="image/png" hidden>
+            </div>
+            <div class="image-preview-wrap hidden" id="extract-preview-wrap">
+              <img id="extract-preview-img" src="" alt="Encoded">
+            </div>
+          </div>
+          <div>
+            <label class="field-label">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="extract-password" class="field-input" placeholder="Enter the decryption password...">
+              <button class="toggle-pw-btn" data-target="extract-password">👁️</button>
+            </div>
+            <button class="btn btn-accent btn-full" id="btn-extract" style="margin-top: 1rem;">
+              <span>🔍 Extract Hidden Message</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="output-box hidden" id="extract-output-wrap">
+          <div class="output-header">
+            <span class="output-label">✅ Extracted & Decrypted Message</span>
+            <button class="copy-btn" id="btn-copy-extracted">Copy</button>
+          </div>
+          <pre id="extract-output" class="output-text"></pre>
+        </div>
+        <div class="error-box hidden" id="extract-error"></div>
+      </div>
+    </div>
+
+    <!-- ===== TAB 3: PASSWORD GENERATOR ===== -->
+    <div id="passgen-tab" class="tab-panel">
+
+      <!-- Sub Tabs -->
+      <div class="sub-tabs">
+        <button class="sub-tab-btn active" data-sub="pg-generate-panel">🎲 Generate</button>
+        <button class="sub-tab-btn" data-sub="pg-encrypt-panel">🔒 Encrypt with PW</button>
+        <button class="sub-tab-btn" data-sub="pg-decrypt-panel">🔓 Decrypt with PW</button>
+      </div>
+
+      <!-- Generate Sub-Panel -->
+      <div id="pg-generate-panel" class="sub-panel active">
+        <div class="passgen-layout">
+
+        <!-- Left: Input & Controls -->
+        <div class="passgen-controls">
+          <div class="glass-panel">
+            <label class="field-label">Phrase / Seed Message</label>
+            <textarea id="pg-phrase" class="field-textarea" rows="4" placeholder="Type any phrase or sentence... (e.g. My dog Bruno is born in 1995)"></textarea>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;">The password is deterministically generated from this phrase using SHA-256. Same phrase = Same password.</p>
+          </div>
+
+          <div class="glass-panel" style="margin-top: 1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+              <label class="field-label" style="margin:0;">Password Length</label>
+              <span id="pg-len-display" style="font-size:1.1rem; font-weight:700; color:var(--accent);">20</span>
+            </div>
+            <input type="range" id="pg-length" min="8" max="64" value="20" style="width:100%;">
+            <div style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted); margin-top:4px;">
+              <span>8 (min)</span><span>64 (max)</span>
+            </div>
+          </div>
+
+          <div class="glass-panel" style="margin-top: 1rem;">
+            <label class="field-label">Include Character Types</label>
+            <div class="charset-grid">
+              <label class="charset-check">
+                <input type="checkbox" id="pg-upper" checked>
+                <span class="check-box"></span>
+                <span class="check-label">A–Z <span class="check-sub">Uppercase</span></span>
+              </label>
+              <label class="charset-check">
+                <input type="checkbox" id="pg-lower" checked>
+                <span class="check-box"></span>
+                <span class="check-label">a–z <span class="check-sub">Lowercase</span></span>
+              </label>
+              <label class="charset-check">
+                <input type="checkbox" id="pg-numbers" checked>
+                <span class="check-box"></span>
+                <span class="check-label">0–9 <span class="check-sub">Numbers</span></span>
+              </label>
+              <label class="charset-check">
+                <input type="checkbox" id="pg-symbols" checked>
+                <span class="check-box"></span>
+                <span class="check-label">!@# <span class="check-sub">Symbols</span></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Output -->
+        <div class="passgen-output-col">
+          <div class="glass-panel passgen-result-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <label class="field-label" style="margin:0;">Generated Password</label>
+              <button class="copy-btn" id="btn-copy-pg">Copy</button>
+            </div>
+
+            <div class="pg-output-box" id="pg-output-box">
+              <span id="pg-output" class="pg-output-text">—</span>
+            </div>
+
+            <div class="strength-wrap" style="margin-top:1.25rem;">
+              <div class="strength-bar" style="height:8px;">
+                <div class="strength-fill" id="pg-strength-fill"></div>
+              </div>
+              <span class="strength-label" id="pg-strength-label">—</span>
+            </div>
+
+            <div class="pg-stats" id="pg-stats"></div>
+
+            <button class="btn btn-primary btn-full" id="btn-pg-refresh" style="margin-top:1.25rem;">
+              🔄 Regenerate (New Salt)
+            </button>
+          </div>
+
+          <!-- History -->
+          <div class="glass-panel" style="margin-top:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+              <label class="field-label" style="margin:0;">Recent Passwords</label>
+              <button class="copy-btn" id="btn-clear-history" style="border-color:var(--danger); color:var(--danger);">Clear</button>
+            </div>
+            <div id="pg-history" class="pg-history">
+              <p style="color:var(--text-muted); font-size:0.8rem;">No passwords generated yet.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div> <!-- end pg-generate-panel -->
+
+      <!-- Encrypt with Generated PW -->
+      <div id="pg-encrypt-panel" class="sub-panel">
+        <div class="glass-panel">
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">💡 Use the password generated above (or enter a custom one) to AES-256 encrypt any message.</p>
+          <div class="panel-grid">
+            <div>
+              <label class="field-label">Message to Encrypt</label>
+              <textarea id="pg-enc-input" class="field-textarea" rows="6" placeholder="Type your secret message..."></textarea>
+            </div>
+            <div>
+              <label class="field-label">Encryption Password</label>
+              <input type="text" id="pg-enc-password" class="field-input" placeholder="Paste generated password or type custom..." style="font-family:'JetBrains Mono',monospace; font-size:0.82rem;">
+              <button class="btn btn-outline" id="btn-use-generated-pw" style="margin-top:0.5rem; font-size:0.78rem; padding:4px 14px; width:100%;">← Use Generated Password</button>
+              <button class="btn btn-primary btn-full" id="btn-pg-encrypt" style="margin-top:0.75rem;">🔒 Encrypt</button>
+            </div>
+          </div>
+          <div class="output-box hidden" id="pg-enc-output-wrap" style="margin-top:1rem;">
+            <div class="output-header">
+              <span class="output-label">🔐 Encrypted Ciphertext</span>
+              <button class="copy-btn" id="btn-copy-pg-enc">Copy</button>
+            </div>
+            <pre id="pg-enc-output" class="output-text"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Decrypt with Generated PW -->
+      <div id="pg-decrypt-panel" class="sub-panel">
+        <div class="glass-panel">
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">💡 Paste the ciphertext and the same password used to encrypt it.</p>
+          <div class="panel-grid">
+            <div>
+              <label class="field-label">Ciphertext to Decrypt</label>
+              <textarea id="pg-dec-input" class="field-textarea" rows="6" placeholder="Paste encrypted ciphertext here..."></textarea>
+            </div>
+            <div>
+              <label class="field-label">Decryption Password</label>
+              <input type="text" id="pg-dec-password" class="field-input" placeholder="Enter password used during encryption..." style="font-family:'JetBrains Mono',monospace; font-size:0.82rem;">
+              <button class="btn btn-outline" id="btn-use-generated-pw-dec" style="margin-top:0.5rem; font-size:0.78rem; padding:4px 14px; width:100%;">← Use Generated Password</button>
+              <button class="btn btn-accent btn-full" id="btn-pg-decrypt" style="margin-top:0.75rem;">🔓 Decrypt</button>
+            </div>
+          </div>
+          <div class="output-box hidden" id="pg-dec-output-wrap" style="margin-top:1rem;">
+            <div class="output-header">
+              <span class="output-label">✅ Decrypted Message</span>
+              <button class="copy-btn" id="btn-copy-pg-dec">Copy</button>
+            </div>
+            <pre id="pg-dec-output" class="output-text"></pre>
+          </div>
+          <div class="error-box hidden" id="pg-dec-error">
+            ❌ <strong>Incorrect Password or Invalid Ciphertext.</strong> Use the exact same password that was used to encrypt.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <footer class="app-footer">
+      <p>🔐 All operations happen <strong>locally in your browser</strong>. No data is ever sent to any server. Built with AES-256 (CryptoJS) and LSB Steganography.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
