@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Password Remover — Unlock PDF Files</title>
-  <meta name="description" content="Remove passwords from PDF files instantly in your browser. 100% client-side, no uploads. Unlock protected PDFs for free.">
+  <title>PDF Password Tool — Unlock & Protect PDFs</title>
+  <meta name="description" content="Remove or add passwords to PDF files instantly in your browser. Dictionary attack for unknown passwords. 100% client-side, no uploads.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -23,8 +23,8 @@
       <div class="header-logo">
         <span class="logo-icon">🔓</span>
         <div>
-          <h1>PDF Password Remover</h1>
-          <p>Unlock Protected PDFs — 100% In-Browser</p>
+          <h1>PDF Password Tool</h1>
+          <p>Unlock & Protect PDFs — 100% In-Browser</p>
         </div>
       </div>
       <div class="header-actions">
@@ -32,95 +32,250 @@
       </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="main-layout">
-      
-      <!-- Step 1: Upload -->
-      <div class="glass-panel" id="panel-upload">
-        <h3 class="panel-title">
-          <span>1. Upload PDF</span>
-          <span class="step-badge">Step 1 of 3</span>
-        </h3>
-        <div class="dropzone" id="pdf-dropzone">
-           <div class="drop-icon">📄</div>
-           <p>Drag & Drop your password-protected PDF here</p>
-           <p class="drop-sub">or click to browse</p>
-           <input type="file" id="pdf-file" accept=".pdf" hidden>
-        </div>
-        <div class="file-info hidden" id="file-info">
-          <div class="file-icon">📄</div>
-          <div class="file-details">
-            <span class="file-name" id="file-name">—</span>
-            <span class="file-size" id="file-size">—</span>
+    <!-- Tabs -->
+    <div class="main-tabs">
+      <button class="tab-btn active" data-tab="unlock">
+        <span class="tab-icon">🔓</span> Unlock PDF
+      </button>
+      <button class="tab-btn" data-tab="protect">
+        <span class="tab-icon">🔒</span> Protect PDF
+      </button>
+    </div>
+
+    <!-- ==================== TAB 1: UNLOCK ==================== -->
+    <div class="tab-panel active" id="tab-unlock">
+      <div class="main-layout">
+        
+        <!-- Upload -->
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <span>1. Upload Locked PDF</span>
+            <span class="step-badge">Step 1</span>
+          </h3>
+          <div class="dropzone" id="unlock-dropzone">
+             <div class="drop-icon">📄</div>
+             <p>Drag & Drop your password-protected PDF here</p>
+             <p class="drop-sub">or click to browse</p>
+             <input type="file" id="unlock-file" accept=".pdf" hidden>
           </div>
-          <button class="btn btn-xs btn-outline" id="btn-remove-file">✕ Remove</button>
+          <div class="file-info hidden" id="unlock-file-info">
+            <div class="file-icon">📄</div>
+            <div class="file-details">
+              <span class="file-name" id="unlock-file-name">—</span>
+              <span class="file-size" id="unlock-file-size">—</span>
+            </div>
+            <button class="btn btn-xs btn-outline" id="btn-unlock-remove">✕ Remove</button>
+          </div>
+        </div>
+
+        <!-- Password + Actions -->
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <span>2. Unlock Method</span>
+            <span class="step-badge">Step 2</span>
+          </h3>
+
+          <!-- Method Toggle -->
+          <div class="method-toggle">
+            <button class="method-btn active" data-method="manual" id="method-manual">🔑 I Know the Password</button>
+            <button class="method-btn" data-method="auto" id="method-auto">🎯 Auto-Guess (Dictionary Attack)</button>
+          </div>
+
+          <!-- Manual Password -->
+          <div class="method-panel" id="panel-manual">
+            <p class="panel-desc">Enter the PDF password below to unlock it.</p>
+            <div class="password-field-wrap">
+              <input type="password" id="unlock-password" class="field-input" placeholder="Enter PDF password" autocomplete="off">
+              <button class="toggle-pw-btn" id="btn-toggle-pw-unlock" type="button">👁️</button>
+            </div>
+            <button class="btn btn-primary btn-full" id="btn-unlock" style="margin-top: 1rem;" disabled>
+              🔓 Unlock & Remove Password
+            </button>
+          </div>
+
+          <!-- Dictionary Attack -->
+          <div class="method-panel hidden" id="panel-auto">
+            <p class="panel-desc">Don't know the password? We'll try <strong>500+ common passwords</strong> automatically. This works for simple passwords like "1234", "password", "admin", etc.</p>
+            <button class="btn btn-primary btn-full" id="btn-dict-attack" disabled>
+              🎯 Start Dictionary Attack
+            </button>
+            <div class="dict-status hidden" id="dict-status">
+              <div class="progress-bar">
+                <div class="progress-fill" id="dict-progress-fill"></div>
+              </div>
+              <div class="dict-info">
+                <span id="dict-tried">0</span> / <span id="dict-total">0</span> passwords tried
+              </div>
+              <div class="dict-current" id="dict-current">Trying: —</div>
+            </div>
+          </div>
+
+          <!-- Unlock Progress -->
+          <div class="progress-wrap hidden" id="unlock-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="unlock-progress-fill"></div>
+            </div>
+            <span class="progress-text" id="unlock-progress-text">Processing...</span>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <span>3. Result</span>
+            <span class="step-badge">Step 3</span>
+          </h3>
+
+          <div class="result-empty" id="unlock-result-empty">
+            <div class="empty-icon">🔒</div>
+            <p>Upload a PDF and unlock it to get the password-free version.</p>
+          </div>
+
+          <div class="result-success hidden" id="unlock-result-success">
+            <div class="success-icon">✅</div>
+            <h4>PDF Unlocked Successfully!</h4>
+            <div class="found-password hidden" id="found-password-wrap">
+              <span>🔑 Found Password:</span>
+              <code id="found-password">—</code>
+            </div>
+            <div class="result-meta">
+              <div class="meta-row"><span>Original Size:</span><span id="meta-original">—</span></div>
+              <div class="meta-row"><span>Unlocked Size:</span><span id="meta-unlocked">—</span></div>
+              <div class="meta-row"><span>Pages:</span><span id="meta-pages">—</span></div>
+            </div>
+            <button class="btn btn-accent btn-full" id="btn-download-unlocked" style="margin-top: 1rem;">
+              ⬇️ Download Unlocked PDF
+            </button>
+          </div>
+
+          <div class="result-error hidden" id="unlock-result-error">
+            <div class="error-icon">❌</div>
+            <h4>Failed to Unlock</h4>
+            <p id="unlock-error-msg">—</p>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Step 2: Password -->
-      <div class="glass-panel" id="panel-password">
-        <h3 class="panel-title">
-          <span>2. Enter Password</span>
-          <span class="step-badge">Step 2 of 3</span>
-        </h3>
-        <p class="panel-desc">If the PDF requires a password to open, enter it below. If it only has editing/printing restrictions, leave this empty.</p>
-        <div class="password-field-wrap">
-          <input type="password" id="pdf-password" class="field-input" placeholder="Enter PDF password (if needed)" autocomplete="off">
-          <button class="toggle-pw-btn" id="btn-toggle-pw" type="button">👁️</button>
-        </div>
-
-        <button class="btn btn-primary btn-full" id="btn-unlock" style="margin-top: 1.5rem;" disabled>
-          <span>🔓 Unlock & Remove Password</span>
-        </button>
-
-        <!-- Progress -->
-        <div class="progress-wrap hidden" id="progress-wrap">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
+    <!-- ==================== TAB 2: PROTECT ==================== -->
+    <div class="tab-panel" id="tab-protect">
+      <div class="main-layout">
+        
+        <!-- Upload -->
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <span>1. Upload PDF to Protect</span>
+            <span class="step-badge">Step 1</span>
+          </h3>
+          <div class="dropzone" id="protect-dropzone">
+             <div class="drop-icon">📄</div>
+             <p>Drag & Drop the PDF you want to password-protect</p>
+             <p class="drop-sub">or click to browse</p>
+             <input type="file" id="protect-file" accept=".pdf" hidden>
           </div>
-          <span class="progress-text" id="progress-text">Processing...</span>
-        </div>
-      </div>
-
-      <!-- Step 3: Download -->
-      <div class="glass-panel" id="panel-result">
-        <h3 class="panel-title">
-          <span>3. Download</span>
-          <span class="step-badge">Step 3 of 3</span>
-        </h3>
-
-        <div class="result-empty" id="result-empty">
-          <div class="empty-icon">🔒</div>
-          <p>Upload a PDF and unlock it to get the password-free version here.</p>
-        </div>
-
-        <div class="result-success hidden" id="result-success">
-          <div class="success-icon">✅</div>
-          <h4>PDF Unlocked Successfully!</h4>
-          <div class="result-meta">
-            <div class="meta-row"><span>Original Size:</span><span id="meta-original">—</span></div>
-            <div class="meta-row"><span>Unlocked Size:</span><span id="meta-unlocked">—</span></div>
-            <div class="meta-row"><span>Pages:</span><span id="meta-pages">—</span></div>
+          <div class="file-info hidden" id="protect-file-info">
+            <div class="file-icon">📄</div>
+            <div class="file-details">
+              <span class="file-name" id="protect-file-name">—</span>
+              <span class="file-size" id="protect-file-size">—</span>
+            </div>
+            <button class="btn btn-xs btn-outline" id="btn-protect-remove">✕ Remove</button>
           </div>
-          <button class="btn btn-accent btn-full" id="btn-download" style="margin-top: 1rem;">
-            ⬇️ Download Unlocked PDF
+        </div>
+
+        <!-- Set Password -->
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <span>2. Set Password</span>
+            <span class="step-badge">Step 2</span>
+          </h3>
+          <p class="panel-desc">Set a password for your PDF. Use the generator for a strong password or type your own.</p>
+          
+          <div class="password-field-wrap">
+            <input type="password" id="protect-password" class="field-input" placeholder="Enter new password for PDF" autocomplete="off">
+            <button class="toggle-pw-btn" id="btn-toggle-pw-protect" type="button">👁️</button>
+          </div>
+
+          <div class="password-field-wrap" style="margin-top: 0.75rem;">
+            <input type="password" id="protect-password-confirm" class="field-input" placeholder="Confirm password" autocomplete="off">
+          </div>
+
+          <!-- Password Generator -->
+          <div class="pw-generator">
+            <div class="pw-gen-header">
+              <span>🎲 Generate Strong Password</span>
+              <button class="btn btn-xs btn-outline" id="btn-gen-password">Generate</button>
+            </div>
+            <div class="pw-gen-output hidden" id="pw-gen-output">
+              <code id="generated-pw">—</code>
+              <button class="btn btn-xs btn-accent" id="btn-use-password">Use This</button>
+            </div>
+            <div class="pw-gen-options">
+              <label><input type="range" id="pw-length" min="6" max="32" value="12"> Length: <span id="pw-length-val">12</span></label>
+              <div class="pw-checkboxes">
+                <label><input type="checkbox" id="pw-upper" checked> A-Z</label>
+                <label><input type="checkbox" id="pw-lower" checked> a-z</label>
+                <label><input type="checkbox" id="pw-numbers" checked> 0-9</label>
+                <label><input type="checkbox" id="pw-symbols" checked> !@#$</label>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btn-protect" style="margin-top: 1rem;" disabled>
+            🔒 Protect PDF with Password
           </button>
+
+          <div class="progress-wrap hidden" id="protect-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="protect-progress-fill"></div>
+            </div>
+            <span class="progress-text" id="protect-progress-text">Encrypting...</span>
+          </div>
         </div>
 
-        <div class="result-error hidden" id="result-error">
-          <div class="error-icon">❌</div>
-          <h4>Failed to Unlock</h4>
-          <p id="error-message">—</p>
+        <!-- Result -->
+        <div class="glass-panel">
+          <h3 class="panel-title">
+            <span>3. Download Protected</span>
+            <span class="step-badge">Step 3</span>
+          </h3>
+
+          <div class="result-empty" id="protect-result-empty">
+            <div class="empty-icon">🔒</div>
+            <p>Upload a PDF and set a password to get the protected version.</p>
+          </div>
+
+          <div class="result-success hidden" id="protect-result-success">
+            <div class="success-icon">✅</div>
+            <h4>PDF Protected Successfully!</h4>
+            <div class="info-card" style="margin: 1rem 0; text-align: left;">
+              <h4>⚠️ Important</h4>
+              <p>This creates an <strong>AES-256 encrypted</strong> secure file. Use this same tool to decrypt it later with your password. Keep your password safe — it cannot be recovered!</p>
+            </div>
+            <div class="result-meta">
+              <div class="meta-row"><span>Original Size:</span><span id="protect-meta-original">—</span></div>
+              <div class="meta-row"><span>Encrypted Size:</span><span id="protect-meta-encrypted">—</span></div>
+            </div>
+            <button class="btn btn-accent btn-full" id="btn-download-protected" style="margin-top: 1rem;">
+              ⬇️ Download Protected PDF
+            </button>
+          </div>
+
+          <div class="result-error hidden" id="protect-result-error">
+            <div class="error-icon">❌</div>
+            <h4>Protection Failed</h4>
+            <p id="protect-error-msg">—</p>
+          </div>
         </div>
+
       </div>
-
     </div>
 
     <!-- Info Section -->
     <div class="glass-panel" style="margin-top: 1.5rem;">
       <div class="info-card">
         <h4>🔒 Your Privacy is Guaranteed</h4>
-        <p>This tool works 100% in your browser using JavaScript. Your PDF file is <strong>never uploaded</strong> to any server. All processing happens locally on your device. We use the open-source <strong>pdf-lib</strong> library for secure, client-side PDF manipulation.</p>
+        <p>This tool works 100% in your browser using JavaScript. Your PDF file is <strong>never uploaded</strong> to any server. All processing happens locally on your device. We use <strong>pdf-lib</strong> for PDF manipulation and the browser's native <strong>Web Crypto API (AES-256-GCM)</strong> for military-grade encryption.</p>
       </div>
     </div>
   </div>

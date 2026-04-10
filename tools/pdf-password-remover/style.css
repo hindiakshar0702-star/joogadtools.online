@@ -318,6 +318,124 @@ body {
 /* ===== UTILS ===== */
 .hidden { display: none !important; }
 
+/* ===== TABS ===== */
+.main-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 6px;
+  margin-bottom: 1.5rem;
+}
+.tab-btn {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none; border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-muted);
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all var(--transition);
+}
+.tab-btn:hover { color: var(--text); background: var(--glass); }
+.tab-btn.active {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 0, 128, 0.4);
+}
+.tab-icon { font-size: 1.1rem; }
+.tab-panel { display: none; animation: fadeIn 0.3s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== METHOD TOGGLE ===== */
+.method-toggle {
+  display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+  background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); padding: 4px;
+}
+.method-btn {
+  flex: 1; padding: 0.6rem 0.75rem;
+  border: none; border-radius: 6px;
+  background: transparent; color: var(--text-muted);
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all var(--transition);
+}
+.method-btn:hover { color: var(--text); }
+.method-btn.active {
+  background: rgba(255, 0, 128, 0.2); color: var(--accent);
+  border: 1px solid rgba(255, 0, 128, 0.3);
+}
+.method-panel { animation: fadeIn 0.3s ease; }
+
+/* ===== DICTIONARY ATTACK STATUS ===== */
+.dict-status {
+  margin-top: 1.5rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.dict-info {
+  font-size: 0.8rem; color: var(--text-muted);
+  text-align: center; font-family: 'JetBrains Mono', monospace;
+}
+.dict-current {
+  font-size: 0.75rem; color: var(--accent-2);
+  text-align: center; font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== FOUND PASSWORD ===== */
+.found-password {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 0.5rem 1rem; border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+.found-password span { color: var(--text-muted); }
+.found-password code {
+  color: var(--success); font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; font-size: 1rem;
+  background: rgba(34, 197, 94, 0.15); padding: 2px 8px; border-radius: 4px;
+}
+
+/* ===== PASSWORD GENERATOR ===== */
+.pw-generator {
+  margin-top: 1.25rem;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+}
+.pw-gen-header {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.85rem; font-weight: 600; color: var(--text);
+  margin-bottom: 0.75rem;
+}
+.pw-gen-output {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: rgba(0,0,0,0.4); padding: 0.6rem 1rem;
+  border-radius: 6px; margin-bottom: 0.75rem;
+}
+.pw-gen-output code {
+  flex: 1; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem; color: var(--accent-2); word-break: break-all;
+}
+.pw-gen-options label {
+  font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem;
+}
+.pw-gen-options input[type="range"] {
+  -webkit-appearance: none; width: 100px; height: 4px;
+  background: rgba(255,255,255,0.1); border-radius: 999px; outline: none;
+}
+.pw-gen-options input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--accent); cursor: pointer;
+}
+.pw-checkboxes {
+  display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap;
+}
+.pw-checkboxes label { cursor: pointer; }
+.pw-checkboxes input[type="checkbox"] { accent-color: var(--accent); }
+
 /* ===== FOOTER ===== */
 .app-footer {
   margin-top: 3rem;
@@ -333,4 +451,6 @@ body {
   .app-container { padding: 1rem; }
   .header-logo h1 { font-size: 1.3rem; }
   .dropzone { padding: 1.5rem 1rem; }
+  .method-toggle { flex-direction: column; }
+  .main-tabs { flex-direction: column; }
 }
