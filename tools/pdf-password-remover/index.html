@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Password Remover — Unlock PDF Files</title>
+  <meta name="description" content="Remove passwords from PDF files instantly in your browser. 100% client-side, no uploads. Unlock protected PDFs for free.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🔓</span>
+        <div>
+          <h1>PDF Password Remover</h1>
+          <p>Unlock Protected PDFs — 100% In-Browser</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-layout">
+      
+      <!-- Step 1: Upload -->
+      <div class="glass-panel" id="panel-upload">
+        <h3 class="panel-title">
+          <span>1. Upload PDF</span>
+          <span class="step-badge">Step 1 of 3</span>
+        </h3>
+        <div class="dropzone" id="pdf-dropzone">
+           <div class="drop-icon">📄</div>
+           <p>Drag & Drop your password-protected PDF here</p>
+           <p class="drop-sub">or click to browse</p>
+           <input type="file" id="pdf-file" accept=".pdf" hidden>
+        </div>
+        <div class="file-info hidden" id="file-info">
+          <div class="file-icon">📄</div>
+          <div class="file-details">
+            <span class="file-name" id="file-name">—</span>
+            <span class="file-size" id="file-size">—</span>
+          </div>
+          <button class="btn btn-xs btn-outline" id="btn-remove-file">✕ Remove</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Password -->
+      <div class="glass-panel" id="panel-password">
+        <h3 class="panel-title">
+          <span>2. Enter Password</span>
+          <span class="step-badge">Step 2 of 3</span>
+        </h3>
+        <p class="panel-desc">If the PDF requires a password to open, enter it below. If it only has editing/printing restrictions, leave this empty.</p>
+        <div class="password-field-wrap">
+          <input type="password" id="pdf-password" class="field-input" placeholder="Enter PDF password (if needed)" autocomplete="off">
+          <button class="toggle-pw-btn" id="btn-toggle-pw" type="button">👁️</button>
+        </div>
+
+        <button class="btn btn-primary btn-full" id="btn-unlock" style="margin-top: 1.5rem;" disabled>
+          <span>🔓 Unlock & Remove Password</span>
+        </button>
+
+        <!-- Progress -->
+        <div class="progress-wrap hidden" id="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <span class="progress-text" id="progress-text">Processing...</span>
+        </div>
+      </div>
+
+      <!-- Step 3: Download -->
+      <div class="glass-panel" id="panel-result">
+        <h3 class="panel-title">
+          <span>3. Download</span>
+          <span class="step-badge">Step 3 of 3</span>
+        </h3>
+
+        <div class="result-empty" id="result-empty">
+          <div class="empty-icon">🔒</div>
+          <p>Upload a PDF and unlock it to get the password-free version here.</p>
+        </div>
+
+        <div class="result-success hidden" id="result-success">
+          <div class="success-icon">✅</div>
+          <h4>PDF Unlocked Successfully!</h4>
+          <div class="result-meta">
+            <div class="meta-row"><span>Original Size:</span><span id="meta-original">—</span></div>
+            <div class="meta-row"><span>Unlocked Size:</span><span id="meta-unlocked">—</span></div>
+            <div class="meta-row"><span>Pages:</span><span id="meta-pages">—</span></div>
+          </div>
+          <button class="btn btn-accent btn-full" id="btn-download" style="margin-top: 1rem;">
+            ⬇️ Download Unlocked PDF
+          </button>
+        </div>
+
+        <div class="result-error hidden" id="result-error">
+          <div class="error-icon">❌</div>
+          <h4>Failed to Unlock</h4>
+          <p id="error-message">—</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Info Section -->
+    <div class="glass-panel" style="margin-top: 1.5rem;">
+      <div class="info-card">
+        <h4>🔒 Your Privacy is Guaranteed</h4>
+        <p>This tool works 100% in your browser using JavaScript. Your PDF file is <strong>never uploaded</strong> to any server. All processing happens locally on your device. We use the open-source <strong>pdf-lib</strong> library for secure, client-side PDF manipulation.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>🔓 All operations happen <strong>locally in your browser</strong>. Your files never leave your device.</p>
+  </footer>
+
+  <!-- pdf-lib CDN -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
