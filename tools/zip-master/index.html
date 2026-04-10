@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZIP Master — Create, Extract & Protect ZIPs</title>
+  <meta name="description" content="All-in-one ZIP tool: Compress, unzip, password-protect (AES-256), and unlock ZIP files 100% in your browser. No server uploads.">
+  <link rel="canonical" href="https://joogadtools.online/tools/zip-master/index.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ZIP Master",
+    "url": "https://joogadtools.online/tools/zip-master/index.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "100% Free & Secure Client-side ZIP tool."
+  }
+  </script>
+</head>
+
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🗜️</span>
+        <div>
+          <h1>ZIP Master</h1>
+          <p>Compress, Extract & Protect — 100% Client-Side</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <div class="main-tabs">
+      <button class="tab-btn active" data-tab="compress">
+        <span class="tab-icon">📦</span> Compress
+      </button>
+      <button class="tab-btn" data-tab="extract">
+        <span class="tab-icon">📂</span> Extract
+      </button>
+      <button class="tab-btn" data-tab="protect">
+        <span class="tab-icon">🔒</span> Protect
+      </button>
+      <button class="tab-btn" data-tab="unlock">
+        <span class="tab-icon">🔓</span> Unlock
+      </button>
+    </div>
+
+    <!-- ==================== TAB 1: COMPRESS ==================== -->
+    <div class="tab-panel active" id="tab-compress">
+      <div class="glass-panel">
+        <h3 class="panel-title">Create ZIP Archive</h3>
+        <p class="panel-desc">Drag & drop multiple files or folders to compress them into a single `.zip` file.</p>
+        
+        <div class="dropzone" id="compress-dropzone">
+          <div class="drop-icon">➕</div>
+          <p>Drop files & folders here</p>
+          <p class="drop-sub">or click to browse</p>
+          <input type="file" id="compress-file-input" multiple hidden>
+        </div>
+
+        <div class="file-list hidden" id="compress-file-list">
+          <!-- File items injected here via JS -->
+        </div>
+
+        <div class="action-bar hidden" id="compress-action-bar">
+          <div class="action-info">
+            <span id="compress-total-files">0 files</span> • <span id="compress-total-size">0 KB</span>
+          </div>
+          <button class="btn btn-primary" id="btn-compress-start">🗜️ Create ZIP</button>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-wrap hidden" id="compress-progress">
+          <div class="progress-bar"><div class="progress-fill" id="compress-progress-fill"></div></div>
+          <span class="progress-text" id="compress-progress-text">Compressing...</span>
+        </div>
+
+        <!-- Result -->
+        <div class="result-box hidden" id="compress-result">
+          <div class="success-icon">✅</div>
+          <h4>ZIP Created!</h4>
+          <p>Size: <span id="compress-result-size">—</span></p>
+          <button class="btn btn-accent" id="btn-compress-download" style="margin-top: 1rem;">⬇️ Download ZIP</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 2: EXTRACT ==================== -->
+    <div class="tab-panel" id="tab-extract">
+      <div class="glass-panel">
+        <h3 class="panel-title">Extract ZIP File</h3>
+        <p class="panel-desc">Upload a `.zip` archive to preview and extract its contents instantly.</p>
+        
+        <div class="dropzone" id="extract-dropzone">
+          <div class="drop-icon">📦</div>
+          <p>Drop a .zip file here</p>
+          <p class="drop-sub">or click to browse</p>
+          <input type="file" id="extract-file-input" accept=".zip,application/zip" hidden>
+        </div>
+
+        <!-- File tree wrapper -->
+        <div class="tree-wrapper hidden" id="extract-tree-wrapper">
+          <div class="tree-header">
+            <div>
+              <span class="file-name" id="extract-file-name">archive.zip</span>
+              <span class="file-size text-muted" id="extract-file-size" style="margin-left:8px; font-size:0.8rem;"></span>
+            </div>
+            <button class="btn btn-xs btn-outline" id="btn-extract-clear">✕ Clear</button>
+          </div>
+          
+          <div class="file-tree" id="extract-file-tree">
+            <!-- Entries injected here via JS -->
+          </div>
+
+          <div class="tree-footer">
+            <button class="btn btn-primary btn-full" id="btn-extract-all">⬇️ Extract All Files</button>
+          </div>
+        </div>
+
+        <!-- Extract Progress -->
+        <div class="progress-wrap hidden" id="extract-progress">
+          <div class="progress-bar"><div class="progress-fill" id="extract-progress-fill"></div></div>
+          <span class="progress-text" id="extract-progress-text">Extracting...</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: PROTECT ==================== -->
+    <div class="tab-panel" id="tab-protect">
+      <div class="glass-panel">
+        <h3 class="panel-title">Create Password-Protected ZIP</h3>
+        <p class="panel-desc">Bundle your files into a highly secure, AES-256 encrypted ZIP archive.</p>
+
+        <div class="dropzone" id="protect-dropzone">
+          <div class="drop-icon">➕</div>
+          <p>Drop files & folders here to protect</p>
+          <p class="drop-sub">or click to browse</p>
+          <input type="file" id="protect-file-input" multiple hidden>
+        </div>
+
+        <div class="file-list hidden" id="protect-file-list" style="margin-bottom: 1rem;"></div>
+
+        <!-- Password Section -->
+        <div id="protect-setup" class="hidden">
+          <div class="password-field-wrap">
+            <input type="password" id="protect-password" class="field-input" placeholder="Set a strong password">
+            <button class="toggle-pw-btn" id="btn-toggle-pw-protect" type="button">👁️</button>
+          </div>
+
+          <div class="pw-generator" style="margin-top: 1rem;">
+            <div class="pw-gen-header">
+              <span>🎲 Generate Strong Password</span>
+              <button class="btn btn-xs btn-outline" id="btn-gen-pw">Generate</button>
+            </div>
+            <div class="pw-gen-output hidden" id="pw-gen-output">
+              <code id="generated-pw">—</code>
+              <button class="btn btn-xs btn-accent" id="btn-use-pw">Use This</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btn-protect-start" style="margin-top: 1.5rem;" disabled>
+            🔒 Protect & Create ZIP
+          </button>
+        </div>
+
+        <!-- Protect Progress -->
+        <div class="progress-wrap hidden" id="protect-progress">
+          <div class="progress-bar"><div class="progress-fill" id="protect-progress-fill"></div></div>
+          <span class="progress-text" id="protect-progress-text">Encrypting...</span>
+        </div>
+
+        <!-- Protect Result -->
+        <div class="result-box hidden" id="protect-result">
+          <div class="success-icon">✅</div>
+          <h4>Secure ZIP Created!</h4>
+          <div class="info-card" style="text-align:left; margin:1rem 0;">
+            <p><strong>Note:</strong> Standard Windows Extractor does not support AES-256. Use 7-Zip, WinRAR, or MacOS Finder to open this file.</p>
+          </div>
+          <button class="btn btn-accent" id="btn-protect-download">⬇️ Download Secure ZIP</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: UNLOCK ==================== -->
+    <div class="tab-panel" id="tab-unlock">
+      <div class="glass-panel">
+        <h3 class="panel-title">Unlock Protected ZIP</h3>
+        <p class="panel-desc">Remove the password from an encrypted `.zip` file.</p>
+
+        <div class="dropzone" id="unlock-dropzone">
+          <div class="drop-icon">📦</div>
+          <p>Drop protected .zip file here</p>
+          <input type="file" id="unlock-file-input" accept=".zip,application/zip" hidden>
+        </div>
+
+        <div id="unlock-setup" class="hidden">
+          <div class="file-info" style="margin-bottom: 1rem;">
+            <div class="file-icon">🔒</div>
+            <div class="file-details">
+              <span class="file-name" id="unlock-file-name">—</span>
+              <span class="file-size" id="unlock-file-size">—</span>
+            </div>
+            <button class="btn btn-xs btn-outline" id="btn-unlock-clear">✕ Clear</button>
+          </div>
+
+          <!-- Method Toggle -->
+          <div class="method-toggle">
+            <button class="method-btn active" data-method="manual" id="unlock-method-manual">🔑 Known Password</button>
+            <button class="method-btn" data-method="auto" id="unlock-method-auto">🎯 Auto-Guess (Dictionary Attack)</button>
+          </div>
+
+          <!-- Manual Password -->
+          <div class="method-panel" id="unlock-panel-manual">
+            <div class="password-field-wrap">
+              <input type="password" id="unlock-password" class="field-input" placeholder="Enter ZIP password">
+              <button class="toggle-pw-btn" id="btn-toggle-pw-unlock" type="button">👁️</button>
+            </div>
+            <button class="btn btn-primary btn-full" id="btn-unlock-start" style="margin-top: 1rem;" disabled>
+              🔓 Unlock & Remove Password
+            </button>
+          </div>
+
+          <!-- Dictionary Attack -->
+          <div class="method-panel hidden" id="unlock-panel-auto">
+             <p class="text-muted" style="font-size:0.85rem; margin-bottom:1rem;">We will try 500+ common passwords automatically.</p>
+             <button class="btn btn-primary btn-full" id="btn-unlock-dict">🎯 Start Dictionary Attack</button>
+             
+             <div class="dict-status hidden" id="unlock-dict-status">
+               <div class="progress-bar"><div class="progress-fill" id="unlock-dict-progress"></div></div>
+               <div class="dict-info"><span id="unlock-dict-tried">0</span>/500+ tried</div>
+               <div class="dict-current" id="unlock-dict-current">Trying: —</div>
+             </div>
+          </div>
+        </div>
+
+        <!-- Unlock Progress -->
+        <div class="progress-wrap hidden" id="unlock-progress">
+          <div class="progress-bar"><div class="progress-fill" id="unlock-progress-fill"></div></div>
+          <span class="progress-text" id="unlock-progress-text">Decrypting & Unlocking...</span>
+        </div>
+
+        <!-- Unlock Result -->
+        <div class="result-box hidden" id="unlock-result">
+          <div class="success-icon">✅</div>
+          <h4>ZIP Unlocked!</h4>
+          
+          <div class="found-password hidden" id="unlock-found-pw-wrap">
+            <span>🔑 Password found:</span>
+            <code id="unlock-found-pw">—</code>
+          </div>
+
+          <div class="error-box hidden" id="unlock-error" style="text-align:left;"></div>
+
+          <button class="btn btn-accent btn-full" id="btn-unlock-download" style="margin-top: 1rem;">
+            ⬇️ Download Unlocked ZIP
+          </button>
+        </div>
+
+      </div>
+    </div> <!-- End Tab 4 -->
+
+    <!-- Info -->
+    <div class="glass-panel" style="margin-top: 1.5rem;">
+      <div class="info-card">
+        <h4>🔐 100% Client-Side Processing</h4>
+        <p>This tool uses your device's memory to compress, extract, and encrypt files. Your actual files are <strong>never uploaded to any server</strong>, guaranteeing complete privacy and blazing fast speeds. Powered by Web Workers and modern Web APIs.</p>
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <footer class="app-footer">
+    <p>⚡ All operations run locally in your browser. Files never leave your device.</p>
+  </footer>
+
+  <!-- Using zip.js for robust ZIP and AES encryption support -->
+  <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
