@@ -803,7 +803,7 @@
   (function() {
     'use strict';
     // These elements should NOT trigger Monetag popunder ads.
-    // We stop click event propagation so the Monetag global click listener never fires.
+    // We stop ALL pointer event propagation so the Monetag global listener never fires.
     const safeZones = [
       '#tool-search',           // Search input
       '#search-container',      // Search wrapper
@@ -814,13 +814,17 @@
       'header',                 // Header/Nav
     ];
 
+    const eventsToBlock = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'];
+
     document.addEventListener('DOMContentLoaded', function() {
       safeZones.forEach(selector => {
         document.querySelectorAll(selector).forEach(el => {
-          el.addEventListener('click', function(e) {
-            // Only stop propagation, don't prevent default (so search/pagination still work)
-            e.stopPropagation();
-          }, true); // capture phase to beat Monetag's listener
+          eventsToBlock.forEach(evt => {
+            el.addEventListener(evt, function(e) {
+              // Only stop propagation, don't prevent default (so search/pagination still work)
+              e.stopPropagation();
+            }, true); // capture phase to beat Monetag's listener
+          });
         });
       });
     });
