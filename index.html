@@ -87,6 +87,7 @@
       box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4);
     }
   </style>
+  <link rel="canonical" href="https://joogadtools.online/">
 </head>
 
 <body>
@@ -500,7 +501,8 @@
         data-keywords="pdf password remover unlock decrypt remove protection open secure document file">
         <div class="tool-card-icon red">🔓</div>
         <h3>PDF Password Remover</h3>
-        <p>Remove passwords and unlock protected PDF files instantly. 100% client-side — your files never leave your device.</p>
+        <p>Remove passwords and unlock protected PDF files instantly. 100% client-side — your files never leave your
+          device.</p>
         <div class="tool-card-footer">
           <div class="tool-card-tags">
             <span class="badge badge--warning">🔥 New</span>
@@ -672,163 +674,163 @@
   <!-- JoogadTools Advanced Ad Interstitial Engine v2  -->
   <!-- ============================================== -->
   <script>
-  (function () {
-    'use strict';
+    (function () {
+      'use strict';
 
-    // ── CONFIG ──
-    const AD_CONFIG = Object.freeze({
-      url: 'https://omg10.com/4/10798394',
-      storageKey: 'jt_ad_state',
-      sessionCooldownMs: 60 * 1000,       // 1 min cooldown after ad shown
-      maxAdsPerSession: 10,               // max ads in one session
-    });
+      // ── CONFIG ──
+      const AD_CONFIG = Object.freeze({
+        url: 'https://omg10.com/4/10798394',
+        storageKey: 'jt_ad_state',
+        sessionCooldownMs: 60 * 1000,       // 1 min cooldown after ad shown
+        maxAdsPerSession: 10,               // max ads in one session
+      });
 
-    // ── STATE MANAGER ──
-    const AdState = {
-      _data: null,
+      // ── STATE MANAGER ──
+      const AdState = {
+        _data: null,
 
-      _defaults() {
-        return { lastAdTime: 0, adsThisSession: 0, pendingAd: false, pendingHref: '' };
-      },
+        _defaults() {
+          return { lastAdTime: 0, adsThisSession: 0, pendingAd: false, pendingHref: '' };
+        },
 
-      load() {
+        load() {
+          try {
+            const raw = sessionStorage.getItem(AD_CONFIG.storageKey);
+            this._data = raw ? JSON.parse(raw) : this._defaults();
+          } catch {
+            this._data = this._defaults();
+          }
+          return this._data;
+        },
+
+        save() {
+          try { sessionStorage.setItem(AD_CONFIG.storageKey, JSON.stringify(this._data)); } catch { }
+        },
+
+        get(key) { if (!this._data) this.load(); return this._data[key]; },
+
+        set(key, val) { if (!this._data) this.load(); this._data[key] = val; this.save(); },
+
+        reset() { this._data = this._defaults(); this.save(); },
+      };
+
+      // ── HELPERS ──
+      function isToolPage() {
+        return /\/tools\//i.test(window.location.pathname);
+      }
+
+      function isCoolingDown() {
+        const last = AdState.get('lastAdTime');
+        return (Date.now() - last) < AD_CONFIG.sessionCooldownMs;
+      }
+
+      function hasHitSessionCap() {
+        return AdState.get('adsThisSession') >= AD_CONFIG.maxAdsPerSession;
+      }
+
+      function openAdTab() {
         try {
-          const raw = sessionStorage.getItem(AD_CONFIG.storageKey);
-          this._data = raw ? JSON.parse(raw) : this._defaults();
+          const w = window.open(AD_CONFIG.url, '_blank');
+          if (!w || w.closed) {
+            // Popup blocked fallback
+            window.location.href = AD_CONFIG.url;
+          }
         } catch {
-          this._data = this._defaults();
-        }
-        return this._data;
-      },
-
-      save() {
-        try { sessionStorage.setItem(AD_CONFIG.storageKey, JSON.stringify(this._data)); } catch {}
-      },
-
-      get(key) { if (!this._data) this.load(); return this._data[key]; },
-
-      set(key, val) { if (!this._data) this.load(); this._data[key] = val; this.save(); },
-
-      reset() { this._data = this._defaults(); this.save(); },
-    };
-
-    // ── HELPERS ──
-    function isToolPage() {
-      return /\/tools\//i.test(window.location.pathname);
-    }
-
-    function isCoolingDown() {
-      const last = AdState.get('lastAdTime');
-      return (Date.now() - last) < AD_CONFIG.sessionCooldownMs;
-    }
-
-    function hasHitSessionCap() {
-      return AdState.get('adsThisSession') >= AD_CONFIG.maxAdsPerSession;
-    }
-
-    function openAdTab() {
-      try {
-        const w = window.open(AD_CONFIG.url, '_blank');
-        if (!w || w.closed) {
-          // Popup blocked fallback
           window.location.href = AD_CONFIG.url;
         }
-      } catch {
-        window.location.href = AD_CONFIG.url;
       }
-    }
 
-    // ── MAIN LOGIC ──
-    // Skip entirely on tool pages
-    if (isToolPage()) return;
+      // ── MAIN LOGIC ──
+      // Skip entirely on tool pages
+      if (isToolPage()) return;
 
-    AdState.load();
+      AdState.load();
 
-    // If user is returning after seeing an ad (pendingAd = true), redirect to tool
-    if (AdState.get('pendingAd') && AdState.get('pendingHref')) {
-      const href = AdState.get('pendingHref');
-      AdState.set('pendingAd', false);
-      AdState.set('pendingHref', '');
-      // Small delay to let page render & avoid infinite loops
-      setTimeout(() => { window.location.href = href; }, 300);
-      return;
-    }
+      // If user is returning after seeing an ad (pendingAd = true), redirect to tool
+      if (AdState.get('pendingAd') && AdState.get('pendingHref')) {
+        const href = AdState.get('pendingHref');
+        AdState.set('pendingAd', false);
+        AdState.set('pendingHref', '');
+        // Small delay to let page render & avoid infinite loops
+        setTimeout(() => { window.location.href = href; }, 300);
+        return;
+      }
 
-    // Attach click handler to all tool-cards using event delegation on the grid
-    document.addEventListener('DOMContentLoaded', function () {
-      const grid = document.getElementById('tools-grid');
-      if (!grid) return;
+      // Attach click handler to all tool-cards using event delegation on the grid
+      document.addEventListener('DOMContentLoaded', function () {
+        const grid = document.getElementById('tools-grid');
+        if (!grid) return;
 
-      grid.addEventListener('click', function (e) {
-        // Find closest .tool-card anchor
-        const card = e.target.closest('.tool-card');
-        if (!card || !card.href) return;
+        grid.addEventListener('click', function (e) {
+          // Find closest .tool-card anchor
+          const card = e.target.closest('.tool-card');
+          if (!card || !card.href) return;
 
-        // If cooldown active or session cap hit → let user through directly
-        if (isCoolingDown() || hasHitSessionCap()) {
-          return; // default link behavior
-        }
-
-        // ── FIRST CLICK: Show Ad, block navigation ──
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Save the intended destination
-        AdState.set('pendingAd', true);
-        AdState.set('pendingHref', card.href);
-        AdState.set('lastAdTime', Date.now());
-        AdState.set('adsThisSession', AdState.get('adsThisSession') + 1);
-
-        // Open ad
-        openAdTab();
-
-        // After ad opens, the user stays on this page.
-        // On their NEXT click (any card), since pendingAd is true,
-        // the page reload at top will auto-redirect them.
-        // But we also provide an instant path: after 1.5s, navigate anyway.
-        setTimeout(() => {
-          if (AdState.get('pendingAd')) {
-            AdState.set('pendingAd', false);
-            window.location.href = card.href;
+          // If cooldown active or session cap hit → let user through directly
+          if (isCoolingDown() || hasHitSessionCap()) {
+            return; // default link behavior
           }
-        }, 1500);
-      }, true);
-    });
 
-  })();
+          // ── FIRST CLICK: Show Ad, block navigation ──
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Save the intended destination
+          AdState.set('pendingAd', true);
+          AdState.set('pendingHref', card.href);
+          AdState.set('lastAdTime', Date.now());
+          AdState.set('adsThisSession', AdState.get('adsThisSession') + 1);
+
+          // Open ad
+          openAdTab();
+
+          // After ad opens, the user stays on this page.
+          // On their NEXT click (any card), since pendingAd is true,
+          // the page reload at top will auto-redirect them.
+          // But we also provide an instant path: after 1.5s, navigate anyway.
+          setTimeout(() => {
+            if (AdState.get('pendingAd')) {
+              AdState.set('pendingAd', false);
+              window.location.href = card.href;
+            }
+          }, 1500);
+        }, true);
+      });
+
+    })();
   </script>
 
   <!-- Block Monetag popunder on Search, Pagination & non-card UI -->
   <script>
-  (function() {
-    'use strict';
-    // These elements should NOT trigger Monetag popunder ads.
-    // We stop ALL pointer event propagation so the Monetag global listener never fires.
-    const safeZones = [
-      '#tool-search',           // Search input
-      '#search-container',      // Search wrapper
-      '#pagination-controls',   // Pagination buttons
-      '.hero',                  // Hero section
-      '.features-section',      // Why JoogadTools section
-      '.app-footer',            // Footer
-      'header',                 // Header/Nav
-    ];
+    (function () {
+      'use strict';
+      // These elements should NOT trigger Monetag popunder ads.
+      // We stop ALL pointer event propagation so the Monetag global listener never fires.
+      const safeZones = [
+        '#tool-search',           // Search input
+        '#search-container',      // Search wrapper
+        '#pagination-controls',   // Pagination buttons
+        '.hero',                  // Hero section
+        '.features-section',      // Why JoogadTools section
+        '.app-footer',            // Footer
+        'header',                 // Header/Nav
+      ];
 
-    const eventsToBlock = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'];
+      const eventsToBlock = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'];
 
-    document.addEventListener('DOMContentLoaded', function() {
-      safeZones.forEach(selector => {
-        document.querySelectorAll(selector).forEach(el => {
-          eventsToBlock.forEach(evt => {
-            el.addEventListener(evt, function(e) {
-              // Only stop propagation, don't prevent default (so search/pagination still work)
-              e.stopPropagation();
-            }, true); // capture phase to beat Monetag's listener
+      document.addEventListener('DOMContentLoaded', function () {
+        safeZones.forEach(selector => {
+          document.querySelectorAll(selector).forEach(el => {
+            eventsToBlock.forEach(evt => {
+              el.addEventListener(evt, function (e) {
+                // Only stop propagation, don't prevent default (so search/pagination still work)
+                e.stopPropagation();
+              }, true); // capture phase to beat Monetag's listener
+            });
           });
         });
       });
-    });
-  })();
+    })();
   </script>
 </body>
 
