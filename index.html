@@ -50,27 +50,6 @@
     gtag('js', new Date());
     gtag('config', 'G-10QRHXEPGV');
   </script>
-  
-  <!-- Intercept Clicks to Block Monetag on Safe Zones (Bubble Phase) -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const safeZones = ['#search-container', '#pagination-controls', '.hero', '.features-section', '.app-footer', 'header'];
-      const events = ['click', 'mousedown', 'mouseup', 'pointerdown', 'pointerup', 'touchstart', 'touchend'];
-      
-      safeZones.forEach(selector => {
-        const els = document.querySelectorAll(selector);
-        els.forEach(el => {
-          events.forEach(evt => {
-            el.addEventListener(evt, function(e) {
-              // Stop bubbling up to the document/window where Monetag listens
-              e.stopPropagation();
-            }); // Bubble phase!
-          });
-        });
-      });
-    });
-  </script>
-
   <!-- Monetag Popunder -->
   <script src="https://al5sm.com/tag.min.js" data-zone="10826670" async></script>
   <style>
@@ -625,8 +604,23 @@
 
     // Pagination & Search logic
     const searchInput = document.getElementById('tool-search');
+    const searchContainer = document.getElementById('search-container');
     const toolCards = Array.from(document.querySelectorAll('.tool-card'));
     const paginationControls = document.getElementById('pagination-controls');
+
+    // Helper to block Monetag Ad on specific elements
+    function blockAds(el) {
+       if (!el) return;
+       ['click', 'mousedown', 'touchstart', 'pointerdown'].forEach(evt => {
+         el.addEventListener(evt, function(e) { e.stopPropagation(); });
+       });
+    }
+
+    blockAds(searchContainer);
+    blockAds(paginationControls);
+    blockAds(document.querySelector('header'));
+    blockAds(document.querySelector('.hero'));
+    blockAds(document.querySelector('.app-footer'));
 
     let currentPage = parseInt(sessionStorage.getItem('joogadtools_page')) || 1;
     const itemsPerPage = 9;
