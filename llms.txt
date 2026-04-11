@@ -1,0 +1,53 @@
+# JoogadTools.online
+
+> Free, fast, and private browser-based tools for developers and everyday users.
+
+## About
+
+JoogadTools is a collection of 27+ free online tools that run 100% client-side in your browser. No data is ever uploaded to any server — all processing happens locally on your device, ensuring complete privacy and speed.
+
+## Website
+
+https://joogadtools.online
+
+## Tools
+
+- QR Code Generator: https://joogadtools.online/tools/qr-generator/index.html
+- Password Generator: https://joogadtools.online/tools/password-generator/index.html
+- Case Converter: https://joogadtools.online/tools/case-converter/index.html
+- Color Converter: https://joogadtools.online/tools/color-converter/index.html
+- JSON/CSV Converter: https://joogadtools.online/tools/json-csv-converter/index.html
+- CSV Generator: https://joogadtools.online/tools/csv-generator/index.html
+- EMI Calculator: https://joogadtools.online/tools/emi-calculator/index.html
+- GST Calculator: https://joogadtools.online/tools/gst-calculator/index.html
+- Image Quality Checker: https://joogadtools.online/tools/image-quality-checker/index.html
+- Image Compressor: https://joogadtools.online/tools/image-compressor/index.html
+- PNG Trimmer: https://joogadtools.online/tools/png-trimmer/index.html
+- ZIP Master: https://joogadtools.online/tools/zip-master/index.html
+- Word Counter: https://joogadtools.online/tools/word-counter/index.html
+- Hash Generator: https://joogadtools.online/tools/hash-generator/index.html
+- Handwriting to Text (OCR): https://joogadtools.online/tools/handwriting-to-text/index.html
+- Insta Grid Splitter: https://joogadtools.online/tools/image-grid-splitter/index.html
+- Age Calculator: https://joogadtools.online/tools/age-calculator/index.html
+- Historical Date Calculator: https://joogadtools.online/tools/historical-date-calculator/index.html
+- Hindu Panchang: https://joogadtools.online/tools/hindu-panchang/index.html
+- Chart Generator: https://joogadtools.online/tools/chart-generator/index.html
+- Bulk Map QR Codes: https://joogadtools.online/tools/bulk-map-qr/index.html
+- Map to CSV Extractor: https://joogadtools.online/tools/map-csv-generator/index.html
+- Passport Photo Maker: https://joogadtools.online/tools/passport-photo-maker/index.html
+- PDF Password Remover: https://joogadtools.online/tools/pdf-password-remover/index.html
+- CipherArt Studio: https://joogadtools.online/tools/cipherart-studio/index.html
+- Halftone Converter: https://joogadtools.online/tools/halftone-converter/index.html
+- Secret Studio: https://joogadtools.online/tools/secret-studio/index.html
+
+## Key Features
+
+- 100% Client-Side: All tools run in the browser. No server uploads.
+- Free Forever: No sign-ups, no paywalls, no limits.
+- Privacy First: Your data never leaves your device.
+- Modern UI: Dark-themed glassmorphism design with smooth animations.
+
+## Contact
+
+Website: https://joogadtools.online
+About: https://joogadtools.online/about.html

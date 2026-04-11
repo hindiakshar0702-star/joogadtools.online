@@ -8,13 +8,14 @@ const JoogadTools = {
     const header = document.createElement('header');
     header.className = 'site-header';
     header.id = 'site-header';
+    header.setAttribute('role', 'banner');
     header.innerHTML = `
       <div class="header-inner">
-        <a href="${this.getBasePath(currentPath)}index.html" class="logo" id="logo-link">
+        <a href="${this.getBasePath(currentPath)}index.html" class="logo" id="logo-link" aria-label="JoogadTools Home">
           <div class="logo-icon">J</div>
           <div class="logo-text"><span>Joogad</span>Tools</div>
         </a>
-        <nav class="nav-links" id="nav-links">
+        <nav class="nav-links" id="nav-links" role="navigation" aria-label="Main Navigation">
           <a href="${this.getBasePath(currentPath)}index.html" id="nav-home">Home</a>
           <div class="nav-dropdown">
             <a href="${this.getBasePath(currentPath)}index.html#tools" id="nav-tools">Tools</a>
@@ -48,7 +49,7 @@ const JoogadTools = {
           </div>
           <a href="${this.getBasePath(currentPath)}about.html" id="nav-about">About</a>
         </nav>
-        <div class="menu-toggle" id="menu-toggle">
+        <div class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
           <span></span>
           <span></span>
           <span></span>
@@ -87,9 +88,10 @@ const JoogadTools = {
     const footer = document.createElement('footer');
     footer.className = 'site-footer';
     footer.id = 'site-footer';
+    footer.setAttribute('role', 'contentinfo');
     footer.innerHTML = `
       <div class="footer-inner">
-        <div class="footer-links">
+        <nav class="footer-links" aria-label="Footer Navigation">
           <a href="${this.getBasePath(currentPath)}tools/qr-generator/index.html" id="footer-qr">QR Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/password-generator/index.html" id="footer-password">Password Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/case-converter/index.html" id="footer-case">Case Converter</a>
@@ -112,7 +114,7 @@ const JoogadTools = {
           <a href="${this.getBasePath(currentPath)}tools/bulk-map-qr/index.html" id="footer-bulk-map">Bulk Map QR</a>
           <a href="${this.getBasePath(currentPath)}tools/map-csv-generator/index.html" id="footer-map-csv">Map to CSV Extractor</a>
           <a href="${this.getBasePath(currentPath)}tools/passport-photo-maker/index.html" id="footer-passport">Passport Photo Maker</a>
-        </div>
+        </nav>
         <p class="footer-copyright">© ${new Date().getFullYear()} JoogadTools.online — Free Online Tools for Everyone</p>
       </div>
     `;
