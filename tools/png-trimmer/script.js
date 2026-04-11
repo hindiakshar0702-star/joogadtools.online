@@ -46,6 +46,67 @@ const App = {
     });
 
     document.getElementById('btn-download-all').addEventListener('click', () => this.downloadAllZIP());
+
+    // URL Fetching
+    const btnFetch = document.getElementById('btn-fetch-url');
+    const inputUrl = document.getElementById('url-input');
+    btnFetch.addEventListener('click', () => this.fetchImageFromUrl(inputUrl.value.trim()));
+    inputUrl.addEventListener('keypress', e => {
+      if (e.key === 'Enter') this.fetchImageFromUrl(inputUrl.value.trim());
+    });
+  },
+
+  async fetchImageFromUrl(url) {
+    if (!url) return;
+    const errorEl = document.getElementById('url-error');
+    errorEl.classList.add('hidden');
+    errorEl.textContent = '';
+    
+    const btn = document.getElementById('btn-fetch-url');
+    const originalText = btn.textContent;
+    btn.textContent = '⏳';
+    btn.disabled = true;
+
+    try {
+      let response;
+      let usedProxy = false;
+      
+      try {
+        // Attempt 1: Direct fetch
+        response = await fetch(url);
+        if (!response.ok) throw new Error("Direct fetch failed status: " + response.status);
+      } catch (directErr) {
+        // Attempt 2: CORS Proxy fallback
+        usedProxy = true;
+        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+        response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("Proxy fetch failed");
+      }
+
+      const blob = await response.blob();
+      
+      if (!blob.type.startsWith('image/')) {
+        throw new Error('URL does not point to a valid image file.');
+      }
+
+      // Create a fake file from blob so it plugs into our existing pipeline seamlessly
+      const ext = blob.type.split('/')[1] || 'png';
+      const filename = `fetched_image_${Date.now()}.${ext}`;
+      const file = new File([blob], filename, { type: blob.type });
+
+      document.getElementById('url-input').value = ''; // clear input
+      
+      // Send to existing pipeline
+      this.handleFiles([file]);
+
+    } catch (err) {
+      console.error("Fetch error:", err);
+      errorEl.textContent = '❌ Failed to load image. The site may strictly block downloads.';
+      errorEl.classList.remove('hidden');
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   },
 
   async handleFiles(files) {
