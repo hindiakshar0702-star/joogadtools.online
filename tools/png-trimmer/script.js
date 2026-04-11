@@ -317,40 +317,28 @@ const App = {
 
         // Overlay bounding box to show what gets trimmed
         if (!isBlank && data.bounds) {
-           // We need to size the overlay relative to the displayed canvas size
-           // Since object-fit: contain is used, getting exact rendered positions is tricky purely in CSS.
-           // A simpler approach: wrap the canvas in a div matching the logical width/height using CSS aspect-ratio.
-           cOrig.style.width = '100%';
-           cOrig.style.height = '100%';
+           const ctx = cOrig.getContext('2d');
            
-           const wrap = document.createElement('div');
-           wrap.style.position = 'relative';
-           wrap.style.aspectRatio = `${data.originalW} / ${data.originalH}`;
-           wrap.style.maxHeight = '200px';
-           wrap.style.margin = '0 auto';
+           // Scale line width so it's always visible regardless of image resolution
+           const lw = Math.max(2, data.originalW / 200);
+           ctx.lineWidth = lw;
+           ctx.strokeStyle = 'rgba(239, 68, 68, 0.9)';
+           ctx.setLineDash([lw * 2, lw * 2]);
+           
+           const bx = data.bounds.left;
+           const by = data.bounds.top;
+           const bw = data.bounds.right - data.bounds.left;
+           const bh = data.bounds.bottom - data.bounds.top;
 
-           origCont.innerHTML = '';
-           origCont.appendChild(wrap);
-           
-           cOrig.style.position = 'absolute';
-           cOrig.style.inset = '0';
-           wrap.appendChild(cOrig);
+           // Tint the removed background area with a red wash
+           ctx.fillStyle = 'rgba(239, 68, 68, 0.2)';
+           ctx.fillRect(0, 0, data.originalW, by); // Top
+           ctx.fillRect(0, by + bh, data.originalW, data.originalH - (by + bh)); // Bottom
+           ctx.fillRect(0, by, bx, bh); // Left
+           ctx.fillRect(bx + bw, by, data.originalW - (bx + bw), bh); // Right
 
-           const overlay = document.createElement('div');
-           overlay.className = 'crop-box-overlay';
-           
-           // Calculate percentages
-           const leftPct = (data.bounds.left / data.originalW) * 100;
-           const topPct = (data.bounds.top / data.originalH) * 100;
-           const widthPct = ((data.bounds.right - data.bounds.left) / data.originalW) * 100;
-           const heightPct = ((data.bounds.bottom - data.bounds.top) / data.originalH) * 100;
-
-           overlay.style.left = leftPct + '%';
-           overlay.style.top = topPct + '%';
-           overlay.style.width = widthPct + '%';
-           overlay.style.height = heightPct + '%';
-           
-           wrap.appendChild(overlay);
+           // Draw the dashed border bounding box
+           ctx.strokeRect(bx, by, bw, bh);
         }
       }
 
