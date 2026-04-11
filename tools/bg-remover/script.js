@@ -254,8 +254,11 @@ const App = {
   },
 
   async processImage(imgObj) {
+    if (!window.imglyRemoveBackground) {
+        throw new Error("AI Library is still loading...");
+    }
     // 1. Run AI to get Transparent PNG Blob
-    const transparentBlob = await imglyRemoveBackground(imgObj.originalBlob);
+    const transparentBlob = await window.imglyRemoveBackground(imgObj.originalBlob);
 
     // 2. Determine final output based on settings
     const bgType = this.elements.bgType.value;

@@ -135,9 +135,12 @@
   </footer>
 
   <script src="../../js/common.js"></script>
-  <!-- Background Removal AI -->
-  <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser/@imgly/background-removal.js"></script>
   <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <!-- Background Removal AI via jsdelivr ESM -->
+  <script type="module">
+    import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm";
+    window.imglyRemoveBackground = removeBackground;
+  </script>
   <script src="script.js"></script>
   <style>
     @keyframes spin { 100% { transform: rotate(360deg); } }
