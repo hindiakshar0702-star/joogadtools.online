@@ -50,9 +50,9 @@ const AIEngine = {
 
       progressCallback?.('Initializing AI engine...', 70);
 
-      // Create ONNX session with best available backend
+      // Create ONNX session — use WASM backend (WebGL can't handle this model's complex shaders)
       const sessionOptions = {
-        executionProviders: ['webgpu', 'webgl', 'wasm'],
+        executionProviders: ['wasm'],
         graphOptimizationLevel: 'all'
       };
 
