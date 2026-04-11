@@ -51,21 +51,24 @@
     gtag('config', 'G-10QRHXEPGV');
   </script>
   
-  <!-- Intercept Clicks to Block Monetag on Safe Zones -->
+  <!-- Intercept Clicks to Block Monetag on Safe Zones (Bubble Phase) -->
   <script>
-    (function() {
-      const safeZones = '#tool-search, #search-container, #pagination-controls, .hero, .features-section, .app-footer, header';
+    document.addEventListener('DOMContentLoaded', function() {
+      const safeZones = ['#search-container', '#pagination-controls', '.hero', '.features-section', '.app-footer', 'header'];
       const events = ['click', 'mousedown', 'mouseup', 'pointerdown', 'pointerup', 'touchstart', 'touchend'];
       
-      events.forEach(evt => {
-        window.addEventListener(evt, function(e) {
-          if (e.target.closest && e.target.closest(safeZones)) {
-            // Stop this event from reaching Monetag's window/document listeners
-            e.stopImmediatePropagation();
-          }
-        }, true); // Add to window capture phase so it runs before Monetag
+      safeZones.forEach(selector => {
+        const els = document.querySelectorAll(selector);
+        els.forEach(el => {
+          events.forEach(evt => {
+            el.addEventListener(evt, function(e) {
+              // Stop bubbling up to the document/window where Monetag listens
+              e.stopPropagation();
+            }); // Bubble phase!
+          });
+        });
       });
-    })();
+    });
   </script>
 
   <!-- Monetag Popunder -->
