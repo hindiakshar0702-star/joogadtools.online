@@ -13,7 +13,7 @@ https://joogadtools.online
 ## Tools
 
 - AI Background Remover: https://joogadtools.online/tools/bg-remover/index.html
-- Image Resizer: https://joogadtools.online/tools/image-resizer/index.html
+- Image Resizer & AI Enhancer (Real-ESRGAN): https://joogadtools.online/tools/image-resizer/index.html
 - PDF Merge & Split: https://joogadtools.online/tools/pdf-merge-split/index.html
 - QR Code Generator: https://joogadtools.online/tools/qr-generator/index.html
 - Password Generator: https://joogadtools.online/tools/password-generator/index.html

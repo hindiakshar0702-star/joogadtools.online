@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Resizer — Free Online Batch Image Resizing Tool</title>
-  <meta name="description" content="Instantly resize your images, change formats (JPEG, WebP, PNG) and adjust quality. Free, fast, and secure 100% client-side tool with batch processing.">
+  <title>Image Resizer & AI Enhancer — Free Online Upscale & Resize Tool</title>
+  <meta name="description" content="AI-powered image upscaler using Real-ESRGAN. Resize, upscale 2x/4x, change formats (JPEG, WebP, PNG) and adjust quality. 100% client-side, private.">
   <link rel="canonical" href="https://joogadtools.online/tools/image-resizer/index.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -43,8 +43,8 @@
       <div class="header-logo">
         <span class="logo-icon">📐</span>
         <div>
-          <h1>Image Resizer</h1>
-          <p>Resize, convert, and compress images — 100% Client-Side</p>
+          <h1>Image Resizer & AI Enhancer</h1>
+          <p>AI Upscale + Resize + Convert — 100% Client-Side</p>
         </div>
       </div>
       <div class="header-actions">
@@ -141,6 +141,46 @@
           <input type="range" id="quality" min="10" max="100" value="90" class="range-slider">
         </div>
 
+        <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
+
+        <!-- AI Enhance Settings -->
+        <h3 class="panel-subtitle" style="display:flex; align-items:center; gap:8px;">✨ AI Enhance <span style="font-size:0.65rem; background:linear-gradient(135deg,#6c63ff,#f64f59); padding:2px 8px; border-radius:10px; font-weight:600;">Real-ESRGAN</span></h3>
+
+        <div class="settings-group">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem;">
+            <input type="checkbox" id="ai-enhance-toggle">
+            Enable AI Upscaling before Resize
+          </label>
+          <p class="setting-desc" style="font-size:0.72rem; margin-top:4px;">Uses Real-ESRGAN neural network to enhance image quality and upscale resolution. Model (~34 MB) downloads once and caches.</p>
+        </div>
+
+        <div id="ai-settings" class="hidden">
+          <div class="settings-group mt-sm">
+            <label class="setting-label">Scale</label>
+            <div class="format-tabs" style="display: flex; background: rgba(0,0,0,0.3); border-radius: 6px; padding: 4px; gap: 4px;">
+              <button class="scale-tab active" data-scale="4" style="flex: 1; padding: 6px; background: transparent; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;">4× Upscale</button>
+              <button class="scale-tab" data-scale="2" style="flex: 1; padding: 6px; background: transparent; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;">2× Upscale</button>
+            </div>
+          </div>
+
+          <div class="settings-group mt-sm">
+            <label class="setting-label">Tile Size <span id="tile-val" class="badge">128px</span></label>
+            <p class="setting-desc" style="font-size:0.72rem;">Smaller = less RAM, but slower. Increase if you have a powerful device.</p>
+            <input type="range" id="tile-size" min="64" max="256" value="128" step="64" class="range-slider">
+          </div>
+        </div>
+
+        <!-- AI Progress -->
+        <div id="ai-progress-bar" class="hidden" style="margin-top:10px;">
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px;">
+            <span id="ai-status-text" class="text-accent">Loading model...</span>
+            <span id="ai-percent">0%</span>
+          </div>
+          <div style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+            <div id="ai-progress-fill" style="height:100%; width:0%; background:linear-gradient(90deg,#6c63ff,#f64f59); border-radius:3px; transition:width 0.3s;"></div>
+          </div>
+        </div>
+
         <div class="action-box">
           <button class="btn btn-primary btn-full" id="btn-process-all">🔄 Resize All</button>
           <button class="btn btn-secondary btn-full hidden mt-sm" id="btn-download-all" style="background: var(--gradient-warm);">📦 Download All ZIP</button>
@@ -165,8 +205,8 @@
     <!-- Info -->
     <div class="glass-panel" style="margin-top: 2rem;">
       <div class="info-card">
-        <h4>🔐 100% Client-Side Processing</h4>
-        <p>This tool uses your device's browser to resize and convert your images. Your actual files are <strong>never uploaded to any server</strong>, ensuring complete privacy and speed.</p>
+        <h4>🔐 100% Client-Side AI Processing</h4>
+        <p>This tool uses <strong>Real-ESRGAN AI</strong> powered by ONNX Runtime Web to enhance and upscale your images <strong>directly in your browser</strong>. The AI model runs locally on your device — your photos are never uploaded to any server.</p>
       </div>
     </div>
 
@@ -178,6 +218,12 @@
 
   <script src="../../js/common.js"></script>
   <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <!-- ONNX Runtime Web for AI upscaling -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.19.0/dist/ort.min.js"></script>
+  <script>
+    // Configure ONNX wasm paths to load from CDN
+    ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.19.0/dist/';
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

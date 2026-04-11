@@ -1,6 +1,226 @@
+// ============================================================
+// Real-ESRGAN AI Upscaler + Image Resizer
+// 100% Client-Side — ONNX Runtime Web
+// ============================================================
+
+const MODEL_URL = 'https://huggingface.co/imgdesignart/realesrgan-x4-onnx/resolve/main/onnx/model_fp16.onnx';
+
+// -------- AI Upscaler Engine --------
+const AIEngine = {
+  session: null,
+  loading: false,
+  loaded: false,
+  modelScale: 4, // Real-ESRGAN x4 model always outputs 4x
+
+  async loadModel(progressCallback) {
+    if (this.loaded && this.session) return;
+    if (this.loading) return;
+    this.loading = true;
+
+    try {
+      progressCallback?.('Downloading AI model (~34 MB)...', 5);
+
+      // Fetch model as ArrayBuffer with progress
+      const response = await fetch(MODEL_URL);
+      if (!response.ok) throw new Error('Model download failed: ' + response.status);
+      
+      const contentLength = response.headers.get('content-length');
+      const totalBytes = contentLength ? parseInt(contentLength) : 34000000; // ~34MB estimate
+      
+      const reader = response.body.getReader();
+      const chunks = [];
+      let receivedBytes = 0;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        receivedBytes += value.length;
+        const pct = Math.min(Math.round((receivedBytes / totalBytes) * 60), 60); // 0-60% for download
+        progressCallback?.(`Downloading model... ${(receivedBytes / 1048576).toFixed(1)} MB`, pct);
+      }
+
+      // Combine chunks into single ArrayBuffer
+      const modelBuffer = new Uint8Array(receivedBytes);
+      let offset = 0;
+      for (const chunk of chunks) {
+        modelBuffer.set(chunk, offset);
+        offset += chunk.length;
+      }
+
+      progressCallback?.('Initializing AI engine...', 70);
+
+      // Create ONNX session with best available backend
+      const sessionOptions = {
+        executionProviders: ['webgpu', 'webgl', 'wasm'],
+        graphOptimizationLevel: 'all'
+      };
+
+      this.session = await ort.InferenceSession.create(modelBuffer.buffer, sessionOptions);
+      this.loaded = true;
+      progressCallback?.('AI Model Ready!', 100);
+
+    } catch (err) {
+      console.error('AI Model load error:', err);
+      this.loading = false;
+      throw err;
+    } finally {
+      this.loading = false;
+    }
+  },
+
+  /**
+   * Upscale an HTMLImageElement using Real-ESRGAN
+   * @param {HTMLImageElement} imgElement - source image
+   * @param {number} targetScale - 2 or 4
+   * @param {number} tileSize - tile dimension (64, 128, 192, 256)
+   * @param {Function} progressCallback - (statusText, percent)
+   * @returns {HTMLCanvasElement} - upscaled canvas
+   */
+  async upscale(imgElement, targetScale, tileSize, progressCallback) {
+    if (!this.session) throw new Error('Model not loaded');
+
+    const srcW = imgElement.naturalWidth || imgElement.width;
+    const srcH = imgElement.naturalHeight || imgElement.height;
+
+    // Draw source image to canvas to get pixel data
+    const srcCanvas = document.createElement('canvas');
+    srcCanvas.width = srcW;
+    srcCanvas.height = srcH;
+    const srcCtx = srcCanvas.getContext('2d');
+    srcCtx.drawImage(imgElement, 0, 0);
+
+    const scale = this.modelScale; // Always 4x from model
+    const outW = srcW * scale;
+    const outH = srcH * scale;
+
+    // Output canvas
+    const outCanvas = document.createElement('canvas');
+    outCanvas.width = outW;
+    outCanvas.height = outH;
+    const outCtx = outCanvas.getContext('2d');
+
+    // Calculate tiles with padding for seamless stitching
+    const pad = 8; // overlap padding in pixels
+    const tilesX = Math.ceil(srcW / tileSize);
+    const tilesY = Math.ceil(srcH / tileSize);
+    const totalTiles = tilesX * tilesY;
+    let processedTiles = 0;
+
+    progressCallback?.(`Processing ${totalTiles} tiles...`, 0);
+
+    for (let ty = 0; ty < tilesY; ty++) {
+      for (let tx = 0; tx < tilesX; tx++) {
+        // Calculate tile bounds with padding
+        const x1 = tx * tileSize;
+        const y1 = ty * tileSize;
+        const x2 = Math.min(x1 + tileSize, srcW);
+        const y2 = Math.min(y1 + tileSize, srcH);
+
+        // Padded bounds (clamped to image bounds)
+        const px1 = Math.max(0, x1 - pad);
+        const py1 = Math.max(0, y1 - pad);
+        const px2 = Math.min(srcW, x2 + pad);
+        const py2 = Math.min(srcH, y2 + pad);
+
+        const tileW = px2 - px1;
+        const tileH = py2 - py1;
+
+        // Extract tile pixels
+        const tileData = srcCtx.getImageData(px1, py1, tileW, tileH);
+
+        // Convert to Float32 tensor [1, 3, H, W] normalized to [0..1]
+        const inputTensor = this.imageDataToTensor(tileData, tileW, tileH);
+
+        // Run inference
+        const feeds = {};
+        feeds[this.session.inputNames[0]] = inputTensor;
+        const results = await this.session.run(feeds);
+        const outputTensor = results[this.session.outputNames[0]];
+
+        // Convert output tensor to ImageData
+        const outTileW = tileW * scale;
+        const outTileH = tileH * scale;
+        const outputImageData = this.tensorToImageData(outputTensor.data, outTileW, outTileH);
+
+        // Calculate where to place this tile on the output canvas (strip padding)
+        const offsetX = (x1 - px1) * scale;
+        const offsetY = (y1 - py1) * scale;
+        const drawW = (x2 - x1) * scale;
+        const drawH = (y2 - y1) * scale;
+
+        // Use temporary canvas to crop the padded output to just the core tile
+        const tmpCanvas = document.createElement('canvas');
+        tmpCanvas.width = outTileW;
+        tmpCanvas.height = outTileH;
+        const tmpCtx = tmpCanvas.getContext('2d');
+        tmpCtx.putImageData(outputImageData, 0, 0);
+
+        // Draw only the core (non-padded) region onto the output
+        outCtx.drawImage(
+          tmpCanvas,
+          offsetX, offsetY, drawW, drawH, // source crop region
+          x1 * scale, y1 * scale, drawW, drawH  // destination
+        );
+
+        processedTiles++;
+        const pct = Math.round((processedTiles / totalTiles) * 100);
+        progressCallback?.(`Tile ${processedTiles}/${totalTiles}`, pct);
+
+        // Yield to event loop to keep UI responsive
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+
+    // If user wants 2x instead of 4x, downscale the 4x result
+    if (targetScale === 2) {
+      const halfCanvas = document.createElement('canvas');
+      halfCanvas.width = srcW * 2;
+      halfCanvas.height = srcH * 2;
+      const halfCtx = halfCanvas.getContext('2d');
+      halfCtx.drawImage(outCanvas, 0, 0, halfCanvas.width, halfCanvas.height);
+      return halfCanvas;
+    }
+
+    return outCanvas;
+  },
+
+  imageDataToTensor(imageData, width, height) {
+    const { data } = imageData;
+    const float32 = new Float32Array(3 * height * width);
+    const channelSize = height * width;
+
+    for (let i = 0; i < channelSize; i++) {
+      const rgba = i * 4;
+      float32[i] = data[rgba] / 255.0;                    // R
+      float32[channelSize + i] = data[rgba + 1] / 255.0;  // G
+      float32[2 * channelSize + i] = data[rgba + 2] / 255.0; // B
+    }
+
+    return new ort.Tensor('float32', float32, [1, 3, height, width]);
+  },
+
+  tensorToImageData(tensorData, width, height) {
+    const imageData = new ImageData(width, height);
+    const channelSize = height * width;
+
+    for (let i = 0; i < channelSize; i++) {
+      const rgba = i * 4;
+      imageData.data[rgba] = Math.max(0, Math.min(255, Math.round(tensorData[i] * 255)));                    // R
+      imageData.data[rgba + 1] = Math.max(0, Math.min(255, Math.round(tensorData[channelSize + i] * 255)));  // G
+      imageData.data[rgba + 2] = Math.max(0, Math.min(255, Math.round(tensorData[2 * channelSize + i] * 255))); // B
+      imageData.data[rgba + 3] = 255; // A
+    }
+
+    return imageData;
+  }
+};
+
+
+// -------- Main App --------
 const App = {
   elements: {},
-  images: [], // { id, file, originalImage, originalWidth, originalHeight, resultBlob, resultDataUrl, name }
+  images: [],
   settings: {
     preset: 'custom',
     width: 0,
@@ -9,6 +229,9 @@ const App = {
     fitMode: 'contain',
     format: 'original',
     quality: 0.9,
+    aiEnhance: false,
+    aiScale: 4,
+    tileSize: 128,
   },
 
   init() {
@@ -37,16 +260,26 @@ const App = {
       qualityRange: elId('quality'),
       qualityVal: elId('quality-val'),
 
+      // AI elements
+      aiToggle: elId('ai-enhance-toggle'),
+      aiSettings: elId('ai-settings'),
+      scaleTabs: document.querySelectorAll('.scale-tab'),
+      tileRange: elId('tile-size'),
+      tileVal: elId('tile-val'),
+      aiProgressBar: elId('ai-progress-bar'),
+      aiStatusText: elId('ai-status-text'),
+      aiPercent: elId('ai-percent'),
+      aiProgressFill: elId('ai-progress-fill'),
+
       btnProcessAll: elId('btn-process-all'),
       btnDownloadAll: elId('btn-download-all'),
-
       emptyState: elId('empty-state'),
       fileList: elId('file-list')
     };
   },
 
   bindEvents() {
-    // 1. Upload logic
+    // 1. Upload
     this.elements.dropzone.addEventListener('click', () => this.elements.fileInput.click());
     this.elements.dropzone.addEventListener('dragover', e => { e.preventDefault(); this.elements.dropzone.classList.add('dragover'); });
     this.elements.dropzone.addEventListener('dragleave', () => this.elements.dropzone.classList.remove('dragover'));
@@ -59,34 +292,28 @@ const App = {
       if (e.target.files) this.handleFiles(Array.from(e.target.files));
     });
 
-    // 2. URL Fetch logic
+    // 2. URL Fetch
     this.elements.btnFetchUrl.addEventListener('click', () => this.fetchImageFromUrl(this.elements.urlInput.value));
 
-    // 3. Settings logic
+    // 3. Settings
     this.elements.presetSelect.addEventListener('change', (e) => this.handlePresetChange(e.target.value));
-    
     this.elements.dimWidth.addEventListener('input', (e) => {
       this.settings.preset = 'custom';
       this.elements.presetSelect.value = 'custom';
       this.settings.width = parseInt(e.target.value) || 0;
       this.handleDimChange('width');
     });
-
     this.elements.dimHeight.addEventListener('input', (e) => {
       this.settings.preset = 'custom';
       this.elements.presetSelect.value = 'custom';
       this.settings.height = parseInt(e.target.value) || 0;
       this.handleDimChange('height');
     });
-
     this.elements.aspectLock.addEventListener('change', (e) => {
       this.settings.aspectLock = e.target.checked;
       this.checkFitModeVisibility();
     });
-
-    this.elements.fitModes.forEach(r => r.addEventListener('change', e => {
-      this.settings.fitMode = e.target.value;
-    }));
+    this.elements.fitModes.forEach(r => r.addEventListener('change', e => { this.settings.fitMode = e.target.value; }));
 
     this.elements.formatTabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
@@ -96,20 +323,44 @@ const App = {
         this.checkQualityVisibility();
       });
     });
-
     this.elements.qualityRange.addEventListener('input', (e) => {
       this.settings.quality = parseInt(e.target.value) / 100;
       this.elements.qualityVal.textContent = `${e.target.value}%`;
     });
 
-    // 4. Action logic
+    // 4. AI Settings
+    this.elements.aiToggle.addEventListener('change', (e) => {
+      this.settings.aiEnhance = e.target.checked;
+      if (e.target.checked) {
+        this.elements.aiSettings.classList.remove('hidden');
+        this.elements.btnProcessAll.innerHTML = '✨ AI Enhance & Resize';
+      } else {
+        this.elements.aiSettings.classList.add('hidden');
+        this.elements.btnProcessAll.innerHTML = '🔄 Resize All';
+      }
+    });
+
+    this.elements.scaleTabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.scale-tab').forEach(t => { t.classList.remove('active'); t.style.background = 'transparent'; });
+        e.target.classList.add('active');
+        e.target.style.background = 'var(--primary-color)';
+        this.settings.aiScale = parseInt(e.target.dataset.scale);
+      });
+    });
+
+    this.elements.tileRange.addEventListener('input', (e) => {
+      this.settings.tileSize = parseInt(e.target.value);
+      this.elements.tileVal.textContent = `${e.target.value}px`;
+    });
+
+    // 5. Actions
     this.elements.btnProcessAll.addEventListener('click', () => this.processAll());
     this.elements.btnDownloadAll.addEventListener('click', () => this.downloadAllZip());
   },
 
+  // -------- UI Helpers --------
   checkFitModeVisibility() {
-    // If BOTH dims are specified AND lock is OFF, we might enforce fit modes.
-    // Actually, if we type hard logic Width x Height without aspect match, we need to know how to fit it.
     if (this.settings.width > 0 && this.settings.height > 0 && !this.settings.aspectLock) {
       this.elements.fitGroup.style.display = 'block';
     } else {
@@ -129,10 +380,8 @@ const App = {
 
   handlePresetChange(val) {
     if (val === 'custom') return;
-    
-    // Percentage presets
     if (val === 'perc-50' || val === 'perc-25') {
-      this.settings.width = 0; // Means we scale dynamically based on image
+      this.settings.width = 0;
       this.settings.height = 0;
       this.elements.dimWidth.value = '';
       this.elements.dimHeight.value = '';
@@ -144,7 +393,7 @@ const App = {
       this.settings.height = h;
       this.elements.dimWidth.value = w;
       this.elements.dimHeight.value = h;
-      this.elements.aspectLock.checked = false; // Preset usually means exact HW
+      this.elements.aspectLock.checked = false;
       this.settings.aspectLock = false;
     }
     this.checkFitModeVisibility();
@@ -152,7 +401,6 @@ const App = {
 
   handleDimChange(changed) {
     if (this.settings.aspectLock && this.images.length > 0) {
-      // Use the first image's aspect ratio as reference
       const ratio = this.images[0].originalWidth / this.images[0].originalHeight;
       if (changed === 'width' && this.settings.width > 0) {
         this.settings.height = Math.round(this.settings.width / ratio);
@@ -165,7 +413,18 @@ const App = {
     this.checkFitModeVisibility();
   },
 
-  // -------------------- UPLOAD & FETCH FETCH -------------------- //
+  updateAIProgress(text, percent) {
+    this.elements.aiProgressBar.classList.remove('hidden');
+    this.elements.aiStatusText.textContent = text;
+    this.elements.aiPercent.textContent = `${percent}%`;
+    this.elements.aiProgressFill.style.width = `${percent}%`;
+  },
+
+  hideAIProgress() {
+    this.elements.aiProgressBar.classList.add('hidden');
+  },
+
+  // -------- Upload & Fetch --------
   handleFiles(files) {
     const valid = files.filter(f => f.type.startsWith('image/'));
     valid.forEach(f => this.addImage(f));
@@ -236,14 +495,12 @@ const App = {
         this.images.push(item);
         this.renderList();
 
-        // If this is the first image and we have no dimensions SET, init dimensions
         if (this.images.length === 1 && this.settings.preset === 'custom' && this.settings.width === 0) {
           this.settings.width = img.width;
           this.settings.height = img.height;
           this.elements.dimWidth.value = img.width;
           this.elements.dimHeight.value = img.height;
         }
-
       };
       img.src = e.target.result;
     };
@@ -255,7 +512,7 @@ const App = {
     this.renderList();
   },
 
-  // -------------------- RENDERING -------------------- //
+  // -------- Rendering --------
   formatBytes(bytes) {
     if (bytes === 0) return '0 B';
     const k = 1024, sizes = ['B', 'KB', 'MB', 'GB'];
@@ -274,8 +531,7 @@ const App = {
 
     list.classList.remove('hidden');
     this.elements.emptyState.classList.add('hidden');
-    
-    // Check if we show bulk download
+
     const allProcessed = this.images.every(img => img.resultBlob);
     if (allProcessed && this.images.length > 0) {
       this.elements.btnDownloadAll.classList.remove('hidden');
@@ -287,16 +543,17 @@ const App = {
     this.images.forEach(img => {
       const card = document.createElement('div');
       card.className = 'image-card glass-panel';
-      
+
       const beforeSize = this.formatBytes(img.originalSize);
       let afterStr = img.resultBlob ? `<span style="color:var(--success)">${this.formatBytes(img.resultBlob.size)}</span>` : `<span class="text-muted">Pending...</span>`;
-      let dimStr = img.resultBlob ? `${img.originalWidth}x${img.originalHeight} → ${img.newWidth}x${img.newHeight}` : `${img.originalWidth}x${img.originalHeight}`;
+      let dimStr = img.resultBlob ? `${img.originalWidth}×${img.originalHeight} → ${img.newWidth}×${img.newHeight}` : `${img.originalWidth}×${img.originalHeight}`;
 
       let src = img.resultDataUrl || img.originalImage.src;
+      let aiTag = img.aiEnhanced ? '<span style="font-size:0.65rem; background:linear-gradient(135deg,#6c63ff,#f64f59); padding:1px 6px; border-radius:8px; margin-left:4px;">AI✨</span>' : '';
 
       card.innerHTML = `
         <div class="image-card-header">
-          <span class="img-name" title="${img.name}">${img.name}</span>
+          <span class="img-name" title="${img.name}">${img.name}${aiTag}</span>
           <button class="btn-icon text-danger" onclick="App.removeImage('${img.id}')">✕</button>
         </div>
         <div class="image-preview-wrap">
@@ -314,48 +571,94 @@ const App = {
     });
   },
 
-  // -------------------- PROCESSING -------------------- //
+  // -------- Processing Pipeline --------
   async processAll() {
     if (this.images.length === 0) return;
-    this.elements.btnProcessAll.textContent = "Processing...";
-    this.elements.btnProcessAll.disabled = true;
+    
+    const btn = this.elements.btnProcessAll;
+    btn.textContent = "Processing...";
+    btn.disabled = true;
 
-    for (let i = 0; i < this.images.length; i++) {
-      await this.processImage(this.images[i]);
+    try {
+      // Step 1: Load AI model if AI enhance is ON
+      if (this.settings.aiEnhance && !AIEngine.loaded) {
+        this.updateAIProgress('Downloading AI model...', 0);
+        await AIEngine.loadModel((text, pct) => this.updateAIProgress(text, pct));
+      }
+
+      // Step 2: Process each image
+      for (let i = 0; i < this.images.length; i++) {
+        let sourceImage = this.images[i].originalImage;
+
+        // Step 2a: AI upscale if enabled
+        if (this.settings.aiEnhance) {
+          this.updateAIProgress(`Image ${i + 1}/${this.images.length}: Starting AI...`, 0);
+          
+          const upscaledCanvas = await AIEngine.upscale(
+            sourceImage,
+            this.settings.aiScale,
+            this.settings.tileSize,
+            (text, pct) => this.updateAIProgress(`Image ${i + 1}: ${text}`, pct)
+          );
+
+          // Create a temporary image from the upscaled canvas for the resize step
+          const tempImg = new Image();
+          await new Promise((resolve) => {
+            tempImg.onload = resolve;
+            tempImg.src = upscaledCanvas.toDataURL('image/png');
+          });
+
+          // Replace source for resize step with AI-upscaled version
+          sourceImage = tempImg;
+          this.images[i].aiEnhanced = true;
+        }
+
+        // Step 2b: Standard resize + format + quality
+        await this.processImage(this.images[i], sourceImage);
+      }
+
+      this.hideAIProgress();
+      this.renderList();
+
+    } catch (err) {
+      console.error('Processing error:', err);
+      this.hideAIProgress();
+      alert('Error: ' + err.message);
+    } finally {
+      btn.textContent = this.settings.aiEnhance ? '✨ AI Enhance & Resize' : '🔄 Resize All';
+      btn.disabled = false;
     }
-
-    this.renderList();
-    this.elements.btnProcessAll.textContent = "🔄 Resize All";
-    this.elements.btnProcessAll.disabled = false;
   },
 
-  processImage(imgObj) {
+  processImage(imgObj, sourceImage) {
     return new Promise((resolve) => {
+      const srcW = sourceImage.naturalWidth || sourceImage.width;
+      const srcH = sourceImage.naturalHeight || sourceImage.height;
+
       let targetW = this.settings.width;
       let targetH = this.settings.height;
 
       // Handle Percentage Logic
       if (this.settings.preset === 'perc-50') {
-        targetW = Math.round(imgObj.originalWidth * 0.5);
-        targetH = Math.round(imgObj.originalHeight * 0.5);
+        targetW = Math.round(srcW * 0.5);
+        targetH = Math.round(srcH * 0.5);
       } else if (this.settings.preset === 'perc-25') {
-        targetW = Math.round(imgObj.originalWidth * 0.25);
-        targetH = Math.round(imgObj.originalHeight * 0.25);
+        targetW = Math.round(srcW * 0.25);
+        targetH = Math.round(srcH * 0.25);
       } else if (targetW === 0 || targetH === 0) {
-        // Fallback to original if 0
-        targetW = imgObj.originalWidth;
-        targetH = imgObj.originalHeight;
+        targetW = srcW;
+        targetH = srcH;
       }
 
-      // Handle Aspect Lock (Calculate based on this specific image if it was locked)
+      // Handle Aspect Lock
       if (this.settings.aspectLock && this.settings.preset === 'custom') {
-        const ratio = imgObj.originalWidth / imgObj.originalHeight;
+        const ratio = srcW / srcH;
         if (this.settings.width > 0 && this.settings.height === 0) {
-            targetW = this.settings.width;
-            targetH = Math.round(targetW / ratio);
+          targetW = this.settings.width;
+          targetH = Math.round(targetW / ratio);
         } else if (this.settings.height > 0 && this.settings.width === 0) {
-            targetH = this.settings.height;
-            targetW = Math.round(targetH * ratio);
+          targetH = this.settings.height;
+          targetW = Math.round(targetH * ratio);
         }
       }
 
@@ -364,42 +667,35 @@ const App = {
       canvas.height = targetH;
       const ctx = canvas.getContext('2d');
 
-      // Decide how to draw
       if (this.settings.aspectLock || this.settings.preset.startsWith('perc')) {
-        // Just draw stretched (it's proportional anyway)
-        ctx.drawImage(imgObj.originalImage, 0, 0, targetW, targetH);
+        ctx.drawImage(sourceImage, 0, 0, targetW, targetH);
       } else {
-        // We have strict TargetW and TargetH, and aspect unlocked. 
         if (this.settings.fitMode === 'cover') {
-          // Crop it
-          const scale = Math.max(targetW / imgObj.originalWidth, targetH / imgObj.originalHeight);
-          const drawW = imgObj.originalWidth * scale;
-          const drawH = imgObj.originalHeight * scale;
+          const scale = Math.max(targetW / srcW, targetH / srcH);
+          const drawW = srcW * scale;
+          const drawH = srcH * scale;
           const x = (targetW - drawW) / 2;
           const y = (targetH - drawH) / 2;
-          ctx.drawImage(imgObj.originalImage, x, y, drawW, drawH);
+          ctx.drawImage(sourceImage, x, y, drawW, drawH);
         } else {
-          // Contain (pad)
-          const scale = Math.min(targetW / imgObj.originalWidth, targetH / imgObj.originalHeight);
-          const drawW = imgObj.originalWidth * scale;
-          const drawH = imgObj.originalHeight * scale;
+          const scale = Math.min(targetW / srcW, targetH / srcH);
+          const drawW = srcW * scale;
+          const drawH = srcH * scale;
           const x = (targetW - drawW) / 2;
           const y = (targetH - drawH) / 2;
-          // Apply background based on format? If JPG, put white background
           let outTypeStr = this.settings.format === 'original' ? imgObj.file.type : this.settings.format;
           if (outTypeStr === 'image/jpeg') {
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, targetW, targetH);
           }
-          ctx.drawImage(imgObj.originalImage, x, y, drawW, drawH);
+          ctx.drawImage(sourceImage, x, y, drawW, drawH);
         }
       }
 
-      // Export
       let outType = this.settings.format;
       if (outType === 'original') outType = imgObj.file.type;
       let outQuality = this.settings.quality;
-      
+
       let ext = outType.split('/')[1] || 'png';
       if (ext === 'jpeg') ext = 'jpg';
 
@@ -409,10 +705,10 @@ const App = {
         imgObj.resultDataUrl = url;
         imgObj.newWidth = targetW;
         imgObj.newHeight = targetH;
-        
-        // Update name
+
         const baseName = imgObj.name.substring(0, imgObj.name.lastIndexOf('.')) || imgObj.name;
-        imgObj.name = `${baseName}_resized.${ext}`;
+        const suffix = imgObj.aiEnhanced ? '_enhanced' : '_resized';
+        imgObj.name = `${baseName}${suffix}.${ext}`;
 
         resolve();
       }, outType, outQuality);
@@ -437,24 +733,20 @@ const App = {
 
     try {
       const zipWriter = new zip.ZipWriter(new zip.BlobWriter("application/zip"));
-      
-      const promises = this.images.map(img => {
+      for (const img of this.images) {
         if (img.resultBlob) {
-          return zipWriter.add(img.name, new zip.BlobReader(img.resultBlob));
+          await zipWriter.add(img.name, new zip.BlobReader(img.resultBlob));
         }
-      });
-      
-      await Promise.all(promises);
+      }
       const zipBlob = await zipWriter.close();
       const url = URL.createObjectURL(zipBlob);
-      
+
       const a = document.createElement('a');
       a.href = url;
-      a.download = `resized_images_${Date.now()}.zip`;
+      a.download = `enhanced_images_${Date.now()}.zip`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      
       setTimeout(() => URL.revokeObjectURL(url), 10000);
     } catch (e) {
       console.error(e);
