@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PNG Trimmer — Auto Crop Transparent Background</title>
+  <meta name="description" content="Instantly trim transparent emptiness from your PNG images. Adds padding, configures tolerance, and supports bulk processing completely client-side.">
+  <link rel="canonical" href="https://joogadtools.online/tools/png-trimmer/index.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PNG Trimmer",
+    "url": "https://joogadtools.online/tools/png-trimmer/index.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "100% Free & Secure Client-side PNG Auto Cropper tool."
+  }
+  </script>
+</head>
+
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">✂️</span>
+        <div>
+          <h1>PNG Trimmer</h1>
+          <p>Auto-crop transparent backgrounds — 100% Client-Side</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+      
+      <!-- Left Panel: Settings -->
+      <aside class="sidebar glass-panel">
+        <h3 class="panel-subtitle">Upload Images</h3>
+        
+        <div class="dropzone" id="dropzone">
+          <div class="drop-icon">🖼️</div>
+          <p>Drop PNG/JPG files here</p>
+          <p class="drop-sub">Batch uploading supported</p>
+          <input type="file" id="file-input" multiple accept="image/png, image/jpeg, image/webp" hidden>
+        </div>
+
+        <div class="settings-group">
+          <label class="setting-label">Tolerance Level <span id="tol-val" class="badge">0%</span></label>
+          <p class="setting-desc">Increase if background has faint shadows or noise.</p>
+          <input type="range" id="tolerance" min="0" max="100" value="0" class="range-slider">
+        </div>
+
+        <div class="settings-group">
+          <label class="setting-label">Extra Padding (px)</label>
+          <p class="setting-desc">Add margin around the cropped image.</p>
+          <div class="pad-grid">
+            <div class="pad-input-box">
+              <label>Top</label><input type="number" id="pad-top" value="0" min="0" max="500">
+            </div>
+            <div class="pad-input-box">
+               <label>Right</label><input type="number" id="pad-right" value="0" min="0" max="500">
+            </div>
+            <div class="pad-input-box">
+              <label>Bottom</label><input type="number" id="pad-bottom" value="0" min="0" max="500">
+            </div>
+            <div class="pad-input-box">
+              <label>Left</label><input type="number" id="pad-left" value="0" min="0" max="500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Global Actions -->
+        <div class="action-box">
+          <button class="btn btn-primary btn-full hidden" id="btn-download-all">📦 Download All ZIP</button>
+        </div>
+      </aside>
+
+      <!-- Right Panel: Preview List -->
+      <main class="main-content">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">✂️</div>
+          <h2>Ready to Trim!</h2>
+          <p>Upload a single PNG or batch-upload multiple files to begin.</p>
+        </div>
+
+        <div class="file-list hidden" id="file-list">
+          <!-- Item Card Example -->
+          <!--
+          <div class="image-card glass-panel">
+            <div class="image-card-header">
+              <span class="img-name">image.png</span>
+              <button class="btn-icon text-danger">✕</button>
+            </div>
+            <div class="image-preview-wrap">
+               <div class="preview-canvas-box">...</div>
+            </div>
+            <div class="image-card-footer">
+              <span class="img-stats">800x600 → 400x300</span>
+              <button class="btn btn-accent btn-sm">⬇️ Download</button>
+            </div>
+          </div>
+          -->
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Info -->
+    <div class="glass-panel" style="margin-top: 2rem;">
+      <div class="info-card">
+        <h4>🔐 100% Client-Side Processing</h4>
+        <p>This tool uses your device's browser to analyze pixels and crop your images locally. Your actual files are <strong>never uploaded to any server</strong>, ensuring complete privacy and speed.</p>
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <footer class="app-footer">
+    <p>⚡ All operations run locally in your browser. Files never leave your device.</p>
+  </footer>
+
+  <!-- Using zip.js for bulk ZIP download -->
+  <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
