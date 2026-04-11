@@ -30,6 +30,8 @@ const JoogadTools = {
                 <a href="${this.getBasePath(currentPath)}tools/gst-calculator/index.html">GST Calculator</a>
                 <a href="${this.getBasePath(currentPath)}tools/image-quality-checker/index.html">Image Quality Checker</a>
                 <a href="${this.getBasePath(currentPath)}tools/image-compressor/index.html">Image Compressor</a>
+                <a href="${this.getBasePath(currentPath)}tools/png-trimmer/index.html">PNG Trimmer</a>
+                <a href="${this.getBasePath(currentPath)}tools/zip-master/index.html">ZIP Master</a>
                 <a href="${this.getBasePath(currentPath)}tools/word-counter/index.html">Word Counter</a>
                 <a href="${this.getBasePath(currentPath)}tools/hash-generator/index.html">Hash Generator</a>
                 <a href="${this.getBasePath(currentPath)}tools/handwriting-to-text/index.html">Handwriting to Text</a>
@@ -98,6 +100,8 @@ const JoogadTools = {
           <a href="${this.getBasePath(currentPath)}tools/gst-calculator/index.html" id="footer-gst">GST Calculator</a>
           <a href="${this.getBasePath(currentPath)}tools/image-quality-checker/index.html" id="footer-quality">Image Quality Checker</a>
           <a href="${this.getBasePath(currentPath)}tools/image-compressor/index.html" id="footer-image">Image Compressor</a>
+          <a href="${this.getBasePath(currentPath)}tools/png-trimmer/index.html" id="footer-trimmer">PNG Trimmer</a>
+          <a href="${this.getBasePath(currentPath)}tools/zip-master/index.html" id="footer-zip">ZIP Master</a>
           <a href="${this.getBasePath(currentPath)}tools/word-counter/index.html" id="footer-word">Word Counter</a>
           <a href="${this.getBasePath(currentPath)}tools/hash-generator/index.html" id="footer-hash">Hash Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/handwriting-to-text/index.html" id="footer-ocr">Handwriting to Text</a>
