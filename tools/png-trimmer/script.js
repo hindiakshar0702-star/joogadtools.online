@@ -257,8 +257,11 @@ const App = {
     if (this.filesData.length === 0) {
       document.getElementById('empty-state').classList.remove('hidden');
       document.getElementById('btn-download-all').classList.add('hidden');
+      list.classList.add('hidden');
       return;
     }
+
+    list.classList.remove('hidden');
 
     if (this.filesData.length > 1) {
       document.getElementById('btn-download-all').classList.remove('hidden');

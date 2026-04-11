@@ -50,6 +50,24 @@
     gtag('js', new Date());
     gtag('config', 'G-10QRHXEPGV');
   </script>
+  
+  <!-- Intercept Clicks to Block Monetag on Safe Zones -->
+  <script>
+    (function() {
+      const safeZones = '#tool-search, #search-container, #pagination-controls, .hero, .features-section, .app-footer, header';
+      const events = ['click', 'mousedown', 'mouseup', 'pointerdown', 'pointerup', 'touchstart', 'touchend'];
+      
+      events.forEach(evt => {
+        window.addEventListener(evt, function(e) {
+          if (e.target.closest && e.target.closest(safeZones)) {
+            // Stop this event from reaching Monetag's window/document listeners
+            e.stopImmediatePropagation();
+          }
+        }, true); // Add to window capture phase so it runs before Monetag
+      });
+    })();
+  </script>
+
   <!-- Monetag Popunder -->
   <script src="https://al5sm.com/tag.min.js" data-zone="10826670" async></script>
   <style>
@@ -827,39 +845,6 @@
         }, true);
       });
 
-    })();
-  </script>
-
-  <!-- Block Monetag popunder on Search, Pagination & non-card UI -->
-  <script>
-    (function () {
-      'use strict';
-      // These elements should NOT trigger Monetag popunder ads.
-      // We stop ALL pointer event propagation so the Monetag global listener never fires.
-      const safeZones = [
-        '#tool-search',           // Search input
-        '#search-container',      // Search wrapper
-        '#pagination-controls',   // Pagination buttons
-        '.hero',                  // Hero section
-        '.features-section',      // Why JoogadTools section
-        '.app-footer',            // Footer
-        'header',                 // Header/Nav
-      ];
-
-      const eventsToBlock = ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'pointerdown', 'pointerup'];
-
-      document.addEventListener('DOMContentLoaded', function () {
-        safeZones.forEach(selector => {
-          document.querySelectorAll(selector).forEach(el => {
-            eventsToBlock.forEach(evt => {
-              el.addEventListener(evt, function (e) {
-                // Only stop propagation, don't prevent default (so search/pagination still work)
-                e.stopPropagation();
-              }, true); // capture phase to beat Monetag's listener
-            });
-          });
-        });
-      });
     })();
   </script>
 </body>
