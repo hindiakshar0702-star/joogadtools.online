@@ -73,12 +73,22 @@ const AIEngine = {
    * Upscale an HTMLImageElement using Real-ESRGAN
    * @param {HTMLImageElement} imgElement - source image
    * @param {number} targetScale - 2 or 4
-   * @param {number} tileSize - tile dimension (64, 128, 192, 256)
+   * @param {number} tileSize - ignored (auto-detected from model)
    * @param {Function} progressCallback - (statusText, percent)
    * @returns {HTMLCanvasElement} - upscaled canvas
    */
   async upscale(imgElement, targetScale, tileSize, progressCallback) {
     if (!this.session) throw new Error('Model not loaded');
+
+    // Detect model's expected input size from metadata
+    const inputMeta = this.session.inputNames[0];
+    const inputShape = this.session.inputMetadata?.[inputMeta]?.dims
+                    || this.getInputDims();
+    
+    // Model's fixed tile size (e.g. 64 for [1,3,64,64])
+    const modelTile = (inputShape && inputShape.length === 4) ? inputShape[3] : 64;
+    
+    progressCallback?.(`Model expects ${modelTile}×${modelTile} tiles`, 5);
 
     const srcW = imgElement.naturalWidth || imgElement.width;
     const srcH = imgElement.naturalHeight || imgElement.height;
@@ -100,37 +110,41 @@ const AIEngine = {
     outCanvas.height = outH;
     const outCtx = outCanvas.getContext('2d');
 
-    // Calculate tiles with padding for seamless stitching
-    const pad = 8; // overlap padding in pixels
-    const tilesX = Math.ceil(srcW / tileSize);
-    const tilesY = Math.ceil(srcH / tileSize);
+    // Calculate how many tiles we need
+    const step = modelTile; // non-overlapping step = model tile size
+    const tilesX = Math.ceil(srcW / step);
+    const tilesY = Math.ceil(srcH / step);
     const totalTiles = tilesX * tilesY;
     let processedTiles = 0;
 
-    progressCallback?.(`Processing ${totalTiles} tiles...`, 0);
+    progressCallback?.(`Processing ${totalTiles} tiles (${modelTile}×${modelTile})...`, 0);
 
     for (let ty = 0; ty < tilesY; ty++) {
       for (let tx = 0; tx < tilesX; tx++) {
-        // Calculate tile bounds with padding
-        const x1 = tx * tileSize;
-        const y1 = ty * tileSize;
-        const x2 = Math.min(x1 + tileSize, srcW);
-        const y2 = Math.min(y1 + tileSize, srcH);
-
-        // Padded bounds (clamped to image bounds)
-        const px1 = Math.max(0, x1 - pad);
-        const py1 = Math.max(0, y1 - pad);
-        const px2 = Math.min(srcW, x2 + pad);
-        const py2 = Math.min(srcH, y2 + pad);
-
-        const tileW = px2 - px1;
-        const tileH = py2 - py1;
+        const x1 = tx * step;
+        const y1 = ty * step;
+        const x2 = Math.min(x1 + step, srcW);
+        const y2 = Math.min(y1 + step, srcH);
+        const tileW = x2 - x1;
+        const tileH = y2 - y1;
 
         // Extract tile pixels
-        const tileData = srcCtx.getImageData(px1, py1, tileW, tileH);
+        const tileData = srcCtx.getImageData(x1, y1, tileW, tileH);
 
-        // Convert to Float32 tensor [1, 3, H, W] normalized to [0..1]
-        const inputTensor = this.imageDataToTensor(tileData, tileW, tileH);
+        // Pad tile to exact model size (modelTile × modelTile)
+        const paddedCanvas = document.createElement('canvas');
+        paddedCanvas.width = modelTile;
+        paddedCanvas.height = modelTile;
+        const paddedCtx = paddedCanvas.getContext('2d');
+        // Fill with black (or edge pixels) for padding
+        paddedCtx.fillStyle = '#000';
+        paddedCtx.fillRect(0, 0, modelTile, modelTile);
+        paddedCtx.putImageData(tileData, 0, 0);
+
+        const paddedData = paddedCtx.getImageData(0, 0, modelTile, modelTile);
+
+        // Convert to Float32 tensor [1, 3, modelTile, modelTile]
+        const inputTensor = this.imageDataToTensor(paddedData, modelTile, modelTile);
 
         // Run inference
         const feeds = {};
@@ -138,29 +152,25 @@ const AIEngine = {
         const results = await this.session.run(feeds);
         const outputTensor = results[this.session.outputNames[0]];
 
-        // Convert output tensor to ImageData
-        const outTileW = tileW * scale;
-        const outTileH = tileH * scale;
-        const outputImageData = this.tensorToImageData(outputTensor.data, outTileW, outTileH);
+        // Output is [1, 3, modelTile*scale, modelTile*scale]
+        const outTileFull = modelTile * scale;
+        const outputImageData = this.tensorToImageData(outputTensor.data, outTileFull, outTileFull);
 
-        // Calculate where to place this tile on the output canvas (strip padding)
-        const offsetX = (x1 - px1) * scale;
-        const offsetY = (y1 - py1) * scale;
-        const drawW = (x2 - x1) * scale;
-        const drawH = (y2 - y1) * scale;
-
-        // Use temporary canvas to crop the padded output to just the core tile
+        // Draw output to temp canvas, then crop only the valid (non-padded) region
         const tmpCanvas = document.createElement('canvas');
-        tmpCanvas.width = outTileW;
-        tmpCanvas.height = outTileH;
+        tmpCanvas.width = outTileFull;
+        tmpCanvas.height = outTileFull;
         const tmpCtx = tmpCanvas.getContext('2d');
         tmpCtx.putImageData(outputImageData, 0, 0);
 
-        // Draw only the core (non-padded) region onto the output
+        // Crop: only take tileW*scale × tileH*scale from top-left
+        const cropW = tileW * scale;
+        const cropH = tileH * scale;
+
         outCtx.drawImage(
           tmpCanvas,
-          offsetX, offsetY, drawW, drawH, // source crop region
-          x1 * scale, y1 * scale, drawW, drawH  // destination
+          0, 0, cropW, cropH,        // source: top-left of output (valid region)
+          x1 * scale, y1 * scale, cropW, cropH  // destination on output canvas
         );
 
         processedTiles++;
@@ -183,6 +193,19 @@ const AIEngine = {
     }
 
     return outCanvas;
+  },
+
+  getInputDims() {
+    // Try to read input dimensions from the ONNX session
+    try {
+      const meta = this.session.handler?.inputMetadata;
+      if (meta) {
+        const firstInput = Object.values(meta)[0];
+        if (firstInput?.dims) return firstInput.dims;
+      }
+    } catch (e) { /* ignore */ }
+    // Default: assume 64x64 fixed input
+    return [1, 3, 64, 64];
   },
 
   imageDataToTensor(imageData, width, height) {
