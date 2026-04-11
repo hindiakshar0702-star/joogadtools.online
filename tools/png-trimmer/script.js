@@ -158,28 +158,32 @@ const App = {
 
   getTrimBounds(imgData, width, height, tolerancePct) {
     const data = imgData.data;
-    const len = data.length;
     
-    // Convert 0-100 tolerance to 0-255 diff scale.
-    // If tolerance is 0, we only skip perfectly transparent pixels.
-    // If > 0, we compare against a "background" color, which is usually the top-left pixel.
+    // Top-left pixel is our reference background color
     const bgR = data[0], bgG = data[1], bgB = data[2], bgA = data[3];
-    const tolSq = Math.pow((tolerancePct / 100) * 255, 2) * 4; // *4 because comparing 4 channels squared
+    
+    // 1. Alpha Threshold: 
+    // Always ignore practically invisible pixels (alpha < 5).
+    // As tolerance increases, we aggressively trim higher-opacity pixels (fade/shadows).
+    // 0% tolerance = alpha < 5. 100% tolerance = alpha < 255.
+    const alphaThreshold = 5 + (tolerancePct / 100) * 250; 
+    
+    // 2. Color Euclidean Distance (for solid backgrounds like White)
+    const tolSq = Math.pow((tolerancePct / 100) * 255, 2) * 3; // RGB max is 255^2 * 3
 
     function isBackground(r, g, b, a) {
-       if (tolerancePct === 0) {
-         return a === 0; // Pure transparency only
-       }
-       // If mostly transparent, consider it background regardless of color
-       if (a < 5) return true; 
+       // If pixel is transparent enough, it's ALWAYS background
+       if (a < alphaThreshold) return true;
 
-       if (bgA < 5) {
-          // If top-left is transparent, and this pixel is NOT transparent, it's NOT bg.
-          return false; 
+       // If the image's overall background (top-left) is already transparent,
+       // we ONLY trim based on transparency. We stop checking colors.
+       if (bgA < 10) {
+           return false; // Since a >= alphaThreshold here, it must be the object (foreground).
        }
 
-       // Compare color diff (Euclidean distance squared)
-       const diff = Math.pow(r - bgR, 2) + Math.pow(g - bgG, 2) + Math.pow(b - bgB, 2) + Math.pow(a - bgA, 2);
+       // If the image has a solid background (e.g. JPG with white background),
+       // we compare the RGB difference against the top-left pixel.
+       const diff = Math.pow(r - bgR, 2) + Math.pow(g - bgG, 2) + Math.pow(b - bgB, 2);
        return diff <= tolSq;
     }
 
