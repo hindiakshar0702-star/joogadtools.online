@@ -3,7 +3,7 @@
 // 100% Client-Side — ONNX Runtime Web
 // ============================================================
 
-const MODEL_URL = 'https://huggingface.co/imgdesignart/realesrgan-x4-onnx/resolve/main/onnx/model_fp16.onnx';
+const MODEL_URL = 'https://huggingface.co/imgdesignart/realesrgan-x4-onnx/resolve/main/onnx/model.onnx';
 
 // -------- AI Upscaler Engine --------
 const AIEngine = {
@@ -18,14 +18,14 @@ const AIEngine = {
     this.loading = true;
 
     try {
-      progressCallback?.('Downloading AI model (~34 MB)...', 5);
+      progressCallback?.('Downloading AI model (~65 MB)...', 5);
 
       // Fetch model as ArrayBuffer with progress
       const response = await fetch(MODEL_URL);
       if (!response.ok) throw new Error('Model download failed: ' + response.status);
       
       const contentLength = response.headers.get('content-length');
-      const totalBytes = contentLength ? parseInt(contentLength) : 34000000; // ~34MB estimate
+      const totalBytes = contentLength ? parseInt(contentLength) : 67000000; // ~67MB estimate
       
       const reader = response.body.getReader();
       const chunks = [];
