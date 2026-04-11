@@ -80,15 +80,8 @@ const AIEngine = {
   async upscale(imgElement, targetScale, tileSize, progressCallback) {
     if (!this.session) throw new Error('Model not loaded');
 
-    // Detect model's expected input size from metadata
-    const inputMeta = this.session.inputNames[0];
-    const inputShape = this.session.inputMetadata?.[inputMeta]?.dims
-                    || this.getInputDims();
-    
-    // Model's fixed tile size (e.g. 64 for [1,3,64,64])
-    const modelTile = (inputShape && inputShape.length === 4) ? inputShape[3] : 64;
-    
-    progressCallback?.(`Model expects ${modelTile}×${modelTile} tiles`, 5);
+    // This model has fixed 64×64 input shape
+    const modelTile = 64;
 
     const srcW = imgElement.naturalWidth || imgElement.width;
     const srcH = imgElement.naturalHeight || imgElement.height;
