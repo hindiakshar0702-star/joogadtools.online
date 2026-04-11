@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Background Remover — Free Client-Side BG Removal</title>
+  <meta name="description" content="Remove backgrounds from images instantly using local AI. 100% client-side, no uploads, secure and fast.">
+  <link rel="canonical" href="https://joogadtools.online/tools/bg-remover/index.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AI Background Remover",
+    "url": "https://joogadtools.online/tools/bg-remover/index.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "100% Free & Secure Client-side AI Background Remover."
+  }
+  </script>
+</head>
+
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🖼️</span>
+        <div>
+          <h1>AI Background Remover</h1>
+          <p>Remove backgrounds instantly — 100% Client-Side Private AI</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+      
+      <!-- Left Panel: Settings -->
+      <aside class="sidebar glass-panel">
+        <h3 class="panel-subtitle">Upload Images</h3>
+        
+        <div class="dropzone" id="dropzone">
+          <div class="drop-icon">🖼️</div>
+          <p>Drop Image here</p>
+          <p class="drop-sub">PNG, JPG, WebP supported</p>
+          <input type="file" id="file-input" multiple accept="image/png, image/jpeg, image/webp" hidden>
+        </div>
+
+        <div class="url-upload-group" style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
+          <input type="url" id="url-input" placeholder="Paste image URL here..." style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white; font-size: 0.85rem; outline: none;">
+          <button id="btn-fetch-url" class="btn btn-outline btn-sm">Fetch</button>
+        </div>
+        <p id="url-error" class="hidden text-danger" style="font-size: 0.75rem; margin-top: -1rem; margin-bottom: 1rem; text-align: left;"></p>
+
+        <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
+
+        <h3 class="panel-subtitle">Background Color</h3>
+        <div class="color-row mt-md">
+          <div class="form-group" style="width: 100%;">
+            <select id="bg-type" class="form-select w-full" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 8px; border-radius: 6px;">
+              <option value="transparent">Transparent (PNG)</option>
+              <option value="white">White (JPG)</option>
+              <option value="custom">Custom Color (JPG)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group mt-sm hidden" id="custom-color-group">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="color" id="bg-color-picker" value="#ff0000" style="width: 40px; height: 40px; padding: 0; border: none; background: transparent; cursor: pointer;">
+            <span id="bg-color-label" style="font-family: monospace; font-size: 0.9rem;">#FF0000</span>
+          </div>
+        </div>
+
+        <div class="action-box mt-lg">
+          <button class="btn btn-primary btn-full hidden" id="btn-process-all">✨ Remove Background</button>
+          <button class="btn btn-secondary btn-full hidden mt-sm" id="btn-download-all" style="background: var(--gradient-warm);">📦 Download All ZIP</button>
+        </div>
+      </aside>
+
+      <!-- Right Panel: Preview List -->
+      <main class="main-content">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">✨</div>
+          <h2>Ready to Magic!</h2>
+          <p>Upload a photo and let our local AI magically remove the background.<br><br><small class="text-accent">Note: First load downloads a ~40MB AI model to your browser. It runs offline afterwards!</small></p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div id="ai-progress" class="hidden" style="text-align: center; padding: 3rem;">
+          <div class="empty-icon" style="animation: spin 2s linear infinite; display: inline-block;">⚙️</div>
+          <h3 id="progress-text" class="text-accent mt-sm">Loading AI Model...</h3>
+          <p class="text-muted" style="font-size: 0.85rem;">This happens only once per session. Please wait...</p>
+        </div>
+
+        <div class="file-list hidden" id="file-list">
+          <!-- Dynamic Items -->
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Info -->
+    <div class="glass-panel" style="margin-top: 2rem;">
+      <div class="info-card">
+        <h4>🔐 100% Client-Side Private AI</h4>
+        <p>This tool uses ONNX Web Assembly to run a complex Machine Learning model <strong>directly inside your web browser</strong>. Your photos are never sent to any server. Complete privacy, zero limits.</p>
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <footer class="app-footer">
+    <p>⚡ All operations run locally in your browser. Files never leave your device.</p>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <!-- Background Removal AI -->
+  <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/browser/@imgly/background-removal.js"></script>
+  <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <script src="script.js"></script>
+  <style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</body>
+</html>

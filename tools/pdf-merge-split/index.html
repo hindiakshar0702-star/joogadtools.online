@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Merge & Split — Free Online PDF Tools</title>
+  <meta name="description" content="Merge multiple PDF files into one or split a PDF into separate pages. Secure, 100% client-side tool with zero server uploads.">
+  <link rel="canonical" href="https://joogadtools.online/tools/pdf-merge-split/index.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- We'll add some specific CSS inline for tabs -> will move to standard if needed -->
+  <style>
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab-btn { flex: 1; padding: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); color: white; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.3s; }
+    .tab-btn.active { background: var(--primary-color); border-color: transparent; box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .pdf-card { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 10px; cursor: grab; }
+    .pdf-card.dragging { opacity: 0.5; }
+    .pdf-info { display: flex; flex-direction: column; }
+    .pdf-name { font-weight: 500; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
+    .pdf-meta { font-size: 0.75rem; color: var(--text-muted); }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Merge & Split",
+    "url": "https://joogadtools.online/tools/pdf-merge-split/index.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "100% Free & Secure Client-side PDF Merger and Splitter."
+  }
+  </script>
+</head>
+
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">📄</span>
+        <div>
+          <h1>PDF Merge & Split</h1>
+          <p>Combine or separate PDF files — 100% Client-Side</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <div class="tabs container" style="max-width: 600px; margin-top: 2rem;">
+      <button class="tab-btn active" data-tab="merge">🔗 Merge PDFs</button>
+      <button class="tab-btn" data-tab="split">✂️ Split PDF</button>
+    </div>
+
+    <!-- MAIN WORKSAPCE -->
+    <div class="workspace" style="max-width: 1000px; margin: 0 auto; gap: 2rem;">
+      
+      <!-- MERGE TAB -->
+      <div id="tab-merge" class="tab-content active" style="width: 100%;">
+        <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2rem;">
+          <aside class="sidebar glass-panel">
+            <h3 class="panel-subtitle">Upload PDFs to Merge</h3>
+            <div class="dropzone" id="dropzone-merge">
+              <div class="drop-icon">📂</div>
+              <p>Drop PDF files here</p>
+              <p class="drop-sub">Select multiple files</p>
+              <input type="file" id="file-merge" multiple accept="application/pdf" hidden>
+            </div>
+            
+            <div class="action-box">
+              <button class="btn btn-primary btn-full hidden" id="btn-do-merge">🔗 Merge PDFs</button>
+            </div>
+            
+            <p class="setting-desc mt-md" style="text-align: center;">You can drag and drop items in the list to reorder them before merging.</p>
+          </aside>
+
+          <main class="main-content glass-panel" style="background: rgba(0,0,0,0.2);">
+            <div class="empty-state" id="empty-merge">
+              <div class="empty-icon">📂</div>
+              <h2>Ready to Merge</h2>
+              <p>Upload 2 or more PDF files to combine them into one.</p>
+            </div>
+            <div id="list-merge" class="hidden">
+              <!-- Sortable items go here -->
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <!-- SPLIT TAB -->
+      <div id="tab-split" class="tab-content" style="width: 100%;">
+         <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2rem;">
+          <aside class="sidebar glass-panel">
+            <h3 class="panel-subtitle">Upload 1 PDF to Split</h3>
+            <div class="dropzone" id="dropzone-split">
+              <div class="drop-icon">📄</div>
+              <p>Drop a PDF file here</p>
+              <input type="file" id="file-split" accept="application/pdf" hidden>
+            </div>
+            
+            <div id="split-settings" class="hidden">
+              <h3 class="panel-subtitle mt-xl">Split Mode</h3>
+              
+              <label style="display:flex; gap:8px; margin-bottom: 10px; cursor: pointer;">
+                <input type="radio" name="split-mode" value="all" checked>
+                <span>Extract all Pages<br><small class="text-muted">Creates a ZIP containing 1 PDF per page.</small></span>
+              </label>
+              
+              <label style="display:flex; gap:8px; cursor: pointer;">
+                <input type="radio" name="split-mode" value="custom">
+                <span>Custom Ranges<br><small class="text-muted">Extract specific pages (e.g. 1-3, 5, 7-9)</small></span>
+              </label>
+
+              <div id="custom-range-input" class="hidden mt-md">
+                <input type="text" id="split-range" class="form-input" placeholder="e.g. 1-3, 5, 7-9" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white;">
+              </div>
+
+              <div class="action-box mt-lg">
+                <button class="btn btn-primary btn-full" id="btn-do-split">✂️ Split PDF</button>
+              </div>
+            </div>
+          </aside>
+
+          <main class="main-content glass-panel" style="background: rgba(0,0,0,0.2); text-align: center;">
+            <div class="empty-state" id="empty-split">
+              <div class="empty-icon">📄</div>
+              <h2>Ready to Split</h2>
+              <p>Upload a PDF file to begin extracting pages.</p>
+            </div>
+            
+            <div id="split-info" class="hidden" style="padding: 2rem;">
+              <div class="empty-icon text-success">✅</div>
+              <h2 id="split-filename" style="margin-bottom: 0.5rem;">filename.pdf</h2>
+              <p id="split-pages" class="text-accent" style="font-size: 1.2rem; font-weight: 600;">XX Pages</p>
+              <p id="split-size" class="text-muted">XX MB</p>
+            </div>
+          </main>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Info -->
+    <div class="glass-panel container" style="margin-top: 2rem; max-width: 1000px;">
+      <div class="info-card">
+        <h4>🔐 100% Client-Side Processing</h4>
+        <p>This tool uses your device's browser to process your PDF files locally using strict javascript. Your actual files, documents, and sensitive data are <strong>never uploaded to any server</strong>, ensuring complete privacy and speed.</p>
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <footer class="app-footer">
+    <p>⚡ All operations run locally in your browser. Files never leave your device.</p>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <!-- pdf-lib for PDF manipulation -->
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <!-- zip-js for ZIP downloads -->
+  <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

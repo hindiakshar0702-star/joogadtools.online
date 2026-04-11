@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Resizer — Free Online Batch Image Resizing Tool</title>
+  <meta name="description" content="Instantly resize your images, change formats (JPEG, WebP, PNG) and adjust quality. Free, fast, and secure 100% client-side tool with batch processing.">
+  <link rel="canonical" href="https://joogadtools.online/tools/image-resizer/index.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Resizer",
+    "url": "https://joogadtools.online/tools/image-resizer/index.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "100% Free & Secure Client-side Batch Image Resizer."
+  }
+  </script>
+</head>
+
+<body>
+  
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">📐</span>
+        <div>
+          <h1>Image Resizer</h1>
+          <p>Resize, convert, and compress images — 100% Client-Side</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+      
+      <!-- Left Panel: Settings -->
+      <aside class="sidebar glass-panel">
+        <h3 class="panel-subtitle">Upload Images</h3>
+        
+        <div class="dropzone" id="dropzone">
+          <div class="drop-icon">🖼️</div>
+          <p>Drop PNG/JPG/WebP files here</p>
+          <p class="drop-sub">Batch uploading supported</p>
+          <input type="file" id="file-input" multiple accept="image/png, image/jpeg, image/webp" hidden>
+        </div>
+
+        <div class="url-upload-group" style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
+          <input type="url" id="url-input" placeholder="Paste image URL here..." style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white; font-size: 0.85rem; outline: none;">
+          <button id="btn-fetch-url" class="btn btn-outline btn-sm">Fetch</button>
+        </div>
+        <p id="url-error" class="hidden text-danger" style="font-size: 0.75rem; margin-top: -1rem; margin-bottom: 1rem; text-align: left;"></p>
+
+        <!-- Presets -->
+        <div class="settings-group">
+          <label class="setting-label">Presets</label>
+          <select id="preset-select" class="form-select w-full mt-sm" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white; padding: 8px; border-radius: 6px;">
+            <option value="custom">Custom Size</option>
+            <option value="1080x1080">Instagram Post (1080x1080)</option>
+            <option value="1080x1350">Instagram Portrait (1080x1350)</option>
+            <option value="1280x720">YouTube Thumbnail (1280x720)</option>
+            <option value="820x312">Facebook Cover (820x312)</option>
+            <option value="1500x500">Twitter Header (1500x500)</option>
+            <option value="1920x1080">Full HD (1920x1080)</option>
+            <option value="600x600">Passport Image (600x600)</option>
+            <option value="perc-50">50% Smaller</option>
+            <option value="perc-25">25% Smaller</option>
+          </select>
+        </div>
+
+        <!-- Dimensions -->
+        <div class="settings-group mt-md">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <label class="setting-label" style="margin: 0;">Dimensions (px)</label>
+            <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-light);">
+              <input type="checkbox" id="aspect-lock" checked>
+              🔒 Lock Aspect Ratio
+            </label>
+          </div>
+          <div class="dim-grid" style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center;">
+            <div class="dim-input-box" style="flex: 1;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 3px;">Width</span>
+              <input type="number" id="dim-width" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3); color: white; outline: none;">
+            </div>
+            <span style="color: var(--text-muted);">×</span>
+            <div class="dim-input-box" style="flex: 1;">
+              <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 3px;">Height</span>
+              <input type="number" id="dim-height" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3); color: white; outline: none;">
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-group mt-md" id="fit-group" style="display: none;">
+           <label class="setting-label">Fit Mode</label>
+           <p class="setting-desc" style="font-size: 0.75rem;">How to fit the image inside the chosen dimensions.</p>
+           <div class="radio-group" style="display: flex; gap: 10px; margin-top: 5px;">
+             <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 4px;"><input type="radio" name="fit-mode" value="contain" checked> Contain (pad)</label>
+             <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 4px;"><input type="radio" name="fit-mode" value="cover"> Cover (crop)</label>
+           </div>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0;">
+
+        <!-- Output Settings -->
+        <h3 class="panel-subtitle">Output Settings</h3>
+
+        <div class="settings-group">
+          <label class="setting-label">Format</label>
+          <div class="format-tabs" style="display: flex; background: rgba(0,0,0,0.3); border-radius: 6px; padding: 4px; gap: 4px;">
+            <button class="format-tab active" data-fmt="original" style="flex: 1; padding: 6px; background: transparent; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;">Original</button>
+            <button class="format-tab" data-fmt="image/jpeg" style="flex: 1; padding: 6px; background: transparent; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;">JPEG</button>
+            <button class="format-tab" data-fmt="image/png" style="flex: 1; padding: 6px; background: transparent; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;">PNG</button>
+            <button class="format-tab" data-fmt="image/webp" style="flex: 1; padding: 6px; background: transparent; border: none; color: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;">WebP</button>
+          </div>
+        </div>
+
+        <div class="settings-group mt-md" id="quality-group">
+          <label class="setting-label">Quality <span id="quality-val" class="badge">90%</span></label>
+          <p class="setting-desc">Lower quality = smaller file size (JPEG/WebP only).</p>
+          <input type="range" id="quality" min="10" max="100" value="90" class="range-slider">
+        </div>
+
+        <div class="action-box">
+          <button class="btn btn-primary btn-full" id="btn-process-all">🔄 Resize All</button>
+          <button class="btn btn-secondary btn-full hidden mt-sm" id="btn-download-all" style="background: var(--gradient-warm);">📦 Download All ZIP</button>
+        </div>
+      </aside>
+
+      <!-- Right Panel: Preview List -->
+      <main class="main-content">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">📐</div>
+          <h2>Ready to Resize!</h2>
+          <p>Upload files or paste an image URL on the left.</p>
+        </div>
+
+        <div class="file-list hidden" id="file-list">
+          <!-- Dynamic Items -->
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Info -->
+    <div class="glass-panel" style="margin-top: 2rem;">
+      <div class="info-card">
+        <h4>🔐 100% Client-Side Processing</h4>
+        <p>This tool uses your device's browser to resize and convert your images. Your actual files are <strong>never uploaded to any server</strong>, ensuring complete privacy and speed.</p>
+      </div>
+    </div>
+
+  </div> <!-- End App Container -->
+
+  <footer class="app-footer">
+    <p>⚡ All operations run locally in your browser. Files never leave your device.</p>
+  </footer>
+
+  <script src="../../js/common.js"></script>
+  <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

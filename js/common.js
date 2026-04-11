@@ -21,6 +21,9 @@ const JoogadTools = {
             <a href="${this.getBasePath(currentPath)}index.html#tools" id="nav-tools">Tools</a>
             <div class="dropdown-menu glass-card">
               <div class="dropdown-grid">
+                <a href="${this.getBasePath(currentPath)}tools/bg-remover/index.html">AI Background Remover</a>
+                <a href="${this.getBasePath(currentPath)}tools/image-resizer/index.html">Image Resizer</a>
+                <a href="${this.getBasePath(currentPath)}tools/pdf-merge-split/index.html">PDF Merge & Split</a>
                 <a href="${this.getBasePath(currentPath)}tools/qr-generator/index.html">QR Generator</a>
                 <a href="${this.getBasePath(currentPath)}tools/password-generator/index.html">Password Generator</a>
                 <a href="${this.getBasePath(currentPath)}tools/case-converter/index.html">Case Converter</a>
@@ -92,6 +95,9 @@ const JoogadTools = {
     footer.innerHTML = `
       <div class="footer-inner">
         <nav class="footer-links" aria-label="Footer Navigation">
+          <a href="${this.getBasePath(currentPath)}tools/bg-remover/index.html" id="footer-bg">AI BG Remover</a>
+          <a href="${this.getBasePath(currentPath)}tools/image-resizer/index.html" id="footer-resizer">Image Resizer</a>
+          <a href="${this.getBasePath(currentPath)}tools/pdf-merge-split/index.html" id="footer-pdf">PDF Tools</a>
           <a href="${this.getBasePath(currentPath)}tools/qr-generator/index.html" id="footer-qr">QR Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/password-generator/index.html" id="footer-password">Password Generator</a>
           <a href="${this.getBasePath(currentPath)}tools/case-converter/index.html" id="footer-case">Case Converter</a>
