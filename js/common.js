@@ -270,3 +270,5 @@ const JoogadTools = {
 
 };
 
+// ---- Monetag Vignette Banner (Zone: 10826691) ----
+(function(s){s.dataset.zone='10826691',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
