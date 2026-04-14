@@ -90,6 +90,14 @@
 </head>
 
 <body>
+  <!-- ?jt.tools=tool-name → tools/tool-name/index.html -->
+  <script>
+    (function () {
+      var t = new URLSearchParams(location.search).get('jt.tools');
+      if (t) location.replace('tools/' + t.toLowerCase().trim() + '/index.html');
+    })();
+  </script>
+
   <!-- Monetag Ad Slot - Top Banner -->
   <div class="ad-slot ad-slot--header" id="ad-top">
     <!-- Monetag: Paste your banner ad code here -->
