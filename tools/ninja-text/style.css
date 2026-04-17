@@ -112,8 +112,26 @@ body {
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-outline { background: transparent; border: 1px solid var(--glass-border); color: var(--text); }
 .btn-outline:hover { background: rgba(255,255,255,0.05); }
-.btn-whatsapp { background: transparent; border: 1px solid #25D366; color: #25D366; margin-top: 0.75rem; }
-.btn-whatsapp:hover { background: #25D366; color: #000; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+
+/* Share Buttons Row */
+.share-buttons-row {
+  display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;
+}
+.btn-social { 
+  flex: 1; min-width: 60px; padding: 0.6rem 0.5rem; font-size: 0.82rem; 
+  border-radius: var(--radius-sm); border: 1px solid transparent; 
+  cursor: pointer; transition: var(--transition); background: transparent; 
+  font-weight: 600; display: flex; align-items: center; justify-content: center; 
+  font-family: inherit; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.btn-whatsapp { border-color: #25D366; color: #25D366; }
+.btn-whatsapp:hover { background: #25D366; color: #000; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+.btn-telegram { border-color: #0088cc; color: #0088cc; }
+.btn-telegram:hover { background: #0088cc; color: #fff; box-shadow: 0 4px 10px rgba(0, 136, 204, 0.3); }
+.btn-twitter { border-color: #e2e8f0; color: #e2e8f0; }
+.btn-twitter:hover { background: #e2e8f0; color: #111; box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); }
+.btn-native { border-color: var(--accent); color: var(--accent); }
+.btn-native:hover { background: var(--accent); color: #000; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
 
 /* Toasts */
 #toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }

@@ -64,8 +64,36 @@ const NinjaApp = {
     document.getElementById('btn-share-wa').addEventListener('click', () => {
       const text = document.getElementById('ninja-output').innerText;
       if (!text) return this.toast('No text to share!', 'error');
-      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    });
+
+    document.getElementById('btn-share-tg').addEventListener('click', () => {
+      const text = document.getElementById('ninja-output').innerText;
+      if (!text) return this.toast('No text to share!', 'error');
+      window.open(`https://t.me/share/url?url=${encodeURIComponent(' ')}&text=${encodeURIComponent(text)}`, '_blank');
+    });
+
+    document.getElementById('btn-share-tw').addEventListener('click', () => {
+      const text = document.getElementById('ninja-output').innerText;
+      if (!text) return this.toast('No text to share!', 'error');
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+    });
+
+    document.getElementById('btn-share-native').addEventListener('click', async () => {
+      const text = document.getElementById('ninja-output').innerText;
+      if (!text) return this.toast('No text to share!', 'error');
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'I have sent you a secret Ninja Message!',
+            text: text
+          });
+        } catch (err) {
+          // User cancelled or failed
+        }
+      } else {
+        this.toast('Native sharing is not supported on your browser. Please copy manually.', 'warning');
+      }
     });
   },
 
