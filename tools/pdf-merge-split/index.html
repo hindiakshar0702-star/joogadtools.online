@@ -4,47 +4,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Merge & Split — Free Online PDF Tools</title>
-  <meta name="description" content="Merge multiple PDF files into one or split a PDF into separate pages. Secure, 100% client-side tool with zero server uploads.">
+  <title>PDF Suite — Merge, Split, Rotate & More | JoogadTools</title>
+  <meta name="description"
+    content="Free all-in-one PDF toolkit. Merge, split, rotate, reorder pages, add page numbers — 100% client-side, zero uploads.">
   <link rel="canonical" href="https://joogadtools.online/tools/pdf-merge-split/index.html">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="style.css">
-  <!-- We'll add some specific CSS inline for tabs -> will move to standard if needed -->
-  <style>
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab-btn { flex: 1; padding: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); color: white; border-radius: 8px; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.3s; }
-    .tab-btn.active { background: var(--primary-color); border-color: transparent; box-shadow: 0 4px 15px rgba(108, 99, 255, 0.4); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    .pdf-card { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 10px; cursor: grab; }
-    .pdf-card.dragging { opacity: 0.5; }
-    .pdf-info { display: flex; flex-direction: column; }
-    .pdf-name { font-weight: 500; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
-    .pdf-meta { font-size: 0.75rem; color: var(--text-muted); }
-  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "PDF Merge & Split",
+    "name": "PDF Suite — Merge, Split, Rotate & More",
     "url": "https://joogadtools.online/tools/pdf-merge-split/index.html",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "All",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "description": "100% Free & Secure Client-side PDF Merger and Splitter."
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Free all-in-one PDF toolkit with merge, split, rotate, reorder, and page numbers. 100% client-side."
   }
   </script>
 </head>
 
 <body>
-  
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Progress Overlay -->
+  <div id="progress-overlay" class="hidden">
+    <div class="progress-card">
+      <h3 id="progress-title">Processing...</h3>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <p id="progress-text" class="progress-text">0%</p>
+    </div>
+  </div>
+
+  <!-- Background -->
   <div class="bg-orbs">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -57,127 +56,272 @@
       <div class="header-logo">
         <span class="logo-icon">📄</span>
         <div>
-          <h1>PDF Merge & Split</h1>
-          <p>Combine or separate PDF files — 100% Client-Side</p>
+          <h1>PDF Suite</h1>
+          <p>Merge, Split, Rotate, Reorder & More — 100% Client-Side</p>
         </div>
       </div>
       <div class="header-actions">
-        <a href="../../index.html" class="btn btn-outline btn-home">← Back to Tools</a>
+        <a href="../../index.html" class="btn btn-outline">← Back to Tools</a>
       </div>
     </header>
 
-    <div class="tabs container" style="max-width: 600px; margin-top: 2rem;">
-      <button class="tab-btn active" data-tab="merge">🔗 Merge PDFs</button>
-      <button class="tab-btn" data-tab="split">✂️ Split PDF</button>
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="merge">🔗 Merge</button>
+      <button class="tab-btn" data-tab="split">✂️ Split</button>
+      <button class="tab-btn" data-tab="rotate">🔄 Rotate</button>
+      <button class="tab-btn" data-tab="pagenum">🔢 Page #</button>
+      <button class="tab-btn" data-tab="protect">🔒 Metadata</button>
+      <button class="tab-btn" data-tab="reorder">📋 Reorder</button>
     </div>
 
-    <!-- MAIN WORKSAPCE -->
-    <div class="workspace" style="max-width: 1000px; margin: 0 auto; gap: 2rem;">
-      
-      <!-- MERGE TAB -->
-      <div id="tab-merge" class="tab-content active" style="width: 100%;">
-        <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2rem;">
-          <aside class="sidebar glass-panel">
-            <h3 class="panel-subtitle">Upload PDFs to Merge</h3>
-            <div class="dropzone" id="dropzone-merge">
-              <div class="drop-icon">📂</div>
-              <p>Drop PDF files here</p>
-              <p class="drop-sub">Select multiple files</p>
-              <input type="file" id="file-merge" multiple accept="application/pdf" hidden>
-            </div>
-            
-            <div class="action-box">
-              <button class="btn btn-primary btn-full hidden" id="btn-do-merge">🔗 Merge PDFs</button>
-            </div>
-            
-            <p class="setting-desc mt-md" style="text-align: center;">You can drag and drop items in the list to reorder them before merging.</p>
-          </aside>
-
-          <main class="main-content glass-panel" style="background: rgba(0,0,0,0.2);">
-            <div class="empty-state" id="empty-merge">
-              <div class="empty-icon">📂</div>
-              <h2>Ready to Merge</h2>
-              <p>Upload 2 or more PDF files to combine them into one.</p>
-            </div>
-            <div id="list-merge" class="hidden">
-              <!-- Sortable items go here -->
-            </div>
-          </main>
-        </div>
+    <!-- ======== TAB: MERGE ======== -->
+    <div id="tab-merge" class="tab-content active">
+      <div class="workspace">
+        <aside class="sidebar glass-panel">
+          <h3 class="panel-title">Upload PDFs</h3>
+          <div class="dropzone" id="dz-merge">
+            <div class="drop-icon">📂</div>
+            <p>Drop PDF files here</p>
+            <p class="drop-sub">or click to browse</p>
+            <input type="file" id="input-merge" multiple accept="application/pdf" hidden>
+          </div>
+          <label class="form-label">Output Filename</label>
+          <input type="text" class="form-input" id="merge-filename" placeholder="Merged_Document" value="Merged_Document">
+          <button class="btn btn-primary btn-full mt-lg hidden" id="btn-merge">🔗 Merge All PDFs</button>
+          <button class="btn btn-outline btn-full mt-sm hidden" id="btn-merge-clear">🗑️ Clear All</button>
+          <p class="text-muted mt-md" style="font-size:0.72rem; text-align:center;">Drag ⠿ handles to reorder before merging.</p>
+        </aside>
+        <main class="main-content glass-panel">
+          <div id="merge-empty" class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h2>Ready to Merge</h2>
+            <p>Upload 2 or more PDFs to combine them into one document.</p>
+          </div>
+          <div id="merge-list" class="merge-list hidden"></div>
+          <div id="merge-result" class="hidden"></div>
+        </main>
       </div>
-
-      <!-- SPLIT TAB -->
-      <div id="tab-split" class="tab-content" style="width: 100%;">
-         <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2rem;">
-          <aside class="sidebar glass-panel">
-            <h3 class="panel-subtitle">Upload 1 PDF to Split</h3>
-            <div class="dropzone" id="dropzone-split">
-              <div class="drop-icon">📄</div>
-              <p>Drop a PDF file here</p>
-              <input type="file" id="file-split" accept="application/pdf" hidden>
-            </div>
-            
-            <div id="split-settings" class="hidden">
-              <h3 class="panel-subtitle mt-xl">Split Mode</h3>
-              
-              <label style="display:flex; gap:8px; margin-bottom: 10px; cursor: pointer;">
-                <input type="radio" name="split-mode" value="all" checked>
-                <span>Extract all Pages<br><small class="text-muted">Creates a ZIP containing 1 PDF per page.</small></span>
-              </label>
-              
-              <label style="display:flex; gap:8px; cursor: pointer;">
-                <input type="radio" name="split-mode" value="custom">
-                <span>Custom Ranges<br><small class="text-muted">Extract specific pages (e.g. 1-3, 5, 7-9)</small></span>
-              </label>
-
-              <div id="custom-range-input" class="hidden mt-md">
-                <input type="text" id="split-range" class="form-input" placeholder="e.g. 1-3, 5, 7-9" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: white;">
-              </div>
-
-              <div class="action-box mt-lg">
-                <button class="btn btn-primary btn-full" id="btn-do-split">✂️ Split PDF</button>
-              </div>
-            </div>
-          </aside>
-
-          <main class="main-content glass-panel" style="background: rgba(0,0,0,0.2); text-align: center;">
-            <div class="empty-state" id="empty-split">
-              <div class="empty-icon">📄</div>
-              <h2>Ready to Split</h2>
-              <p>Upload a PDF file to begin extracting pages.</p>
-            </div>
-            
-            <div id="split-info" class="hidden" style="padding: 2rem;">
-              <div class="empty-icon text-success">✅</div>
-              <h2 id="split-filename" style="margin-bottom: 0.5rem;">filename.pdf</h2>
-              <p id="split-pages" class="text-accent" style="font-size: 1.2rem; font-weight: 600;">XX Pages</p>
-              <p id="split-size" class="text-muted">XX MB</p>
-            </div>
-          </main>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Info -->
-    <div class="glass-panel container" style="margin-top: 2rem; max-width: 1000px;">
+    <!-- ======== TAB: SPLIT ======== -->
+    <div id="tab-split" class="tab-content">
+      <div class="workspace">
+        <aside class="sidebar glass-panel">
+          <h3 class="panel-title">Upload PDF</h3>
+          <div class="dropzone" id="dz-split">
+            <div class="drop-icon">✂️</div>
+            <p>Drop a PDF file here</p>
+            <input type="file" id="input-split" accept="application/pdf" hidden>
+          </div>
+          <div id="split-controls" class="hidden">
+            <hr class="divider">
+            <h3 class="panel-title">Quick Select</h3>
+            <div class="preset-row">
+              <button class="preset-btn" data-preset="all">All</button>
+              <button class="preset-btn" data-preset="none">None</button>
+              <button class="preset-btn" data-preset="odd">Odd</button>
+              <button class="preset-btn" data-preset="even">Even</button>
+              <button class="preset-btn" data-preset="first-half">1st Half</button>
+              <button class="preset-btn" data-preset="last-half">2nd Half</button>
+            </div>
+            <label class="form-label mt-md">Custom Range</label>
+            <input type="text" class="form-input" id="split-range" placeholder="e.g. 1-3, 5, 7-9">
+            <button class="btn btn-outline btn-sm btn-full mt-sm" id="btn-apply-range">Apply Range</button>
+            <hr class="divider">
+            <button class="btn btn-primary btn-full" id="btn-split-zip">✂️ Download as ZIP</button>
+            <button class="btn btn-outline btn-full mt-sm" id="btn-split-single">📄 Merge into 1 PDF</button>
+            <button class="btn btn-outline btn-full mt-sm" id="btn-split-clear">🗑️ Clear</button>
+            <p class="text-muted mt-sm" style="font-size:0.72rem; text-align:center;" id="split-info-text">Click pages to select/deselect. ⬇ to download single page.</p>
+          </div>
+        </aside>
+        <main class="main-content glass-panel">
+          <div id="split-empty" class="empty-state">
+            <div class="empty-icon">✂️</div>
+            <h2>Ready to Split</h2>
+            <p>Upload a PDF to see page thumbnails and select which to extract.</p>
+          </div>
+          <div id="split-grid" class="page-grid hidden"></div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ======== TAB: ROTATE ======== -->
+    <div id="tab-rotate" class="tab-content">
+      <div class="workspace">
+        <aside class="sidebar glass-panel">
+          <h3 class="panel-title">Upload PDF</h3>
+          <div class="dropzone" id="dz-rotate">
+            <div class="drop-icon">🔄</div>
+            <p>Drop a PDF file here</p>
+            <input type="file" id="input-rotate" accept="application/pdf" hidden>
+          </div>
+          <div id="rotate-controls" class="hidden">
+            <hr class="divider">
+            <h3 class="panel-title">Bulk Rotate All</h3>
+            <div class="preset-row">
+              <button class="preset-btn" data-bulk-rotate="90">90° →</button>
+              <button class="preset-btn" data-bulk-rotate="180">180°</button>
+              <button class="preset-btn" data-bulk-rotate="270">← 270°</button>
+              <button class="preset-btn" data-bulk-rotate="0">Reset</button>
+            </div>
+            <p class="text-muted mt-xs" style="font-size:0.72rem;">Or hover a page and use ↺ ↻ buttons.</p>
+            <button class="btn btn-primary btn-full mt-lg" id="btn-rotate-dl">💾 Download Rotated PDF</button>
+            <button class="btn btn-outline btn-full mt-sm" id="btn-rotate-clear">🗑️ Clear</button>
+          </div>
+        </aside>
+        <main class="main-content glass-panel">
+          <div id="rotate-empty" class="empty-state">
+            <div class="empty-icon">🔄</div>
+            <h2>Rotate Pages</h2>
+            <p>Upload a PDF, then rotate individual or all pages.</p>
+          </div>
+          <div id="rotate-grid" class="page-grid hidden"></div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ======== TAB: PAGE NUMBERS ======== -->
+    <div id="tab-pagenum" class="tab-content">
+      <div class="workspace">
+        <aside class="sidebar glass-panel">
+          <h3 class="panel-title">Upload PDF</h3>
+          <div class="dropzone" id="dz-pagenum">
+            <div class="drop-icon">🔢</div>
+            <p>Drop a PDF file here</p>
+            <input type="file" id="input-pagenum" accept="application/pdf" hidden>
+          </div>
+          <div id="pagenum-controls" class="hidden">
+            <hr class="divider">
+            <h3 class="panel-title">Number Position</h3>
+            <div class="position-grid">
+              <button class="pos-btn" data-pos="top-left">↖ Top L</button>
+              <button class="pos-btn" data-pos="top-center">↑ Top C</button>
+              <button class="pos-btn" data-pos="top-right">↗ Top R</button>
+              <button class="pos-btn" data-pos="bottom-left">↙ Bot L</button>
+              <button class="pos-btn active" data-pos="bottom-center">↓ Bot C</button>
+              <button class="pos-btn" data-pos="bottom-right">↘ Bot R</button>
+            </div>
+            <label class="form-label mt-md">Format</label>
+            <select class="form-input form-select" id="pagenum-format">
+              <option value="num">1, 2, 3...</option>
+              <option value="page">Page 1, Page 2...</option>
+              <option value="dash">— 1 —, — 2 —...</option>
+              <option value="of">1 of N, 2 of N...</option>
+            </select>
+            <label class="form-label mt-md">Starting Number</label>
+            <input type="number" class="form-input" id="pagenum-start" value="1" min="1">
+            <label class="form-label mt-md">Font Size</label>
+            <input type="number" class="form-input" id="pagenum-size" value="11" min="6" max="36">
+            <button class="btn btn-primary btn-full mt-lg" id="btn-pagenum-dl">💾 Add Numbers & Download</button>
+            <button class="btn btn-outline btn-full mt-sm" id="btn-pagenum-clear">🗑️ Clear</button>
+          </div>
+        </aside>
+        <main class="main-content glass-panel">
+          <div id="pagenum-empty" class="empty-state">
+            <div class="empty-icon">🔢</div>
+            <h2>Add Page Numbers</h2>
+            <p>Upload a PDF to stamp page numbers on every page.</p>
+          </div>
+          <div id="pagenum-info" class="file-info-panel hidden">
+            <div class="fi-icon">✅</div>
+            <div class="fi-name" id="pn-filename"></div>
+            <div class="fi-detail" id="pn-pages"></div>
+            <div class="fi-size" id="pn-size"></div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ======== TAB: METADATA ======== -->
+    <div id="tab-protect" class="tab-content">
+      <div class="workspace">
+        <aside class="sidebar glass-panel">
+          <h3 class="panel-title">Upload PDF</h3>
+          <div class="dropzone" id="dz-protect">
+            <div class="drop-icon">🔒</div>
+            <p>Drop a PDF file here</p>
+            <input type="file" id="input-protect" accept="application/pdf" hidden>
+          </div>
+          <div id="protect-controls" class="hidden">
+            <hr class="divider">
+            <h3 class="panel-title">Edit Metadata</h3>
+            <label class="form-label">Title</label>
+            <input type="text" class="form-input" id="meta-title" placeholder="Document title">
+            <label class="form-label mt-sm">Author</label>
+            <input type="text" class="form-input" id="meta-author" placeholder="Author name">
+            <label class="form-label mt-sm">Subject</label>
+            <input type="text" class="form-input" id="meta-subject" placeholder="Subject">
+            <label class="form-label mt-sm">Keywords</label>
+            <input type="text" class="form-input" id="meta-keywords" placeholder="keyword1, keyword2">
+            <button class="btn btn-primary btn-full mt-lg" id="btn-protect-dl">💾 Save & Download</button>
+            <button class="btn btn-outline btn-full mt-sm" id="btn-protect-clear">🗑️ Clear</button>
+          </div>
+        </aside>
+        <main class="main-content glass-panel">
+          <div id="protect-empty" class="empty-state">
+            <div class="empty-icon">🔒</div>
+            <h2>PDF Metadata Editor</h2>
+            <p>Upload a PDF to view and edit its title, author, subject, and keywords.</p>
+          </div>
+          <div id="protect-info" class="file-info-panel hidden">
+            <div class="fi-icon">📋</div>
+            <div class="fi-name" id="mt-filename"></div>
+            <div class="fi-detail" id="mt-pages"></div>
+            <div class="fi-size" id="mt-size"></div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ======== TAB: REORDER ======== -->
+    <div id="tab-reorder" class="tab-content">
+      <div class="workspace">
+        <aside class="sidebar glass-panel">
+          <h3 class="panel-title">Upload PDF</h3>
+          <div class="dropzone" id="dz-reorder">
+            <div class="drop-icon">📋</div>
+            <p>Drop a PDF file here</p>
+            <input type="file" id="input-reorder" accept="application/pdf" hidden>
+          </div>
+          <div id="reorder-controls" class="hidden">
+            <hr class="divider">
+            <h3 class="panel-title">Quick Actions</h3>
+            <div class="preset-row">
+              <button class="preset-btn" id="btn-reverse">🔃 Reverse Order</button>
+            </div>
+            <p class="text-muted mt-xs" style="font-size:0.72rem;">Drag and drop pages to rearrange.</p>
+            <button class="btn btn-primary btn-full mt-lg" id="btn-reorder-dl">💾 Download Reordered PDF</button>
+            <button class="btn btn-outline btn-full mt-sm" id="btn-reorder-clear">🗑️ Clear</button>
+          </div>
+        </aside>
+        <main class="main-content glass-panel">
+          <div id="reorder-empty" class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h2>Reorder Pages</h2>
+            <p>Upload a PDF, then drag and drop page thumbnails to rearrange them.</p>
+          </div>
+          <div id="reorder-grid" class="reorder-grid hidden"></div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Info Card -->
+    <div class="glass-panel mt-lg">
       <div class="info-card">
         <h4>🔐 100% Client-Side Processing</h4>
-        <p>This tool uses your device's browser to process your PDF files locally using strict javascript. Your actual files, documents, and sensitive data are <strong>never uploaded to any server</strong>, ensuring complete privacy and speed.</p>
+        <p>This tool uses pdf-lib and pdf.js to process PDFs entirely in your browser. Your files are <strong>never
+            uploaded to any server</strong>, ensuring complete privacy and speed.</p>
       </div>
     </div>
-
-  </div> <!-- End App Container -->
-
-  <footer class="app-footer">
-    <p>⚡ All operations run locally in your browser. Files never leave your device.</p>
-  </footer>
+  </div>
 
   <script src="../../js/common.js"></script>
-  <!-- pdf-lib for PDF manipulation -->
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-  <!-- zip-js for ZIP downloads -->
   <script src="https://unpkg.com/@zip.js/zip.js@2.7.45/dist/zip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
