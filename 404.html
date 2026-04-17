@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — JoogadTools</title>
+  <meta name="description" content="The page you're looking for doesn't exist. Explore our free online tools instead.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://joogadtools.online/">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C63FF'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>J</text></svg>">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    :root {
+      --bg: #0a0a1a;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --text-primary: #f0f0f5;
+      --text-secondary: #8b8ba0;
+      --primary: #6C63FF;
+      --secondary: #00c9a7;
+      --gradient: linear-gradient(135deg, #6C63FF, #00c9a7);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Animated background orbs */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+    }
+    .bg-orb-1 {
+      width: 400px; height: 400px;
+      background: var(--primary);
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+    .bg-orb-2 {
+      width: 350px; height: 350px;
+      background: var(--secondary);
+      bottom: -80px; right: -80px;
+      animation-delay: -4s;
+    }
+    .bg-orb-3 {
+      width: 250px; height: 250px;
+      background: #f64f59;
+      top: 50%; left: 60%;
+      animation-delay: -2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    /* Glitch-style 404 number */
+    .error-code {
+      font-size: clamp(6rem, 20vw, 12rem);
+      font-weight: 800;
+      line-height: 1;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      animation: pulse 3s ease-in-out infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 20px rgba(108,99,255,0.3)); }
+      50% { opacity: 0.85; filter: drop-shadow(0 0 40px rgba(108,99,255,0.5)); }
+    }
+
+    .error-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .error-desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .redirect-notice {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      opacity: 0.7;
+    }
+
+    .redirect-notice span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(108,99,255,0.5);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Search suggestions */
+    .suggestions {
+      margin-top: 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .suggestions h3 {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .suggestion-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .suggestion-tag {
+      padding: 0.5rem 1rem;
+      background: rgba(108,99,255,0.1);
+      border: 1px solid rgba(108,99,255,0.2);
+      border-radius: 999px;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .suggestion-tag:hover {
+      background: rgba(108,99,255,0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Countdown bar */
+    .countdown-bar {
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      border-radius: 3px;
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+    .countdown-fill {
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 3px;
+      animation: countdown 10s linear forwards;
+    }
+    @keyframes countdown {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background orbs -->
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <div class="container">
+    <div class="error-code">404</div>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-desc">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+    <p class="redirect-notice">
+      Redirecting to homepage in <span id="countdown">10</span> seconds...
+    </p>
+
+    <div class="btn-group">
+      <a href="/" class="btn btn-primary">
+        🏠 Go Home
+      </a>
+      <a href="/#tools" class="btn btn-secondary">
+        🔧 Browse Tools
+      </a>
+    </div>
+
+    <div class="suggestions">
+      <h3>Popular Tools</h3>
+      <div class="suggestion-tags">
+        <a href="/tools/qr-generator/index.html" class="suggestion-tag">📱 QR Generator</a>
+        <a href="/tools/image-compressor/index.html" class="suggestion-tag">🖼️ Image Compressor</a>
+        <a href="/tools/password-generator/index.html" class="suggestion-tag">🔐 Password Generator</a>
+        <a href="/tools/bg-remover/index.html" class="suggestion-tag">✨ BG Remover</a>
+        <a href="/tools/pdf-merge-split/index.html" class="suggestion-tag">📄 PDF Tools</a>
+        <a href="/tools/case-converter/index.html" class="suggestion-tag">Aa Case Converter</a>
+      </div>
+    </div>
+
+    <div class="countdown-bar">
+      <div class="countdown-fill"></div>
+    </div>
+  </div>
+
+  <script>
+    // Auto-redirect countdown
+    let seconds = 10;
+    const countdownEl = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      seconds--;
+      if (countdownEl) countdownEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.href = '/';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
