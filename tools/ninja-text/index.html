@@ -44,6 +44,7 @@
     <!-- Tab Bar -->
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="hide">📝 Hide Text</button>
+      <button class="tab-btn" data-tab="link">🔗 Secret Link</button>
       <button class="tab-btn" data-tab="reveal">🔍 Reveal Secret</button>
     </div>
 
@@ -97,6 +98,53 @@
       </div>
     </div>
 
+    <!-- TAB: SECRET LINK -->
+    <div id="tab-link" class="tab-content">
+      <div class="glass-panel">
+        <div class="form-group">
+          <label class="form-label" for="link-secret-msg">Secret Message (To be linked)</label>
+          <textarea id="link-secret-msg" class="form-textarea" placeholder="Type your highly sensitive message here..."></textarea>
+        </div>
+
+        <div class="flex-group">
+          <div class="form-group">
+            <label class="form-label" for="link-password">Password (Optional but recommended)</label>
+            <input type="password" id="link-password" class="form-input" placeholder="Set a password...">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="link-expiry">Message Expiry</label>
+            <select id="link-expiry" class="form-select">
+              <option value="0">Never Expire</option>
+              <option value="1">1 Hour</option>
+              <option value="24">24 Hours</option>
+              <option value="168">7 Days</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-generate-link">🔗 Generate Secret Link</button>
+
+        <div id="link-output-area" class="output-area">
+          <label class="form-label text-accent">Short Link (Share this URL anywhere!)</label>
+          <div style="position: relative;">
+            <div id="link-output" class="output-box" contenteditable="false" style="color: #10b981;">Generating...</div>
+            <button class="btn-copy-absolute" id="btn-copy-link" title="Copy Link">📋</button>
+          </div>
+          <div class="share-buttons-row">
+            <button class="btn btn-social btn-whatsapp" id="btn-share-link-wa" title="Share via WhatsApp">whatsapp</button>
+            <button class="btn btn-social btn-telegram" id="btn-share-link-tg" title="Share via Telegram">telegram</button>
+            <button class="btn btn-social btn-twitter" id="btn-share-link-tw" title="Share via X (Twitter)">twitter</button>
+            <button class="btn btn-social btn-native" id="btn-share-link-native" title="More Options">share</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-alert">
+        <h4>🔗 Link Mode (No Zero-Width Issues)</h4>
+        <p>This mode generates a tiny, shareable YouTube-style URL. It works perfectly on Telegram, Twitter, and does not cause URL length crashes. Powered by is.gd.</p>
+      </div>
+    </div>
+
     <!-- TAB: REVEAL SECRET -->
     <div id="tab-reveal" class="tab-content">
       <div class="glass-panel">
@@ -124,6 +172,30 @@
       <div class="info-alert">
         <h4>ℹ️ How to use</h4>
         <p>Just paste the exact text you received in WhatsApp, Discord, or anywhere else. If it has a self-destruct timer and has expired, you won't be able to read it!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIRECT DECRYPT MODAL -->
+  <div id="link-decrypt-modal" style="display: none; position: fixed; inset: 0; z-index: 100; background: rgba(5,11,20,0.98); align-items: center; justify-content: center; padding: 1.5rem;">
+    <div class="glass-panel" style="width: 100%; max-width: 500px; text-align: center; border: 1px solid var(--accent); box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);">
+      <h2 style="color: #10b981; margin-bottom: 0.5rem;">🔒 Secret Link Received!</h2>
+      <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">Someone sent you a secure encrypted message.</p>
+      
+      <div class="form-group" style="text-align: left;">
+        <label class="form-label" for="direct-password">Enter Password to Unlock</label>
+        <input type="password" id="direct-password" class="form-input" placeholder="Password (leave empty if none)">
+      </div>
+      
+      <button class="btn btn-primary" id="btn-direct-reveal" style="margin-bottom: 1rem;">🔓 Unlock Message</button>
+      <a href="index.html" class="btn btn-outline">Cancel / Go to Tool</a>
+
+      <div id="direct-output-area" class="output-area" style="text-align: left; margin-top: 1rem;">
+        <label class="form-label text-accent">Revealed Message:</label>
+        <div style="position: relative;">
+          <div id="direct-output" class="output-box" style="border-color: #10b981; color: #fff;"></div>
+          <button class="btn-copy-absolute" id="btn-copy-direct" title="Copy Message">📋</button>
+        </div>
       </div>
     </div>
   </div>

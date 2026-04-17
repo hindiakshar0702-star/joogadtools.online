@@ -14,6 +14,16 @@ const NinjaApp = {
 
   init() {
     this.bindEvents();
+    this.checkUrlHash();
+  },
+
+  checkUrlHash() {
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#secure=')) {
+      // Intercept and show decrypt modal
+      document.querySelector('.app-container').style.display = 'none';
+      document.getElementById('link-decrypt-modal').style.display = 'flex';
+    }
   },
 
   // Custom Toast Notification (Replaces alerts)
@@ -49,16 +59,27 @@ const NinjaApp = {
     // Action Buttons
     document.getElementById('btn-generate').addEventListener('click', () => this.generateNinjaText());
     document.getElementById('btn-reveal').addEventListener('click', () => this.revealSecret());
+    
+    // Secret Link action buttons
+    document.getElementById('btn-generate-link').addEventListener('click', () => this.generateSecretLink());
+    document.getElementById('btn-direct-reveal').addEventListener('click', () => this.directReveal());
 
-    // Copy & Share Output Buttons
+    // Copy Output Buttons
     document.getElementById('btn-copy-ninja').addEventListener('click', () => {
       const el = document.getElementById('ninja-output');
       this.copyToClipboard(el.innerText, 'Ninja Text copied to clipboard!');
     });
-    
     document.getElementById('btn-copy-reveal').addEventListener('click', () => {
       const el = document.getElementById('reveal-output');
       this.copyToClipboard(el.innerText, 'Secret message copied to clipboard!');
+    });
+    document.getElementById('btn-copy-link').addEventListener('click', () => {
+      const el = document.getElementById('link-output');
+      this.copyToClipboard(el.innerText, 'Short Link copied to clipboard!');
+    });
+    document.getElementById('btn-copy-direct').addEventListener('click', () => {
+      const el = document.getElementById('direct-output');
+      this.copyToClipboard(el.innerText, 'Revealed message copied to clipboard!');
     });
 
     document.getElementById('btn-share-wa').addEventListener('click', () => {
@@ -88,11 +109,38 @@ const NinjaApp = {
             title: 'I have sent you a secret Ninja Message!',
             text: text
           });
-        } catch (err) {
-          // User cancelled or failed
-        }
+        } catch (err) {}
       } else {
-        this.toast('Native sharing is not supported on your browser. Please copy manually.', 'warning');
+        this.toast('Native sharing is not supported.', 'warning');
+      }
+    });
+
+    // SHARE BUTTONS FOR LINK MODE
+    const shareLink = (platform) => {
+      const urlText = document.getElementById('link-output').innerText;
+      if (!urlText || urlText.includes('Generating')) return this.toast('Wait for link generation!', 'error');
+      
+      let intentUrl = '';
+      if(platform === 'wa') intentUrl = `https://wa.me/?text=${encodeURIComponent("Check out this secret message: " + urlText)}`;
+      if(platform === 'tg') intentUrl = `https://t.me/share/url?url=${encodeURIComponent(urlText)}&text=${encodeURIComponent("Secret Message")}`;
+      if(platform === 'tw') intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent("Check out this secure message! " + urlText)}`;
+      
+      if(intentUrl) window.open(intentUrl, '_blank');
+    };
+
+    document.getElementById('btn-share-link-wa').addEventListener('click', () => shareLink('wa'));
+    document.getElementById('btn-share-link-tg').addEventListener('click', () => shareLink('tg'));
+    document.getElementById('btn-share-link-tw').addEventListener('click', () => shareLink('tw'));
+
+    document.getElementById('btn-share-link-native').addEventListener('click', async () => {
+      const urlText = document.getElementById('link-output').innerText;
+      if (!urlText || urlText.includes('Generating')) return this.toast('Wait for link generation!', 'error');
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'Secret Ninja Link', text: 'Here is a secret encrypted link!', url: urlText });
+        } catch(e) {}
+      } else {
+        this.toast('Native sharing not supported.', 'warning');
       }
     });
   },
@@ -224,6 +272,91 @@ const NinjaApp = {
 
     } catch (e) {
       return this.toast('Incorrect Password or Corrupted Text!', 'error');
+    }
+  },
+
+  // ================= SECRET LINK ENGINE =================
+
+  async generateSecretLink() {
+    const secretMsg = document.getElementById('link-secret-msg').value;
+    const password = document.getElementById('link-password').value || 'ninja-default-key';
+    const expiryHrs = parseInt(document.getElementById('link-expiry').value);
+
+    if (!secretMsg) return this.toast('Secret Message cannot be empty!', 'error');
+
+    let expiryTimestamp = 0;
+    if (expiryHrs > 0) expiryTimestamp = Date.now() + (expiryHrs * 60 * 60 * 1000);
+    const payload = JSON.stringify({ m: secretMsg, t: expiryTimestamp });
+
+    const outArea = document.getElementById('link-output-area');
+    const outBox = document.getElementById('link-output');
+    
+    outArea.classList.add('active');
+    outBox.innerText = 'Encrypting and connecting to shortener API...';
+
+    try {
+      const encryptedBase64 = CryptoJS.AES.encrypt(payload, password).toString();
+      // Appending to hash to keep it 100% client side (server doesn't read hashes)
+      const longUrl = window.location.origin + window.location.pathname + '#secure=' + encodeURIComponent(encryptedBase64);
+      
+      try {
+        // Fetch from is.gd URL shortener (No CORS proxy needed generally, but handling just in case)
+        const response = await fetch(`https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}`);
+        const data = await response.json();
+        
+        if (data.shorturl) {
+          outBox.innerText = data.shorturl;
+          this.toast('Ninja Link Generated successfully!', 'success');
+        } else {
+          outBox.innerText = longUrl;
+          this.toast('API failed. Using fallback secure link.', 'warning');
+        }
+      } catch (err) {
+        // Fallback to the long secure URL if adblockers/network blocks is.gd
+        outBox.innerText = longUrl;
+        this.toast('Shortener blocked. Used direct secure link.', 'warning');
+      }
+    } catch (e) {
+      outBox.innerText = '';
+      this.toast('Encryption Error: ' + e.message, 'error');
+    }
+  },
+
+  directReveal() {
+    const hashData = window.location.hash.substring(8); // remove '#secure='
+    const password = document.getElementById('direct-password').value || 'ninja-default-key';
+    
+    if (!hashData) return this.toast('Invalid Hash Data', 'error');
+
+    try {
+      const extractedBase64 = decodeURIComponent(hashData);
+      const decryptedBytes = CryptoJS.AES.decrypt(extractedBase64, password);
+      const payloadStr = decryptedBytes.toString(CryptoJS.enc.Utf8);
+      
+      if (!payloadStr) throw new Error("Empty Payload");
+      const payload = JSON.parse(payloadStr);
+
+      const outArea = document.getElementById('direct-output-area');
+      const outBox = document.getElementById('direct-output');
+
+      if (payload.t !== 0 && Date.now() > payload.t) {
+        // Expired
+        outArea.classList.add('active');
+        outBox.innerText = "💣 BOOM! This message has self-destructed because its expiry time has passed.";
+        outBox.style.color = "#ef4444";
+        outBox.style.borderColor = "#ef4444";
+        return this.toast('Message Expired.', 'warning');
+      }
+
+      // Success Display
+      outArea.classList.add('active');
+      outBox.innerText = payload.m;
+      outBox.style.color = "#fff";
+      outBox.style.borderColor = "#10b981";
+      this.toast('Secret Revealed!', 'success');
+
+    } catch (e) {
+      this.toast('Incorrect Password or Corrupted Link!', 'error');
     }
   }
 
