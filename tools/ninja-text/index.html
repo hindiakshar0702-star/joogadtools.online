@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ninja Text — Invisible Message Hider | JoogadTools</title>
+  <meta name="description" content="Hide secret messages inside normal text using zero-width steganography and AES encryption. 100% Client-Side.">
+  <link rel="canonical" href="https://joogadtools.online/tools/ninja-text/">
+  
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310b981'/><text x='50' y='68' font-size='55' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>N</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Background Ninja flares -->
+  <div class="bg-ninja">
+    <div class="ninja-flare nf-1"></div>
+    <div class="ninja-flare nf-2"></div>
+  </div>
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🥷</span>
+        <div>
+          <h1><span>Ninja</span> Text</h1>
+          <p>Hide secret messages inside normal text</p>
+        </div>
+      </div>
+      <div>
+        <a href="../../index.html" class="btn btn-outline" style="width: auto; padding: 0.5rem 1rem;">← Back to Tools</a>
+      </div>
+    </header>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="hide">📝 Hide Text</button>
+      <button class="tab-btn" data-tab="reveal">🔍 Reveal Secret</button>
+    </div>
+
+    <!-- TAB: HIDE TEXT -->
+    <div id="tab-hide" class="tab-content active">
+      <div class="glass-panel">
+        <div class="form-group">
+          <label class="form-label" for="cover-text">Visible Text (Cover)</label>
+          <input type="text" id="cover-text" class="form-input" placeholder="e.g. Happy Birthday bro! Have a great day.">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="secret-msg">Secret Message (To be hidden)</label>
+          <textarea id="secret-msg" class="form-textarea" placeholder="Type your highly sensitive message here..."></textarea>
+        </div>
+
+        <div class="flex-group">
+          <div class="form-group">
+            <label class="form-label" for="hide-password">Password (Optional but recommended)</label>
+            <input type="password" id="hide-password" class="form-input" placeholder="Set a password...">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="msg-expiry">Message Expiry</label>
+            <select id="msg-expiry" class="form-select">
+              <option value="0">Never Expire</option>
+              <option value="1">1 Hour</option>
+              <option value="24">24 Hours</option>
+              <option value="168">7 Days</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-generate">🥷 Generate Ninja Text</button>
+
+        <div id="hide-output-area" class="output-area">
+          <label class="form-label text-accent">Result (Copy this and send anywhere!)</label>
+          <div style="position: relative;">
+            <div id="ninja-output" class="output-box" contenteditable="true" spellcheck="false"></div>
+            <button class="btn-copy-absolute" id="btn-copy-ninja" title="Copy to clipboard">📋</button>
+          </div>
+          <button class="btn btn-whatsapp" id="btn-share-wa">📱 Share via WhatsApp</button>
+        </div>
+      </div>
+      
+      <div class="info-alert">
+        <h4>🔒 100% Secure & Client-Side</h4>
+        <p>Your secret message never leaves your browser. It gets encrypted using AES-256 and converted into zero-width (invisible) spaces mixed inside the visible text.</p>
+      </div>
+    </div>
+
+    <!-- TAB: REVEAL SECRET -->
+    <div id="tab-reveal" class="tab-content">
+      <div class="glass-panel">
+        <div class="form-group">
+          <label class="form-label" for="ninja-input">Paste Ninja Text</label>
+          <textarea id="ninja-input" class="form-textarea" placeholder="Paste the text containing the hidden message here..."></textarea>
+        </div>
+
+        <div class="form-group" style="max-width: 400px;">
+          <label class="form-label" for="reveal-password">Unlock Password</label>
+          <input type="password" id="reveal-password" class="form-input" placeholder="Enter password (if any)...">
+        </div>
+
+        <button class="btn btn-primary" id="btn-reveal">🔍 Reveal Secret</button>
+
+        <div id="reveal-output-area" class="output-area">
+          <label class="form-label" style="color: #00ff88;">🔓 Secret Message Decoded:</label>
+          <div style="position: relative;">
+            <div id="reveal-output" class="output-box" style="border-color: #00ff88; color: #fff;"></div>
+            <button class="btn-copy-absolute" id="btn-copy-reveal" title="Copy to clipboard">📋</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="info-alert">
+        <h4>ℹ️ How to use</h4>
+        <p>Just paste the exact text you received in WhatsApp, Discord, or anywhere else. If it has a self-destruct timer and has expired, you won't be able to read it!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CDN for CryptoJS AES Encryption -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="../../js/common.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
