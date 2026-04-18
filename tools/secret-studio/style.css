@@ -651,3 +651,31 @@ body {
 
 /* Utility */
 .hidden { display: none !important; }
+
+
+/* ---- FAQ Section (Native <details>) ---- */
+.faq-section { margin-top: 3rem; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+.faq-header { text-align: center; margin-bottom: 1.5rem; }
+.faq-header h2 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.faq-header p { color: #888; font-size: 0.9rem; }
+.faq-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.faq-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.faq-item[open] { background: rgba(255, 255, 255, 0.08); border-color: rgba(108, 99, 255, 0.3); }
+.faq-question {
+  padding: 1rem 1.25rem; font-weight: 600; font-size: 1rem; color: #fff; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none;
+}
+.faq-question::-webkit-details-marker { display: none; }
+.faq-question::after {
+  content: '+'; display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; font-size: 1.5rem; color: rgb(108, 99, 255); transition: transform 0.2s ease; font-family: monospace;
+}
+.faq-item[open] .faq-question::after { transform: rotate(45deg); color: #ccc; }
+.faq-answer { padding: 0 1.25rem 1rem; color: #bbb; font-size: 0.95rem; line-height: 1.6; }
+.faq-answer p:not(:last-child) { margin-bottom: 0.5rem; }

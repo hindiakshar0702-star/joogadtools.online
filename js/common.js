@@ -17,6 +17,7 @@ const JoogadTools = {
         </a>
         <nav class="nav-links" id="nav-links" role="navigation" aria-label="Main Navigation">
           <a href="${this.getBasePath(currentPath)}index.html" id="nav-home">Home</a>
+          <a href="${this.getBasePath(currentPath)}blog.html" id="nav-blog">Blog</a>
           <div class="nav-dropdown">
             <a href="${this.getBasePath(currentPath)}index.html#tools" id="nav-tools">Tools</a>
             <div class="dropdown-menu glass-card">

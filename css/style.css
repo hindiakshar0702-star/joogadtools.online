@@ -1039,3 +1039,99 @@ button {
 .hidden { display: none !important; }
 .mono { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---- FAQ Section (Native <details>) ---- */
+.faq-section {
+  margin-top: var(--space-4xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.faq-header h2 {
+  font-family: var(--font-heading);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-xs);
+}
+
+.faq-header p {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.faq-item {
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.faq-item[open] {
+  background: var(--surface-glass-hover);
+  border-color: rgba(108, 99, 255, 0.3);
+}
+
+.faq-question {
+  padding: var(--space-md) var(--space-lg);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none; /* removes default arrow in some browsers */
+  user-select: none;
+}
+
+/* Hide default marker for WebKit/Blink */
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question::after {
+  content: '+';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: var(--fs-xl);
+  color: var(--accent-primary);
+  transition: transform var(--transition-fast);
+  font-family: monospace; /* For pixel perfect cross */
+}
+
+.faq-item[open] .faq-question::after {
+  transform: rotate(45deg);
+  color: var(--text-secondary);
+}
+
+.faq-answer {
+  padding: 0 var(--space-lg) var(--space-md);
+  color: var(--text-secondary);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  animation: fadeIn 0.3s ease;
+}
+
+.faq-answer p:not(:last-child) {
+  margin-bottom: var(--space-sm);
+}

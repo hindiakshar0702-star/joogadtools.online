@@ -1,0 +1,219 @@
+/* Blog Editor Specific Styles */
+
+/* Header Tweaks */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2xl);
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.editor-icon {
+  font-size: 2.8rem;
+  background: var(--surface-glass);
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--surface-glass-border);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.2);
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, #FF6B9D, #FF8E53);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.editor-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  height: calc(100vh - 200px);
+  min-height: 700px;
+}
+@media (min-width: 900px) {
+  .editor-grid {
+    flex-direction: row;
+  }
+}
+
+.editor-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.options-col {
+  flex: 0 0 320px;
+}
+.content-col {
+  flex: 1;
+}
+
+.glass-panel {
+  background: var(--surface-glass);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+.flex-group {
+  display: flex;
+  gap: 1rem;
+}
+.flex-group > .form-group {
+  flex: 1;
+}
+
+.form-label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem;
+  transition: all var(--transition-fast);
+}
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.md-editor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  height: 100%;
+  resize: none;
+  flex: 1;
+  padding: 1.25rem;
+}
+
+.preview-container {
+  overflow-y: auto;
+  border: 1px dashed var(--surface-glass-border);
+  border-radius: var(--radius-base);
+  padding: 1.5rem;
+  background: rgba(0,0,0,0.2);
+  flex: 1;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+
+.preview-container h1, .preview-container h2, .preview-container h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+.preview-container p {
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+.preview-container a {
+  color: var(--accent-tertiary);
+}
+.preview-container code {
+  background: rgba(255,255,255,0.1);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+}
+.preview-container img {
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  margin: 1rem 0;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.tab-btn {
+  background: var(--surface-glass);
+  border: 1px solid var(--surface-glass-border);
+  color: var(--text-muted);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+}
+.tab-btn.active {
+  background: var(--gradient-accent);
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+  height: 100%;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.hidden {
+  display: none;
+}
+.modal-panel {
+  width: 90%;
+  max-width: 500px;
+}
